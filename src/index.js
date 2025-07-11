@@ -6,7 +6,10 @@ const path = require("path");
 const serviceName = "frontend"
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+
 app.set('view engine', 'twig');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -14,6 +17,7 @@ getPort.default({
     port: getPort.portNumbers(config.port_range.min, config.port_range.max) }
 ).then((newPort)=>{
     
+    // Defining routers
     const healthRouter = require('./controllers/health.js');
     app.use('/health', healthRouter);
 
@@ -22,6 +26,7 @@ getPort.default({
         res.render('base', { title: 'Home Page', message: 'Hello from Twig!' });
     });
 
+    // Start listing on the specified port
     app.listen(newPort, async () => {
         console.log(`${serviceName} listening on port ${newPort}`);
         try {
