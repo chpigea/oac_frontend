@@ -23,6 +23,7 @@
     "axios": "1.10.0",
     "express": "5.1.0",
     "get-port": "7.1.0",
+    "i18n": "^0.15.1",
     "twig": "1.17.1"
   },
   "devDependencies": {

@@ -3,16 +3,37 @@ const express = require("express");
 const axios = require("axios");
 const getPort = require('get-port');
 const path = require("path");
+const i18n = require('i18n');
+
+
+i18n.configure({
+  locales: ['en', 'it'],
+  defaultLocale: 'it',
+  directory: path.join(__dirname, 'locales'),
+  queryParameter: 'lang',
+  autoReload: true,
+  updateFiles: false, // don't auto-create keys
+  api: {
+    '__': 't'
+  }
+});
+
 const serviceName = "frontend"
 
 const app = express();
 let newPort = null
 
+app.use(i18n.init);
 app.use(`/${serviceName}`, express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.set('view engine', 'twig');
 app.set('views', path.join(__dirname, 'views'));
+
+app.use((req, res, next) => {
+  res.locals.t = req.t;
+  next();
+});
 
 const register = async function(){
     try {
