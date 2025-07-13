@@ -1,7 +1,52 @@
-body {
+html, body {
   font-family: "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
-  color: red;
+  color: #3498db;
+  height: 100%;
+}
+
+.site-header {
+  background: #333;
+  color: white;
+  padding: 1em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.site-footer {
+  background: #333;
+  color: white;
+  padding: 1em;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.container {
+  display: flex;
+  margin-top: 140px;
+  margin-bottom: 80px;
+  min-height: calc(100vh - 220px);
+  overflow: auto;
+}
+
+.sidebar {
+  width: 200px;
+  background: #f4f4f4;
+  padding: 1em;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1em;
+  overflow-y: auto;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node src/index.js",
-    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js --ext js,twig",
     "build:scss": "sass src/scss/main.scss src/public/css/style.css",
     "watch:scss": "sass --watch src/scss/main.scss:src/public/css/style.css"
   },

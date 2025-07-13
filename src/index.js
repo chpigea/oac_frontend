@@ -12,6 +12,7 @@ i18n.configure({
   directory: path.join(__dirname, 'locales'),
   queryParameter: 'lang',
   autoReload: true,
+  objectNotation: true,
   updateFiles: false, // don't auto-create keys
   api: {
     '__': 't'
@@ -61,7 +62,7 @@ getPort.default({
 
 
     app.get(`/${serviceName}`, (req, res) => {
-        res.render('base', { root: serviceName, title: 'Home Page', message: 'Hello from Twig!' });
+        res.render('login', { root: serviceName, title: 'Home Page', message: 'Hello from Twig!' });
     });
 
     // Start listing on the specified port
