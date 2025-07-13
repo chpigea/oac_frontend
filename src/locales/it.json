@@ -2,7 +2,7 @@
     "welcome": "Benvenuto",
     "login": {
         "title": "Accesso",
-        "user": "Email or Nome utente",
+        "user": "Email o Nome utente",
         "password": "Password",
         "sign_in": "Accedi",
         "anonymous": "Anonimo"
