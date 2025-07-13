@@ -40,6 +40,10 @@
         .login-container button:hover {
             background: #2980b9;
         }
+        .login-message{
+            color: red;
+            font-size: 12px;
+        }
     </style>
 {% endblock %}
 
@@ -49,6 +53,9 @@
         <h2>{{ t('login.title') }}</h2>
         <form action="/{{ root }}/login" method="POST">
             <label for="username">{{ t('login.user') }}</label>
+            {% if invalidLogin %}
+                <span class=".login-message">Invalid credentials</span>
+            {% endif %}
             <input type="text" id="username" name="username" required />
             <label for="password">{{ t('login.password') }}</label>
             <input type="password" id="password" name="password" required />
