@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>{{ title }}</title>
-  <link rel="stylesheet" type="text/css" href="/{{ root }}/css/style.css">
+    <meta charset="UTF-8">
+    <title>{{ t('welcome') ~ ': ' ~ title }}</title>
+    <link rel="stylesheet" href="/{{ root }}/css/style.css">
+    {% block extendHead %}{% endblock %}
 </head>
 <body>
-  <h1>{{ message }}</h1>
-  <h2>{{ t('welcome') }}</h2>
+    {% include 'header.twig' %}
+    
+    <div class="container">
+        
+        {% if showSidebar %}
+          <aside class="sidebar">
+              {% block sidebar %}
+              {% endblock %}
+          </aside>
+        {% endif %}
+
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    {% include 'footer.twig' %}
 </body>
 </html>

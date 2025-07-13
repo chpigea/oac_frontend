@@ -1,3 +1,10 @@
 {
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "login": {
+        "title": "Login",
+        "user": "Email or Username",
+        "password": "Password",
+        "sign_in": "Sign in",
+        "anonymous": "Anonymous"
+    }
 }

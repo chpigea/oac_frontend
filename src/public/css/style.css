@@ -1,7 +1,30 @@
 body {
   font-family: "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
-  color: red;
+  color: #3498db;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-header, .site-footer {
+  background: #333;
+  color: white;
+  padding: 1em;
+}
+
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  background: #f4f4f4;
+  padding: 1em;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1em;
 }
 
 /*# sourceMappingURL=style.css.map */
