@@ -20,8 +20,9 @@
   },
   "homepage": "https://github.com/chpigea/oac_frontend#readme",
   "dependencies": {
-    "@igea/oac_jwt_helpers": "1.0.3",
+    "@igea/oac_jwt_helpers": "1.0.6",
     "axios": "1.10.0",
+    "cookie-parser": "1.4.7",
     "express": "5.1.0",
     "get-port": "7.1.0",
     "i18n": "0.15.1",

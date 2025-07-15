@@ -2,6 +2,7 @@ const config = require('./config.js');
 const express = require("express");
 const axios = require("axios");
 const getPort = require('get-port');
+const cookieParser = require('cookie-parser');
 const path = require("path");
 const i18n = require('i18n');
 const jwtLibFactory = require('@igea/oac_jwt_helpers')
@@ -34,6 +35,7 @@ let newPort = null
 
 app.use(i18n.init);
 app.use(`/${serviceName}`, express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 app.use(express.json());
 app.use(jwtLib.middleware); 
 
