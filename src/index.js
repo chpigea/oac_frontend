@@ -4,7 +4,17 @@ const axios = require("axios");
 const getPort = require('get-port');
 const path = require("path");
 const i18n = require('i18n');
-
+const jwtLibFactory = require('@igea/oac_jwt_helpers')
+const serviceName = "frontend"
+const jwtLib = jwtLibFactory({
+    secret: process.env.JWT_SECRET || config.jwt_secret,
+    excludePaths: [
+        `/${serviceName}/`,
+        `/${serviceName}/health`
+    ],
+    signOptions: { expiresIn: '1h' },
+    redirectTo: `/${serviceName}/`
+});
 
 i18n.configure({
   locales: ['en', 'it'],
@@ -19,14 +29,13 @@ i18n.configure({
   }
 });
 
-const serviceName = "frontend"
-
 const app = express();
 let newPort = null
 
 app.use(i18n.init);
 app.use(`/${serviceName}`, express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+app.use(jwtLib.middleware); 
 
 app.set('view engine', 'twig');
 app.set('views', path.join(__dirname, 'views'));
@@ -55,21 +64,20 @@ getPort.default({
     port: getPort.portNumbers(config.port_range.min, config.port_range.max) }
 ).then((port)=>{
     newPort = port
-
+    // ---------------------------------------------------------------------
     // Defining routers
     const healthRouter = require('./controllers/health.js');
     app.use(`/${serviceName}/health`, healthRouter);
-
-
+    // ---------------------------------------------------------------------
     app.get(`/${serviceName}`, (req, res) => {
-        res.render('login', { root: serviceName, title: 'Home Page', message: 'Hello from Twig!' });
+        res.render('login', { root: serviceName, title: 'Login' });
     });
-
+    // ---------------------------------------------------------------------
     // Start listing on the specified port
     app.listen(port, async () => {
         console.log(`${serviceName} listening on port ${port}`);
         await register()
     });
-
+    // ---------------------------------------------------------------------
 })
 
