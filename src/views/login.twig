@@ -4,13 +4,14 @@
 
 {% block extendHead %}
     <link rel="stylesheet" href="/{{ root }}/css/login.css">
+    <script src="/{{ root }}/js/login/login.js"></script>
 {% endblock %}
 
 {% block content %}
     
     <div class="login-container">
         <h2>{{ t('login.title') }}</h2>
-        <form action="/{{ root }}/login" method="POST">
+        <div>
             <label for="username">{{ t('login.user') }}</label>
             {% if invalidLogin %}
                 <span class=".login-message">Invalid credentials</span>
@@ -18,10 +19,10 @@
             <input type="text" id="username" name="username" required />
             <label for="password">{{ t('login.password') }}</label>
             <input type="password" id="password" name="password" required />
-            <button type="submit">{{ t('login.sign_in') }}</button>
-            <button type="submit" style="background: #ff0000">
+            <button onclick="onSubmit('login')">{{ t('login.sign_in') }}</button>
+            <button onclick="onSubmit('anonymous');" style="background: #ff0000">
                 {{ t('login.anonymous') }}</button>
-        </form>
+        </div>
     </div>
 
 {% endblock %}
