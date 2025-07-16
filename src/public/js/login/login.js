@@ -7,7 +7,7 @@ onSubmit = function(type){
         password: (type == "login") ? 
             document.getElementById("password").value : "",
     }).then(response => {
-        console.log(response.data);
+        window.location = "/frontend/home";
     }).catch(error => {
         console.log(error);
     });

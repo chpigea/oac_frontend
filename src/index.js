@@ -13,7 +13,7 @@ const jwtLib = jwtLibFactory({
         `/${serviceName}/`,
         `/${serviceName}/health`
     ],
-    signOptions: { expiresIn: '1h' },
+    signOptions: { expiresIn: '15m' },
     redirectTo: `/${serviceName}/`
 });
 
@@ -73,6 +73,9 @@ getPort.default({
     // ---------------------------------------------------------------------
     app.get(`/${serviceName}`, (req, res) => {
         res.render('login', { root: serviceName, title: 'Login' });
+    });
+    app.get(`/${serviceName}/home`, (req, res) => {
+        res.render('home', { root: serviceName, title: 'Login' });
     });
     // ---------------------------------------------------------------------
     // Start listing on the specified port
