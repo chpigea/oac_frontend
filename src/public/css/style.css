@@ -27,9 +27,9 @@ html, body {
   z-index: 100;
 }
 
-.container {
+.site-container {
   display: flex;
-  margin-top: 140px;
+  margin-top: 100px;
   margin-bottom: 80px;
   min-height: calc(100vh - 220px);
   overflow: auto;
@@ -42,6 +42,35 @@ html, body {
   flex-shrink: 0;
   overflow-y: auto;
 }
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.menu-item a {
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.menu-item a i {
+  color: #666;
+}
+
+.menu-item a span {
+  font-size: 16px;
+  color: #666;
+}
+
+.menu-item:hover {
+  background: #e9ecef;
+  border-radius: 8px;
+}
+
 
 .main-content {
   flex: 1;

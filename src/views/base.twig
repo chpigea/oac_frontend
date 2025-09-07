@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <title>{{ t('welcome') ~ ': ' ~ title }}</title>
     <link rel="stylesheet" href="/{{ root }}/css/style.css">
+    <link rel="stylesheet" href="/{{ root }}/css/font-awesome-all.min.css">
+    <link rel="stylesheet" href="/{{ root }}/css/bootstrap.min.css">
     <script src="/{{ root }}/js/lib/axios.min.js"></script>
+    <script src="/{{ root }}/js/lib/vue.global.js"></script>
+    <script src="/{{ root }}/js/lib/bootstrap.bundle.min.js"></script>
     {% block extendHead %}{% endblock %}
 </head>
 <body>
     {% include 'header.twig' %}
     
-    <div class="container">
+    <div id="app" data-root="{{ root }}" class="site-container">
         
         {% if showSidebar %}
           <aside class="sidebar">
               {% block sidebar %}
+                {% include 'sidebar.twig' %}
               {% endblock %}
           </aside>
         {% endif %}

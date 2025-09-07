@@ -6,5 +6,27 @@
         "password": "Password",
         "sign_in": "Accedi",
         "anonymous": "Anonimo"
+    },
+    "users": {
+        "manage": {
+            "title": "Utenti",
+            "name": "Nome",
+            "surname": "Cognome",
+            "username": "Nome utente",
+            "email": "Email",
+            "role": "Ruolo",
+            "edit": "Modifica",
+            "delete": "Elimina",
+            "new": "Nuovo"
+        },
+        "profile": {
+            "title": "Profilo"
+        },
+        "role" : {
+            "sudo": "Super Amministratore",
+            "admin": "Amministratore",
+            "editor": "Editore",
+            "reader": "Lettore"
+        }   
     }
 }

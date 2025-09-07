@@ -70,6 +70,9 @@ getPort.default({
     // Defining routers
     const healthRouter = require('./controllers/health.js');
     app.use(`/${serviceName}/health`, healthRouter);
+
+    const usersRouter = require('./controllers/users.js')(serviceName);
+    app.use(`/${serviceName}/users`, usersRouter);
     // ---------------------------------------------------------------------
     app.get(`/${serviceName}`, (req, res) => {
         res.render('login', { root: serviceName, title: 'Login' });
