@@ -1,0 +1,17 @@
+{% block sidebar %}
+    
+    <div class="menu-item">    
+        <a href="/{{ root }}/users/manage">
+            <i class="fa-solid fa-users-between-lines"></i>
+            <span>{{ t('users.manage.title') }}</span>
+        </a>
+    </div>
+
+    <div class="menu-item">
+        <a href="/{{ root }}/users/profile">
+            <i class="fa-solid fa-id-badge"></i>
+            {{ t('users.profile.title') }}
+        </a>
+    </div>
+    
+{% endblock %}
