@@ -19,6 +19,11 @@
             "delete": "Elimina",
             "new": "Nuovo"
         },
+        "edit": {
+            "title": "Utente",
+            "update": "Modifica",
+            "new": "Nuovo"
+        },
         "profile": {
             "title": "Profilo"
         },

@@ -1,0 +1,27 @@
+{% set showSidebar = true %}
+{% extends "../base.twig" %}
+
+{% block extendHead %}
+    <script src="/{{ root }}/js/app/vue-users-edit.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div id="edit-user"
+        data-root="{{ root }}"
+        data-role_sudo="{{ t('users.role.sudo') }}" 
+        data-role_admin="{{ t('users.role.admin') }}" 
+        data-role_editor="{{ t('users.role.editor') }}" 
+        data-role_reader="{{ t('users.role.reader') }}" 
+    >
+        <h2 style="display:flex; justify-content:space-between; align-items:center;">
+            {% if id == 0 %}
+                <span>{{ t('users.edit.title') }}: {{ t('users.edit.new') }}</span>
+            {% else %}
+                <span>{{ t('users.edit.title') }} #{{id}}: {{ t('users.edit.update') }}</span>
+            {% endif %}
+        </h2>
+
+    </div>
+
+{% endblock %}
