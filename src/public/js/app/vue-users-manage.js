@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         data() {
             return {
                 root: el.dataset.root,
+                cur_id: parseInt(el.dataset.cur_id) || 0,
                 labels: {
                     role_sudo: el.dataset.role_sudo,
                     role_admin: el.dataset.role_admin,
@@ -48,7 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.users = this.users.filter(user => user.id !== userId);
             },
             editUser(userId) {
-                window.location.href = `/${this.root}/users/edit/${userId}`;
+                window.location.href = `/${this.root}/users/${userId}`;
+            },
+            newUser() {
+                window.location.href = `/${this.root}/users/0`;
             }
         }
     });

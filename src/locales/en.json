@@ -19,6 +19,11 @@
             "delete": "Delete",
             "new": "New"
         },
+        "edit": {
+            "title": "User",
+            "update": "Update",
+            "new": "New"
+        },
         "profile": {
             "title": "Profile"
         },

@@ -8,45 +8,51 @@
 
 {% block content %}
 
-    <h2 style="display:flex; justify-content:space-between; align-items:center;">
-        <span>{{ t('users.manage.title') }}</span>
-        <i style="color:gray; cursor:pointer; font-size:24px;"
-            class="fa-solid fa-user-plus" title="{{ t('users.manage.new') }}"></i>
-    </h2>
-    <table id="manage-users" class="table"
+    <div id="manage-users"
         data-root="{{ root }}"
         data-role_sudo="{{ t('users.role.sudo') }}" 
         data-role_admin="{{ t('users.role.admin') }}" 
         data-role_editor="{{ t('users.role.editor') }}" 
         data-role_reader="{{ t('users.role.reader') }}" 
+        data-cur_id="{{ cur_id }}"
     >
-        <thead>
-            <tr>
-                <td>#</td>
-                <td>{{ t('users.manage.name') }}</td>
-                <td>{{ t('users.manage.surname') }}</td>
-                <td>{{ t('users.manage.username') }}</td>
-                <td>{{ t('users.manage.email') }}</td>
-                <td>{{ t('users.manage.role') }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="user in users">
-                <td v-text="user.id"></td>
-                <td v-text="user.name"></td>
-                <td v-text="user.surname"></td>
-                <td v-text="user.username"></td>
-                <td v-text="user.email"></td>
-                <td v-text="roleByCode(user.role)"></td>
-                <td @click="editUser(user.id)"><i style="cursor:pointer; color:blue" 
-                    class="fa-solid fa-pen-to-square" title="{{ t('users.manage.edit') }}"></i>
-                </td>
-                <td @click="deleteUser(user.id)"><i style="cursor:pointer; color:red" 
-                    class="fa-solid fa-trash-can" title="{{ t('users.manage.delete') }}"></i>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <h2 style="display:flex; justify-content:space-between; align-items:center;">
+            <span>{{ t('users.manage.title') }}</span>
+            <i @click="newUser()" style="color:gray; cursor:pointer; font-size:24px;"
+                class="fa-solid fa-user-plus" title="{{ t('users.manage.new') }}"></i>
+        </h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <td>{{ t('users.manage.name') }}</td>
+                    <td>{{ t('users.manage.surname') }}</td>
+                    <td>{{ t('users.manage.username') }}</td>
+                    <td>{{ t('users.manage.email') }}</td>
+                    <td>{{ t('users.manage.role') }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="user in users">
+                    <td v-text="user.id"></td>
+                    <td v-text="user.name"></td>
+                    <td v-text="user.surname"></td>
+                    <td v-text="user.username"></td>
+                    <td v-text="user.email"></td>
+                    <td v-text="roleByCode(user.role)"></td>
+                    <td @click="editUser(user.id)"><i style="cursor:pointer; color:blue" 
+                        class="fa-solid fa-pen-to-square" title="{{ t('users.manage.edit') }}"></i>
+                    </td>
+                    <td v-if="cur_id != user.id" @click="deleteUser(user.id)">
+                        <i style="cursor:pointer; color:red" 
+                            class="fa-solid fa-trash-can" title="{{ t('users.manage.delete') }}">
+                        </i>
+                    </td>
+                    <td v-else></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
