@@ -1,31 +1,29 @@
 const express = require('express');
 const router = express.Router();
-
+const DataModel = require('../models/DataModel');
 
 module.exports = function(serviceName) {
     /**
      * @route   GET /users/manage: redirect to the users page with list of users
      */
     router.get('/manage', (req, res) => {
-        let user = req.user;
-        res.render('users/manage.twig', { 
+        let data = new DataModel(req, {  
             root: serviceName, 
             title: 'User Management',
-            cur_id: user.id || 0
-        });
+        });    
+        res.render('users/manage.twig', data.toJson()); 
     });
 
     /**
      * @route   GET /users/:id: redirect to the user page with user details
      */
     router.get('/:id', (req, res) => {
-        let user = req.user;
-        res.render('users/edit.twig', { 
+        let data = new DataModel(req, {  
             root: serviceName, 
             title: 'User Edit',
-            id: req.params.id,
-            cur_id: user.id || 0
-        });
+            id: req.params.id
+        });    
+        res.render('users/edit.twig', data.toJson());    
     });
 
     /**

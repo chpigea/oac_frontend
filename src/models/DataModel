@@ -1,0 +1,19 @@
+
+class DataModel {
+
+    constructor(req, options = {}){
+        this.user = req.user || {};
+        this.options = options;
+    }
+
+    toJson(){   
+        return { 
+            user: this.user, 
+            cur_id: this.user.id || 0,
+            ...this.options 
+        };
+    }
+
+}
+
+module.exports = DataModel;
