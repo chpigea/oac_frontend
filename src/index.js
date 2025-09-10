@@ -7,6 +7,7 @@ const path = require("path");
 const i18n = require('i18n');
 const jwtLibFactory = require('@igea/oac_jwt_helpers')
 const serviceName = "frontend"
+const DataModel = require('./models/DataModel');
 const jwtLib = jwtLibFactory({
     secret: process.env.JWT_SECRET || config.jwt_secret,
     excludePaths: [
@@ -78,8 +79,11 @@ getPort.default({
         res.render('login', { root: serviceName, title: 'Login' });
     });
     app.get(`/${serviceName}/home`, (req, res) => {
-        let user = req.user;
-        res.render('home', { root: serviceName, title: 'Login', cur_id: user.id || 0 });
+        let data = new DataModel(req, {  
+            root: serviceName, 
+            title: 'Home',
+        });  
+        res.render('home', data.toJson());
     });
     // ---------------------------------------------------------------------
     // Start listing on the specified port
