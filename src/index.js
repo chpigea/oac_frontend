@@ -78,7 +78,8 @@ getPort.default({
         res.render('login', { root: serviceName, title: 'Login' });
     });
     app.get(`/${serviceName}/home`, (req, res) => {
-        res.render('home', { root: serviceName, title: 'Login' });
+        let user = req.user;
+        res.render('home', { root: serviceName, title: 'Login', cur_id: user.id || 0 });
     });
     // ---------------------------------------------------------------------
     // Start listing on the specified port

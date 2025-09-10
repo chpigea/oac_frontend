@@ -22,7 +22,11 @@
         "edit": {
             "title": "User",
             "update": "Update",
-            "new": "New"
+            "new": "New",
+            "password": "Password",
+            "confirm_password": "Confirm password",
+            "save": "Save",
+            "cancel": "Cancel"
         },
         "profile": {
             "title": "Profile"
