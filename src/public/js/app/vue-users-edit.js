@@ -16,7 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     role_editor: el.dataset.role_editor,
                     role_reader: el.dataset.role_reader,
                 },
-                user: {}       
+                user: {
+                    name: "",
+                    surname: "",
+                    username: "",
+                    email: "",
+                    password: "",
+                    confirm_password: "",
+                    role: 2
+                }       
             }    
         },
         mounted() {

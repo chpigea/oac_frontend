@@ -28,28 +28,28 @@
                 <!-- Name -->
                 <div class="col-md-6">
                 <label for="name" class="form-label">{{ t('users.manage.name') }}</label>
-                <input type="text" class="form-control" id="name" placeholder="">
+                <input v-model="user.name" type="text" class="form-control" id="name" placeholder="">
                 <div id="nameHelp" class="form-text"></div>
                 </div>
                 
                 <!-- Surname -->
                 <div class="col-md-6">
                 <label for="surname" class="form-label">{{ t('users.manage.surname') }}</label>
-                <input type="text" class="form-control" id="surname" placeholder="">
+                <input v-model="user.surname" type="text" class="form-control" id="surname" placeholder="">
                 <div id="surnameHelp" class="form-text"></div>
                 </div>
                 
                 <!-- Username -->
                 <div class="col-md-6">
                 <label for="username" class="form-label">{{ t('users.manage.username') }}</label>
-                <input type="text" class="form-control" id="username" placeholder="">
+                <input v-model="user.username" type="text" class="form-control" id="username" placeholder="">
                 <div id="usernameHelp" class="form-text"></div>
                 </div>
                 
                 <!-- Email -->
                 <div class="col-md-6">
                 <label for="email" class="form-label">{{ t('users.manage.email') }}</label>
-                <input type="email" class="form-control" id="email" placeholder="">
+                <input v-model="user.email" type="email" class="form-control" id="email" placeholder="">
                 <div id="emailHelp" class="form-text text-danger">
                     We'll never share your email with anyone else.
                 </div>
@@ -58,7 +58,7 @@
                 <!-- Password -->
                 <div class="col-md-6">
                 <label for="password" class="form-label">{{ t('users.edit.password') }}</label>
-                <input type="password" class="form-control" id="password" placeholder="">
+                <input v-model="user.password" type="password" class="form-control" id="password" placeholder="">
                 <div id="passwordHelp" class="form-text text-danger">
                     We'll never share your email with anyone else.
                 </div>
@@ -67,7 +67,7 @@
                 <!-- Confirm Password -->
                 <div class="col-md-6">
                 <label for="password2" class="form-label">{{ t('users.edit.confirm_password') }}</label>
-                <input type="password" class="form-control" id="password2" placeholder="">
+                <input v-model="user.confirm_password" type="password" class="form-control" id="password2" placeholder="">
                 <div id="password2Help" class="form-text text-danger">
                     We'll never share your email with anyone else.
                 </div>
@@ -76,11 +76,11 @@
                 <!-- Role -->
                 <div class="col-md-6">
                     <label for="role" class="form-label">Role</label>
-                    <select id="role" class="form-select">
-                        <option value="0">{{ t('users.role.sudo') }}</option>
-                        <option value="1">{{ t('users.role.admin') }}</option>
-                        <option value="2">{{ t('users.role.editor') }}</option>
-                        <option value="3">{{ t('users.role.reader') }}</option>
+                    <select v-model.number="user.role" id="role" class="form-select">
+                        <option :value="0">{{ t('users.role.sudo') }}</option>
+                        <option :value="1">{{ t('users.role.admin') }}</option>
+                        <option :value="2">{{ t('users.role.editor') }}</option>
+                        <option :value="3">{{ t('users.role.reader') }}</option>
                     </select>
                 </div>
                 
