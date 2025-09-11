@@ -15,41 +15,100 @@ document.addEventListener('DOMContentLoaded', () => {
                     role_admin: el.dataset.role_admin,
                     role_editor: el.dataset.role_editor,
                     role_reader: el.dataset.role_reader,
+                    save_ok: el.dataset.save_ok
                 },
                 user: {
+                    id: parseInt(el.dataset.user_id) || 0,
                     name: "",
                     surname: "",
                     username: "",
                     email: "",
+                    mobile: "",
                     password: "",
                     confirm_password: "",
                     role: 2
-                }       
+                }     
             }    
         },
         mounted() {
             this.getUser();
         },
+        computed:{
+            validator(){
+                let name = this.user.name.length > 0;
+                let surname = this.user.surname.length > 0;
+                let username = this.user.username.length > 0;
+                let email = this.user.email.length > 0 && this.user.email.includes("@");
+                let password = this.user.password.length >= 6 || (this.user.id > 0 && this.user.password.length == 0);
+                let confirm_password = this.user.password == this.user.confirm_password;
+                return {
+                    name: name,
+                    surname: surname,
+                    username: username,
+                    email: email,
+                    password: password,
+                    confirm_password: confirm_password
+                }
+            },
+            validForm(){
+                return this.validator.name && this.validator.surname && this.validator.username && this.validator.email && this.validator.password && this.validator.confirm_password;
+            }
+        },
         methods: {
             getUser() {
-                /*
-                axios.get("/backend/users/").then(response => {
+                if(this.user.id == 0) return;
+                axios.get("/backend/users/" + this.user.id).then(response => {
                     var data = response.data;
                     if(data.success) {
-                        this.users = data.data;
+                        this.user = data.data;
+                        this.user.password = "";
+                        this.user.confirm_password = "";
                     } else {
-                        console.error("Failed to fetch users:", data.message);
+                        console.error("Failed to fetch user:", data.message);
                     }
                 }).catch(error => {
                     console.log(error);
                 });
-                */
             },
             save() {
-                // Here you would also make an API call to save the user to the server
+                if(!this.validForm) return;
+                let payload = {
+                    id: this.user.id,
+                    name: this.user.name,
+                    surname: this.user.surname,
+                    username: this.user.username,
+                    email: this.user.email,
+                    mobile: this.user.mobile,
+                    password: this.user.password,
+                    role: this.user.role
+                };
+                let request;
+                if(this.user.id == 0) {
+                    delete payload["id"];
+                    request = axios.post("/backend/users", payload);
+                } else {
+                    request = axios.put("/backend/users/" + this.user.id, payload);
+                }
+                request.then(response => {
+                    var data = response.data;
+                    if(data.success) {
+                        alert(this.labels.save_ok);
+                        if(document.referrer)
+                            window.location.href = document.referrer;
+                        else
+                            window.history.back();
+                    } else {
+                        alert(data.message);
+                    }
+                }).catch(error => {
+                    alert(error);
+                });
             },
             cancel() {
-                window.history.back();
+                if(document.referrer)
+                    window.location.href = document.referrer;
+                else
+                    window.history.back();
             }
         }
     });

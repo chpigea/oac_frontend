@@ -17,7 +17,8 @@
             "role": "Role",
             "edit": "Edit",
             "delete": "Delete",
-            "new": "New"
+            "new": "New",
+            "confirm_delete": "Are you sure you want to delete this user?"
         },
         "edit": {
             "title": "User",
@@ -26,7 +27,14 @@
             "password": "Password",
             "confirm_password": "Confirm password",
             "save": "Save",
-            "cancel": "Cancel"
+            "cancel": "Cancel",
+            "invalid_name": "Invalid name",
+            "invalid_surname": "Invalid surname",
+            "invalid_username": "Invalid username",
+            "invalid_email": "Invalid email address",
+            "invalid_password": "Invalid password (must be at least 6 characters)",
+            "different_password": "Passwords do not match",
+            "save_ok": "Data saved successfully"
         },
         "profile": {
             "title": "Profile"

@@ -31,7 +31,7 @@ html, body {
   display: flex;
   margin-top: 100px;
   margin-bottom: 80px;
-  min-height: calc(100vh - 220px);
+  min-height: calc(100vh + 150px);
   overflow: auto;
 }
 
@@ -71,11 +71,18 @@ html, body {
   border-radius: 8px;
 }
 
-
 .main-content {
   flex: 1;
   padding: 1em;
   overflow-y: auto;
+}
+
+.warning {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 20px;
 }
 
 /*# sourceMappingURL=style.css.map */

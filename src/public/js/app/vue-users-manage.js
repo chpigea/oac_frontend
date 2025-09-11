@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     role_admin: el.dataset.role_admin,
                     role_editor: el.dataset.role_editor,
                     role_reader: el.dataset.role_reader,
+                    confirm_delete: el.dataset.confirm_delete
                 },
                 users: []       
             }    
@@ -45,8 +46,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 return label;
             },
             deleteUser(userId) {
-                // Here you would also make an API call to delete the user from the server
-                this.users = this.users.filter(user => user.id !== userId);
+                if(!confirm(this.labels.confirm_delete)) return;
+                axios.delete("/backend/users/" + userId).then(response => {
+                    var data = response.data;
+                    if(data.success) {
+                        this.users = this.users.filter(user => user.id !== userId);
+                    } else {
+                        console.error("Failed to fetch user:", data.message);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
             },
             editUser(userId) {
                 window.location.href = `/${this.root}/users/${userId}`;
