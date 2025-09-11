@@ -17,7 +17,8 @@
             "role": "Ruolo",
             "edit": "Modifica",
             "delete": "Elimina",
-            "new": "Nuovo"
+            "new": "Nuovo",
+            "confirm_delete": "Sei sicuro di voler eliminare questo utente?"
         },
         "edit": {
             "title": "Utente",
@@ -26,7 +27,14 @@
             "password": "Password",
             "confirm_password": "Conferma password",
             "save": "Salva",
-            "cancel": "Annulla"
+            "cancel": "Annulla",
+            "invalid_name": "Nome non valido",
+            "invalid_surname": "Cognome non valido",
+            "invalid_username": "Nome utente non valido",
+            "invalid_email": "Indirizzo email non valido",
+            "invalid_password": "Password non valida (deve contenere almeno 6 caratteri)",
+            "different_password": "Le password non corrispondono",
+            "save_ok": "Salvataggio dati eseguito correttamente"
         },
         "profile": {
             "title": "Profilo"
