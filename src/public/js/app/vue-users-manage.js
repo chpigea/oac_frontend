@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return {
                 root: el.dataset.root,
                 cur_id: parseInt(el.dataset.cur_id) || 0,
+                cur_role: parseInt(el.dataset.cur_role),
                 labels: {
                     role_sudo: el.dataset.role_sudo,
                     role_admin: el.dataset.role_admin,
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 axios.get("/backend/users/").then(response => {
                     var data = response.data;
                     if(data.success) {
-                        this.users = data.data;
+                        this.users = data.data.filter(u => u.role != 0 || this.cur_role == 0);
                     } else {
                         console.error("Failed to fetch users:", data.message);
                     }

@@ -1,24 +1,36 @@
 {% block sidebar %}
-    
-    {% if user.id > 0 %}
 
-        <!-- abilitare solo per utenti ADMIN -->
-        {% if cur_role != "admin" %}
-            <div class="menu-item">    
-                <a href="/{{ root }}/users/manage">
-                    <i class="fa-solid fa-users-between-lines"></i>
-                    <span>{{ t('users.manage.title') }}</span>
-                </a>
-            </div>
-        {% endif %}
-
-        <div class="menu-item">
-            <a href="/{{ root }}/users/{{ cur_id }}">
-                <i class="fa-solid fa-id-badge"></i>
-                {{ t('users.profile.title') }}
+    <!-- abilitare solo per utenti ADMIN -->
+    {% if user.role == 0 or user.role == 1 %}
+        <div class="menu-item">    
+            <a href="/{{ root }}/users/manage">
+                <i class="fa-solid fa-users-between-lines"></i>
+                <span>{{ t('users.manage.title') }}</span>
             </a>
         </div>
-
     {% endif %}
+
+    {% if user.id > 0 %}
+    <div class="menu-item">
+        <a href="/{{ root }}/users/{{ cur_id }}">
+            <i class="fa-solid fa-id-badge"></i>
+            {{ t('users.profile.title') }}
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="menu-item">
+        <a href="/{{ root }}/search/fast">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            {{ t('search.fast.title') }}
+        </a>
+    </div>
+
+    <div class="menu-item">
+        <a href="/{{ root }}/search/advanced">
+            <i class="fa-solid fa-magnifying-glass-dollar"></i>
+            {{ t('search.advanced.title') }}
+        </a>
+    </div>
 
 {% endblock %}

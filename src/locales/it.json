@@ -45,5 +45,14 @@
             "editor": "Editore",
             "reader": "Lettore"
         }   
+    },
+    "search": {
+        "fast": {
+            "title": "Ricerca veloce"
+        },
+        "advanced": {
+            "title": "Ricerca avanzata"
+        }
+
     }
 }
