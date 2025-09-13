@@ -79,9 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     username: this.user.username,
                     email: this.user.email,
                     mobile: this.user.mobile,
-                    password: this.user.password,
                     role: this.user.role
                 };
+                if(this.user.password.length > 0)
+                    payload["password"] = this.user.password;
                 let request;
                 if(this.user.id == 0) {
                     delete payload["id"];

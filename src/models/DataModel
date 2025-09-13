@@ -6,12 +6,14 @@ class DataModel {
         this.options = options;
     }
 
-    toJson(){   
-        return { 
+    toJson(){  
+        let json = { 
             user: this.user, 
             cur_id: this.user.id || 0,
             ...this.options 
         };
+        console.log(json)
+        return json
     }
 
 }
