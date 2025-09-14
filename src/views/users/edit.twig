@@ -15,6 +15,8 @@
         data-role_reader="{{ t('users.role.reader') }}"
         data-user_id = "{{ id }}"
         data-save_ok="{{ t('users.edit.save_ok') }}"
+        data-cur_id="{{ cur_id }}"
+        data-cur_role="{{ user.role }}"
     >
         <h2 style="display:flex; justify-content:space-between; align-items:center;">
             {% if id == 0 %}
@@ -90,7 +92,7 @@
                 <!-- Role -->
                 <div class="col-md-6">
                     <label for="role" class="form-label">{{ t('users.manage.role') }}:</label>
-                    <select v-model.number="user.role" id="role" class="form-select">
+                    <select v-model.number="user.role" id="role" class="form-select" :disabled="cur_id==user.id">
                         <option :value="0">{{ t('users.role.sudo') }}</option>
                         <option :value="1">{{ t('users.role.admin') }}</option>
                         <option :value="2">{{ t('users.role.editor') }}</option>
