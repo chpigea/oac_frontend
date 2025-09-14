@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
         data() {
             return {
                 root: el.dataset.root,
+                cur_id: parseInt(el.dataset.cur_id),
+                cur_role: parseInt(el.dataset.cur_role),
                 labels: {
                     role_sudo: el.dataset.role_sudo,
                     role_admin: el.dataset.role_admin,

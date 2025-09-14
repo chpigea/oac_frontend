@@ -12,7 +12,8 @@ const jwtLib = jwtLibFactory({
     secret: process.env.JWT_SECRET || config.jwt_secret,
     excludePaths: [
         `/${serviceName}/`,
-        `/${serviceName}/health`
+        `/${serviceName}/health`,
+        `/${serviceName}/captcha/random-image`
     ],
     signOptions: { expiresIn: '15m' },
     redirectTo: `/${serviceName}/`
@@ -74,6 +75,11 @@ getPort.default({
 
     const usersRouter = require('./controllers/users.js')(serviceName);
     app.use(`/${serviceName}/users`, usersRouter);
+
+    const captchaRouter = require('./controllers/captcha.js');
+    app.use(`/${serviceName}/captcha`, captchaRouter);
+    // ---------------------------------------------------------------------
+    // Application routes
     // ---------------------------------------------------------------------
     app.get(`/${serviceName}`, (req, res) => {
         res.render('login', { root: serviceName, title: 'Login' });
