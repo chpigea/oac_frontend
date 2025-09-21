@@ -44,6 +44,22 @@
             "admin": "Admin",
             "editor": "Editor",
             "reader": "Reader"
+        },
+        "vocabolaries": {
+            "title": "Vocabolaries",
+            "drag_drop": "Drag & drop XML files here, or click to select",
+            "browse": "browse",
+            "no_files": "No files selected",
+            "file": "file",
+            "files": "files",
+            "remove": "Remove",
+            "upload": "Upload",
+            "uploading": "Uploading...",
+            "upload_ok": "Files uploaded successfully",
+            "upload_error": "Error uploading files",
+            "invalid_file": "Invalid file type",
+            "max_files": "You can upload up to 5 files at a time",
+            "max_size": "Each file must be less than 10MB"
         }
     },
     "search": {

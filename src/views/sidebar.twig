@@ -8,6 +8,14 @@
                 <span>{{ t('users.manage.title') }}</span>
             </a>
         </div>
+
+        <div class="menu-item">    
+            <a href="/{{ root }}/vocabolaries/manage">
+                <i class="fa-solid fa-book-bookmark"></i>
+                <span>{{ t('users.vocabolaries.title') }}</span>
+            </a>
+        </div>
+
     {% endif %}
 
     {% if user.id > 0 %}

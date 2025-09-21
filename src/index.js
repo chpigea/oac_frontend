@@ -76,6 +76,9 @@ getPort.default({
     const usersRouter = require('./controllers/users.js')(serviceName);
     app.use(`/${serviceName}/users`, usersRouter);
 
+    const vocabolariesRouter = require('./controllers/vocabolaries.js')(serviceName);
+    app.use(`/${serviceName}/vocabolaries`, vocabolariesRouter);
+
     const searchRouter = require('./controllers/search.js')(serviceName);
     app.use(`/${serviceName}/search`, searchRouter);
 

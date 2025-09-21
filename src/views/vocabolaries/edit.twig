@@ -1,0 +1,44 @@
+{% set showSidebar = true %}
+{% extends "../base.twig" %}
+
+{% block extendHead %}
+    <link rel="stylesheet" href="/{{ root }}/css/drop-file.css">
+    <script src="/{{ root }}/js/vocabolaries/vocabolaries.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2 style="display:flex; justify-content:space-between; align-items:center;">    
+            <span>{{ t('users.vocabolaries.title') }}:</span>
+        </h2>
+    </div>
+
+    <div class="dropzone" id="dropzone" draggable="true" tabindex="0">
+        <p>{{ t('users.vocabolaries.drag_drop') }}
+            <button style="margin-left:20px;" id="browseBtn" class="btn" type="button">
+                <i class="fa-solid fa-folder-open" 
+                    style="font-size:24px; color:darkred;">
+                </i>
+            </button>
+        </p>
+        <input id="fileInput" type="file" style="display:none" multiple>
+        <div class="files-list" id="filesList"></div>
+    </div>
+
+    <script>
+        dropFilesInit({
+            labels: {
+                no_files: "{{ t('users.vocabolaries.no_files') }}",
+                remove: "{{ t('users.vocabolaries.remove') }}",
+                upload: "{{ t('users.vocabolaries.upload') }}",
+                uploading: "{{ t('users.vocabolaries.uploading') }}",
+                upload_ok: "{{ t('users.vocabolaries.upload_ok') }}",
+                upload_error: "{{ t('users.vocabolaries.upload_error') }}",
+                invalid_file: "{{ t('users.vocabolaries.invalid_file') }}",
+                max_files: "{{ t('users.vocabolaries.max_files') }}",
+                max_size: "{{ t('users.vocabolaries.max_size') }}"
+            }
+        });
+    </script>
+
+{% endblock %}
