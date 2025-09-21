@@ -4,8 +4,20 @@
         "title": "Login",
         "user": "Email or Username",
         "password": "Password",
+        "password_recovery": "Forgot your password?",
+        "invalid_user": "Invalid username or password",
         "sign_in": "Sign in",
         "anonymous": "Anonymous"
+    },
+    "password_recovery": {
+        "title": "Password recovery",
+        "instructions": "Enter your email address or username to receive password recovery instructions.",
+        "email": "Email",
+        "send_instructions": "Send instructions",
+        "back_to_login": "Back to login",
+        "invalid_email": "Invalid email address",
+        "email_sent": "Instructions have been sent to your email address, if it exists in our system."
+        "password_reset_success": "Your password has been reset successfully. You can now log in with your new password."        
     },
     "users": {
         "manage": {

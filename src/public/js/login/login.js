@@ -1,6 +1,6 @@
 onSubmit = function(type){
-
-    axios.post("/backend/auth/authenticate", {
+    var url = "/backend/auth/authenticate";
+    axios.post(url, {
         type: type,
         user: (type == "login") ? 
             document.getElementById("username").value : "",
@@ -11,5 +11,4 @@ onSubmit = function(type){
     }).catch(error => {
         console.log(error);
     });
-
 }

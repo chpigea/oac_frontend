@@ -14,12 +14,16 @@
         <div>
             <label for="username">{{ t('login.user') }}</label>
             {% if invalidLogin %}
-                <span class=".login-message">Invalid credentials</span>
+                <span class=".login-message">{{ t('login.invalid_user') }}</span>
             {% endif %}
             <input type="text" id="username" name="username" required />
             <label for="password">{{ t('login.password') }}</label>
             <input type="password" id="password" name="password" required />
             <button onclick="onSubmit('login')">{{ t('login.sign_in') }}</button>
+            <a href="/{{ root }}/password_recovery">
+                <i class="fa-solid fa-key"></i>
+                <span>{{ t('login.password_recovery') }}</span>
+            </a>
             <button onclick="onSubmit('anonymous');" style="background: #ff0000">
                 {{ t('login.anonymous') }}</button>
         </div>

@@ -40,6 +40,18 @@ module.exports = function(serviceName) {
 
     });
 
+    router.get('/reset_password/:id/:token', (req, res) => {
+        let data = new DataModel(req, {  
+            root: serviceName, 
+            title: 'Reset password',
+            user: {
+                id: req.params.id,
+                token: req.params.token
+            }
+        });    
+        res.render('users/reset_password.twig', data.toJson()); 
+    });
+
     return router
 }
 
