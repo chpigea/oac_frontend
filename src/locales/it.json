@@ -4,8 +4,20 @@
         "title": "Accesso",
         "user": "Email o Nome utente",
         "password": "Password",
+        "password_recovery": "Hai dimenticato la password?",
+        "invalid_user": "Nome utente o password non validi",
         "sign_in": "Accedi",
         "anonymous": "Anonimo"
+    },
+    "password_recovery": {
+        "title": "Recupero password",
+        "instructions": "Inserisci il tuo indirizzo email o nome utente per ricevere le istruzioni di recupero della password.",
+        "email": "Email",
+        "send_instructions": "Invia istruzioni",
+        "back_to_login": "Torna al login",
+        "invalid_email": "Indirizzo email non valido",
+        "email_sent": "Le istruzioni sono state inviate al tuo indirizzo email, se esiste nel nostro sistema.",
+        "password_reset_success": "La tua password è stata reimpostata con successo. Ora puoi accedere con la tua nuova password."
     },
     "users": {
         "manage": {

@@ -12,6 +12,8 @@ const jwtLib = jwtLibFactory({
     secret: process.env.JWT_SECRET || config.jwt_secret,
     excludePaths: [
         `/${serviceName}/`,
+        `/${serviceName}/password_recovery`,
+        new RegExp(`^/${serviceName}/users/reset_password/[^/]+/[^/]+$`),
         `/${serviceName}/health`,
         `/${serviceName}/captcha/random-image`
     ],
@@ -89,6 +91,9 @@ getPort.default({
     // ---------------------------------------------------------------------
     app.get(`/${serviceName}`, (req, res) => {
         res.render('login', { root: serviceName, title: 'Login' });
+    });
+    app.get(`/${serviceName}/password_recovery`, (req, res) => {
+        res.render('password_recovery', { root: serviceName, title: 'Password recovery' });
     });
     app.get(`/${serviceName}/home`, (req, res) => {
         let data = new DataModel(req, {  
