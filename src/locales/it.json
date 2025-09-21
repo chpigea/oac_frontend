@@ -44,7 +44,21 @@
             "admin": "Amministratore",
             "editor": "Editore",
             "reader": "Lettore"
-        }   
+        },
+        "vocabolaries": {
+            "title": "Vocabolari",
+            "drag_drop": "Trascina e rilascia i file XML qui, oppure clicca per selezionare",
+            "browse": "sfoglia",
+            "no_files": "Nessun file selezionato",
+            "file": "file",
+            "files": "file",
+            "remove": "Rimuovi",
+            "upload": "Carica",
+            "uploading": "Caricamento in corso...",
+            "upload_ok": "File caricati con successo",
+            "upload_error": "Errore durante il caricamento dei file",
+            "invalid_file": "Tipo di file non valido"
+        }
     },
     "search": {
         "fast": {
