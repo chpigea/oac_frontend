@@ -62,7 +62,8 @@ html, body {
 }
 
 .site-footer {
-  background: #333;
+  text-align: center;
+  background: #802433;
   color: white;
   padding: 1em;
   position: fixed;
