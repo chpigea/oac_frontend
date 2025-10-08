@@ -1,5 +1,6 @@
 {
     "welcome": "Benvenuto",
+    "exit": "Esci",
     "login": {
         "title": "Accesso",
         "user": "Email o Nome utente",

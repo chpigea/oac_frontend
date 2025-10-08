@@ -1,5 +1,6 @@
 {
     "welcome": "Welcome",
+    "exit": "Exit",
     "login": {
         "title": "Login",
         "user": "Email or Username",
@@ -81,6 +82,5 @@
         "advanced": {
             "title": "Advanced search"
         }
-
     }
 }
