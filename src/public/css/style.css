@@ -3,17 +3,62 @@ html, body {
   font-size: 1rem;
   color: #3498db;
   height: 100%;
+  background-color: #f4f4f4 !important;
 }
 
+
 .site-header {
-  background: #333;
-  color: white;
-  padding: 1em;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
+  display: grid;
+  grid-template-columns: 247px 1fr; /* logo A fisso, resto variabile */
+  align-items: center;
+  background: #f4f4f4;
+  height: 120px; /* altezza header */
+  padding: 0 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.site-header .logo {
+  display: flex;
+  align-items: center;
+}
+
+.site-header .logo img {
+  height: 120px;        /* altezza uniforme */
+  margin-right: 10px;   /* spaziatura tra i loghi */
+}
+
+.logo-left {
+  display: flex;
+  align-items: flex-start; /* in alto */
+}
+
+.logo-left img {
+  max-width: 247px;
+  max-height: 120px;
+}
+
+.logo-right {
+  display: flex;
+  justify-content: center; /* centro orizzontale */
+  align-items: center;     /* centro verticale */
+  height: 100%;
+}
+
+.logo-right img {
+  width: 50%;
+  min-width: 400px;   /* mai più piccolo di 400px */
+  max-width: 753px;   /* mai più grande della sua dimensione naturale */
+  height: auto;
+  max-height: 59px;
+}
+
+/* Titolo e nav sotto */
+.site-header h1,
+.site-header nav {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: #f4f4f4;
 }
 
 .site-footer {
@@ -75,6 +120,7 @@ html, body {
   flex: 1;
   padding: 1em;
   overflow-y: auto;
+  background-color: white;
 }
 
 .warning {
