@@ -82,5 +82,8 @@
         "advanced": {
             "title": "Advanced search"
         }
+    },
+    "footer": {
+        "text": "Powered by IGEA: all rights reserved"
     }
 }

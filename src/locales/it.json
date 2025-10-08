@@ -81,5 +81,8 @@
             "title": "Ricerca avanzata"
         }
 
+    },
+    "footer": {
+        "text": "Sviluppato da IGEA: tutti i diritti riservati"
     }
 }
