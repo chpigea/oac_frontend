@@ -74,7 +74,6 @@ html, body {
 
 .site-container {
   display: flex;
-  margin-top: 100px;
   margin-bottom: 80px;
   min-height: calc(100vh + 150px);
   overflow: auto;

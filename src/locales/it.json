@@ -1,5 +1,6 @@
 {
     "welcome": "Benvenuto",
+    "exit": "Esci",
     "login": {
         "title": "Accesso",
         "user": "Email o Nome utente",
@@ -80,5 +81,8 @@
             "title": "Ricerca avanzata"
         }
 
+    },
+    "footer": {
+        "text": "Sviluppato da IGEA: tutti i diritti riservati"
     }
 }

@@ -18,15 +18,6 @@
 
     {% endif %}
 
-    {% if user.id > 0 %}
-    <div class="menu-item">
-        <a href="/{{ root }}/users/{{ cur_id }}">
-            <i class="fa-solid fa-id-badge"></i>
-            {{ t('users.profile.title') }}
-        </a>
-    </div>
-    {% endif %}
-
     <div class="menu-item">
         <a href="/{{ root }}/search/fast">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -40,5 +31,27 @@
             {{ t('search.advanced.title') }}
         </a>
     </div>
+
+    {% if user.id > 0 %}
+        <div class="menu-item">
+            <a href="/{{ root }}/users/{{ cur_id }}">
+                <i class="fa-solid fa-id-badge"></i>
+                {{ t('users.profile.title') }}
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="/{{ root }}/">
+                <i class="fa-solid fa-person-walking-arrow-right"></i>
+                {{ t('exit') }}
+            </a>
+        </div>    
+    {% else %}
+        <div class="menu-item">
+            <a href="/{{ root }}/">
+                <i class="fa-solid fa-address-card"></i>
+                {{ t('login.title') }}
+            </a>
+        </div>
+    {% endif %}
 
 {% endblock %}
