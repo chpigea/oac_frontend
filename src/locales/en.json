@@ -1,6 +1,9 @@
 {
     "welcome": "Welcome",
     "exit": "Exit",
+    "app": {
+        "title": "Conservation Flows"
+    },
     "login": {
         "title": "Login",
         "user": "Email or Username",
