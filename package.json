@@ -27,6 +27,7 @@
     "axios": "1.10.0",
     "cookie-parser": "1.4.7",
     "express": "5.1.0",
+    "express-rate-limit": "8.1.0",
     "get-port": "7.1.0",
     "i18n": "0.15.1",
     "twig": "1.17.1"
