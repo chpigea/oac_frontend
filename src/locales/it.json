@@ -1,6 +1,9 @@
 {
     "welcome": "Benvenuto",
     "exit": "Esci",
+    "app": {
+        "title": "Flussi Conservativi"
+    },
     "login": {
         "title": "Accesso",
         "user": "Email o Nome utente",

@@ -2,11 +2,20 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const fs = require('fs');
+const rateLimit = require('express-rate-limit');
 
 // folder where your images are stored
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'captcha');
 
-router.get('/random-image', (req, res) => {
+const imageLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+router.get('/random-image', imageLimiter, (req, res) => {
   fs.readdir(IMAGES_DIR, (err, files) => {
     if (err) {
       console.error(err);
