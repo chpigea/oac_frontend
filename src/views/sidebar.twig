@@ -1,57 +1,117 @@
 {% block sidebar %}
-
-    <!-- abilitare solo per utenti ADMIN -->
-    {% if user.role == 0 or user.role == 1 %}
-        <div class="menu-item">    
-            <a href="/{{ root }}/users/manage">
-                <i class="fa-solid fa-users-between-lines"></i>
-                <span>{{ t('users.manage.title') }}</span>
-            </a>
-        </div>
-
-        <div class="menu-item">    
-            <a href="/{{ root }}/vocabolaries/manage">
+    {# Introduzione #}
+    <div class="menu-item has-submenu {% if '/introduction' in currentPath %}open{% endif %}">
+        <a href="#" class="submenu-toggle">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>{{ t('introduction.title') }}</span>
+            <i class="fa-solid fa-chevron-down submenu-arrow"></i>
+        </a>
+        <div class="submenu">
+            <a href="/{{ root }}/introduction/content" class="{% if '/introduction/content' in currentPath %}active{% endif %}">
                 <i class="fa-solid fa-book-bookmark"></i>
-                <span>{{ t('users.vocabolaries.title') }}</span>
+                <span>{{ t('introduction.content') }}</span>
+            </a>
+            <a href="/{{ root }}/introduction/purpose" class="{% if '/introduction/purpose' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-book-bookmark"></i>
+                <span>{{ t('introduction.purpose') }}</span>
+            </a>
+            <a href="/{{ root }}/introduction/partecipants" class="{% if '/introduction/partecipants' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-book-bookmark"></i>
+                <span>{{ t('introduction.participants') }}</span>
+            </a>
+            <a href="/{{ root }}/introduction/references" class="{% if '/introduction/references' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-book-bookmark"></i>
+                <span>{{ t('introduction.references') }}</span>
+            </a>
+            <a href="/{{ root }}/introduction/bibliography" class="{% if '/introduction/bibliography' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-book-bookmark"></i>
+                <span>{{ t('introduction.bibliography') }}</span>
             </a>
         </div>
+    </div>
 
+    {# Gestione (solo admin) #}
+    {% if user.role == 0 or user.role == 1 %}
+        <div class="menu-item has-submenu {% if '/users' in currentPath  or '/vocabolaries' in currentPath %}open{% endif %}">
+            <a href="#" class="submenu-toggle">
+                <i class="fa-solid fa-gear"></i>
+                <span>{{ t('admin.manage.title')|default('Gestione') }}</span>
+                <i class="fa-solid fa-chevron-down submenu-arrow"></i>
+            </a>
+            <div class="submenu">
+                <a href="/{{ root }}/users/manage" class="{% if '/users/manage' in currentPath %}active{% endif %}">
+                    <i class="fa-solid fa-users-between-lines"></i>
+                    <span>{{ t('users.manage.title') }}</span>
+                </a>
+                <a href="/{{ root }}/vocabolaries/manage" class="{% if '/vocabolaries/manage' in currentPath %}active{% endif %}">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span>{{ t('users.vocabolaries.title') }}</span>
+                </a>
+            </div>
+        </div>
     {% endif %}
 
-    <div class="menu-item">
-        <a href="/{{ root }}/search/fast">
+    {# Ricerca #}
+    <div class="menu-item has-submenu {% if '/search' in currentPath %}open{% endif %}">
+        <a href="#" class="submenu-toggle">
             <i class="fa-solid fa-magnifying-glass"></i>
-            {{ t('search.fast.title') }}
+            <span>{{ t('search.title')|default('Ricerca') }}</span>
+            <i class="fa-solid fa-chevron-down submenu-arrow"></i>
         </a>
-    </div>
-
-    <div class="menu-item">
-        <a href="/{{ root }}/search/advanced">
-            <i class="fa-solid fa-magnifying-glass-dollar"></i>
-            {{ t('search.advanced.title') }}
-        </a>
-    </div>
-
-    {% if user.id > 0 %}
-        <div class="menu-item">
-            <a href="/{{ root }}/users/{{ cur_id }}">
-                <i class="fa-solid fa-id-badge"></i>
-                {{ t('users.profile.title') }}
+        <div class="submenu">
+            <a href="/{{ root }}/search/fast" class="{% if '/search/fast' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>{{ t('search.fast.title') }}</span>
+            </a>
+            <a href="/{{ root }}/search/advanced" class="{% if '/search/advanced' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-magnifying-glass-dollar"></i>
+                <span>{{ t('search.advanced.title') }}</span>
             </a>
         </div>
+    </div>
+
+    <hr class="menu-divider">
+
+    {# Profilo / Login #}
+    {% if user.id > 0 %}
+        <div class="menu-item">
+            <a href="/{{ root }}/users/{{ cur_id }}" class="{% if '/users/' ~ cur_id in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-id-badge"></i>
+                <span>{{ t('users.profile.title') }}</span>
+            </a>
+        </div>
+
         <div class="menu-item">
             <a href="/{{ root }}/">
                 <i class="fa-solid fa-person-walking-arrow-right"></i>
-                {{ t('exit') }}
+                <span>{{ t('exit') }}</span>
             </a>
-        </div>    
+        </div>
     {% else %}
         <div class="menu-item">
             <a href="/{{ root }}/">
                 <i class="fa-solid fa-address-card"></i>
-                {{ t('login.title') }}
+                <span>{{ t('login.title') }}</span>
             </a>
         </div>
     {% endif %}
 
 {% endblock %}
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const toggles = document.querySelectorAll('.submenu-toggle');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', e => {
+            e.preventDefault();
+            const current = toggle.closest('.has-submenu');
+            const isOpen = current.classList.contains('open');
+
+            // Chiude tutti gli altri
+            document.querySelectorAll('.has-submenu.open').forEach(m => m.classList.remove('open'));
+            // Apre solo quello cliccato
+            if (!isOpen) current.classList.add('open');
+        });
+    });
+});
+</script>

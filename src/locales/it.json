@@ -23,6 +23,19 @@
         "email_sent": "Le istruzioni sono state inviate al tuo indirizzo email, se esiste nel nostro sistema.",
         "password_reset_success": "La tua password è stata reimpostata con successo. Ora puoi accedere con la tua nuova password."
     },
+    "introduction" : {
+        "title" : "Presentazione",
+        "content" : "Contenuti",
+        "purpose" : "Finalità",
+        "participants" : "Partecipanti",
+        "references" : "Riferimenti",
+        "bibliography" : "Bibliografia"
+    },
+    "admin": {
+        "manage" :{
+            "title" : "Amministrazione"
+        }
+    },
     "users": {
         "manage": {
             "title": "Utenti",
@@ -77,6 +90,7 @@
         }
     },
     "search": {
+        "title" : "Ricerca",
         "fast": {
             "title": "Ricerca veloce"
         },

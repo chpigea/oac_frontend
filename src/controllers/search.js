@@ -8,6 +8,7 @@ module.exports = function(serviceName) {
         let data = new DataModel(req, {  
             root: serviceName, 
             title: 'Fast Search',
+            currentPath:  req.baseUrl +req.path,
         });    
         res.render('search/fast.twig', data.toJson()); 
     });
@@ -16,6 +17,7 @@ module.exports = function(serviceName) {
         let data = new DataModel(req, {  
             root: serviceName, 
             title: 'Advanced Search',
+            currentPath:  req.baseUrl +req.path,
         });    
         res.render('search/advanced.twig', data.toJson()); 
     });

@@ -85,6 +85,9 @@ getPort.default({
     const searchRouter = require('./controllers/search.js')(serviceName);
     app.use(`/${serviceName}/search`, searchRouter);
 
+    const introductionRouter = require('./controllers/introduction.js')(serviceName);
+    app.use(`/${serviceName}/introduction`, introductionRouter);
+
     const captchaRouter = require('./controllers/captcha.js');
     app.use(`/${serviceName}/captcha`, captchaRouter);
     // ---------------------------------------------------------------------

@@ -10,6 +10,7 @@ module.exports = function(serviceName) {
         let data = new DataModel(req, {  
             root: serviceName, 
             title: 'Vocabolaries Management',
+            currentPath:  req.baseUrl +req.path,
         });    
         res.render('vocabolaries/edit.twig', data.toJson()); 
     });
