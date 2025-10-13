@@ -10,6 +10,7 @@ module.exports = function(serviceName) {
         let data = new DataModel(req, {  
             root: serviceName, 
             title: 'User Management',
+            currentPath:  req.baseUrl +req.path,
         });    
         res.render('users/manage.twig', data.toJson()); 
     });
@@ -21,7 +22,8 @@ module.exports = function(serviceName) {
         let data = new DataModel(req, {  
             root: serviceName, 
             title: 'User Edit',
-            id: req.params.id
+            id: req.params.id,
+            currentPath:  req.baseUrl +req.path,
         });    
         res.render('users/edit.twig', data.toJson());    
     });
