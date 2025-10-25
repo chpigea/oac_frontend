@@ -2,8 +2,80 @@
 {% extends "../base.twig" %}
 
 {% block extendHead %}
+
+    <!-- YASGUI CSS -->
+    <link href="https://unpkg.com/@triply/yasgui/build/yasgui.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Font Awesome -->    
+    <link rel="stylesheet" href="/{{ root }}/css/fa/css/all.min.css" />
+
+    <!-- Sparnatural CSS -->
+    <link rel="stylesheet" href="/{{ root }}/css/sparnatural.css">
+    
+
 {% endblock %}
 
 {% block content %}
-    ADVANCED SEARCH
+    
+    <div class="container" style="margin-top:1rem!important; margin-bottom:1rem!important;">
+      <div class="col-lg-12 px-0">
+        
+        <!-- uncomment to enable links to load sample queries
+        <p>
+          Load example queries :
+          <a href="#" onclick="document.querySelector('spar-natural').loadQuery(window['example_1']);return false;">example 1</a>
+          |
+          <a href="#" onclick="document.querySelector('spar-natural').loadQuery(window['example_2']);return false;">example 2</a>
+        </p>
+        -->
+
+        <!-- The sparnatural web component with config attributes. -->
+        <!-- See http://docs.sparnatural.eu/Javascript-integration.html#html-attributes-reference -->
+        <spar-natural 
+            src="/backend/ontology/schema/ttl"
+            endpoint="https://dbpedia.org/sparql"
+            lang="en"
+            defaultLang="en"
+            distinct="true"
+            limit="1000"
+            debug="true"
+        ></spar-natural>
+
+        <span class="btn btn-primary" id="sparql-toggle">Toggle SPARQL query</span>
+
+      </div>
+    </div>
+
+    <!-- raw SPARQL query editor, yasQE -->
+    <!-- see https://triply.cc/docs/yasgui/ -->
+    <div class="container my-5">
+      <div id="yasqe" style="display:none; " />
+    </div>
+
+    <!-- SPARQL query results display, yasR -->
+    <!-- see https://triply.cc/docs/yasgui/ -->
+    <div class="container my-5">
+      <div id="yasr">
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="/{{ root }}/js/lib/bootstrap.bundle.min.js"></script>
+
+    <!-- YASGUI JS -->
+    <script src="https://unpkg.com/@triply/yasgui/build/yasgui.min.js"></script>
+
+    <!-- Sparnatural JS -->
+    <script src="/{{ root }}/js/lib/sparnatural.js"></script>
+
+    <!-- Sparnatural Custom YASR plugins -->
+    <script src="/{{ root }}/js/lib/sparnatural-yasgui-plugins.js"></script>
+
+    <!-- File containing example queries -->
+    <script src="/{{ root }}/js/lib/sparnatural-example-queries.js"></script>
+    
+    <!-- This page custom JS -->
+    <script src="/{{ root }}/js/lib/sparnatural-main.js"></script>  
+
+
 {% endblock %}
