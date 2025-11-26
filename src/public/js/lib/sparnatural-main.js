@@ -95,3 +95,12 @@ document.getElementById('sparql-toggle').onclick = function() {
 	}
 	return false;        
 } ;
+
+/*
+const treeValues = [
+	{ label: "Fruit", children: ["Apple", "Orange", "Banana"] },
+	{ label: "Vegetables", children: ["Carrot", "Lettuce"] }
+];
+
+const widget = new TreeSelectWidget("myWidgetContainer", treeValues);
+*/
