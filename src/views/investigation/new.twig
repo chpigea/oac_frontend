@@ -1,0 +1,32 @@
+{% set showSidebar = true %}
+{% extends "../base.twig" %}
+
+{% block extendHead %}
+    <script src="/{{ root }}/js/lib/shacl-form.bundle.js" type="module"></script>
+{% endblock %}
+
+{% block content %}
+    
+    <div>
+        <h2 style="display:flex; justify-content:space-between; align-items:center;">    
+            <span>Nuova Indagine:</span>
+        </h2>
+    </div>
+
+    <shacl-form data-shapes-url="/backend/ontology/schema/ttl2"></shacl-form>
+
+    <script>
+      const form = document.querySelector("shacl-form")
+      form.addEventListener('change', event => {
+        // check if form data validates according to the SHACL shapes
+        if (event.detail?.valid) {
+          // get data graph as RDF triples and
+          // log them to the browser console
+          const triples = form.serialize() 
+          console.log('entered form data', triples)
+          // store the data somewhere, e.g. in a triple store
+        }
+      })
+    </script>
+
+{% endblock %}

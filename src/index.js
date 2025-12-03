@@ -88,6 +88,9 @@ getPort.default({
     const introductionRouter = require('./controllers/introduction.js')(serviceName);
     app.use(`/${serviceName}/introduction`, introductionRouter);
 
+    const investigationRouter = require('./controllers/investigation.js')(serviceName);
+    app.use(`/${serviceName}/investigation`, investigationRouter);
+
     const captchaRouter = require('./controllers/captcha.js');
     app.use(`/${serviceName}/captcha`, captchaRouter);
     // ---------------------------------------------------------------------
