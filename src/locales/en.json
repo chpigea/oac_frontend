@@ -86,6 +86,17 @@
             "max_size": "Each file must be less than 10MB"
         }
     },
+    "investigation":{
+        "new": {
+            "title": "New Investigation",
+            "description": "Compila il modulo sottostante per creare una nuova indagine.",
+            "form_invalid": "The form contains errors. Please correct them before submitting.",
+            "submit": "Save",
+            "reset": "Reset",
+            "show_more": "Show more",
+            "confirm": "Confirm"
+        }
+    },
     "search": {
         "fast": {
             "title": "Fast search"
