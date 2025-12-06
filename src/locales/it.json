@@ -89,6 +89,17 @@
             "invalid_file": "Tipo di file non valido"
         }
     },
+    "investigation": {
+        "new": {
+            "title": "Nuova Indagine",
+            "description": "Compila il modulo sottostante per creare una nuova indagine.",
+            "form_invalid": "La scheda contiene errori. Correggerli per poterla salvare correttamente.",
+            "submit": "Invia",
+            "reset": "Reimposta",
+            "show_more": "Mostra di più",
+            "confirm": "Conferma"
+        }
+    },
     "search": {
         "title" : "Ricerca",
         "fast": {

@@ -47,12 +47,16 @@
                     <i class="fa-solid fa-book-bookmark"></i>
                     <span>{{ t('users.vocabolaries.title') }}</span>
                 </a>
-                <a href="/{{ root }}/investigation/new" class="{% if '/investigation/new' in currentPath %}active{% endif %}">
-                    <i class="fa-solid fa-clipboard-list"></i>
-                    <span>Indagine</span>
-                </a>
             </div>
         </div>
+
+        <div class="menu-item">
+            <a href="/{{ root }}/investigation/form" class="{% if '/investigation/form' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>{{ t('investigation.new.title') }}</span>
+            </a>
+        </div>
+
     {% endif %}
 
     {# Ricerca #}
