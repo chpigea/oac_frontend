@@ -52,6 +52,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         methods: {
+            download(outFormat){
+                this.openPostInNewTab("/backend/ontology/convert/ttl/" + outFormat, {
+                    file: this.serializedForm
+                });    
+            },
+            openPostInNewTab(url, params) {
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = url;
+                form.target = "_blank";
+                for (const key in params) {
+                    if (params.hasOwnProperty(key)) {
+                        const input = document.createElement("input");
+                        input.type = "hidden";
+                        input.name = key;
+                        input.value = params[key];
+                        form.appendChild(input);
+                    }
+                }
+                document.body.appendChild(form);
+                form.submit();
+                form.remove();
+            },
             initShaclForm() {
                 var _this = this;
                 this.form = document.querySelector("shacl-form");
@@ -242,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
             },
             reset() {
-                
+                window.location.reload();
             }
         }
     });

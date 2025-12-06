@@ -85,7 +85,18 @@
         <!-- Buttons -->
         <div class="col-12 text-center mt-4">
             <button v-if="validForm" @click="save()" type="submit" class="btn btn-primary me-2">{{ t('investigation.new.submit') }}</button>
-            <button @click="reset()" type="button" class="btn btn-secondary">{{ t('investigation.new.reset') }}</button>
+            <button style="margin-left:30px;" title="{{ t('investigation.new.download') }}"
+              @click="download('xml')" type="button" class="btn btn-secondary">
+                <span>RDF/XML</span><i class="fa-solid fa-file-arrow-down"></i>
+            </button>
+            <button style="margin-left:30px;" title="{{ t('investigation.new.download') }}"
+              @click="download('ttl')" type="button" class="btn btn-secondary">
+                <span>TURTLE</span><i class="fa-solid fa-file-arrow-down"></i>
+            </button>
+            <button style="margin-left:30px;" title="{{ t('investigation.new.reset') }}"
+              @click="reset()" type="button" class="btn btn-secondary">
+              <i class="fa-solid fa-broom"></i>
+            </button>
         </div>
         {% if user.role in [0, 1] %}
           <fieldset id="shacl-output" style="margin-top:10px;
@@ -96,6 +107,16 @@
             <pre :style="outputStyle">{@ serializedForm @}</pre>
           </fieldset>
         {% endif %}
+      {% else %}
+        <div class="col-12 text-center mt-4">
+          <button @click="download('xml')" type="button" class="btn btn-secondary">
+            <span>RDF/XML</span><i class="fa-solid fa-file-arrow-down"></i>
+          </button>  
+          <button style="margin-left:30px;" title="{{ t('investigation.new.download') }}"
+            @click="download('ttl')" type="button" class="btn btn-secondary">
+              <span>TURTLE</span><i class="fa-solid fa-file-arrow-down"></i>
+          </button>
+        </div>
       {% endif %}
 
       <div style="margin-top:200px;"></div>
