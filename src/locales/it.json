@@ -97,7 +97,8 @@
             "submit": "Invia",
             "reset": "Reimposta",
             "show_more": "Mostra di più",
-            "confirm": "Conferma"
+            "confirm": "Conferma",
+            "download": "Scarica"
         }
     },
     "search": {

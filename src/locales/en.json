@@ -94,7 +94,8 @@
             "submit": "Save",
             "reset": "Reset",
             "show_more": "Show more",
-            "confirm": "Confirm"
+            "confirm": "Confirm",
+            "download": "Download"
         }
     },
     "search": {
