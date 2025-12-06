@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     img.classList.add(imgClass);
                                     img.onclick = function(){
                                         var prefix = rokitInput.placeholder.replace("$uuid$", "").replace("$UUID$", "");   
-                                        prefix = "http://diagnostica/vocabularies/quesito-diagnostico/";
+                                        //prefix = "http://diagnostica/vocabularies/quesito-diagnostico/";
                                         _this.searchByPrefixStart(rokitInput, prefix);
                                     }
                                     // inserisco subito dopo la label
