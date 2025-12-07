@@ -3,10 +3,32 @@ const {createApp} = Vue;
 const elementId = 'vocabolary-view';
 
 const OAC_VOCABOLARIES = [
-    {name: "Condizioni ambientali", key: "condizioni-ambientali"},
-    {name: "Contesto", key: "contesto"},
-    {name: "Degrado", key: "degrado"},
-    {name: "Quesiti Diagnostici", key: "quesito-diagnostico"}
+    { "name": "Condizioni ambientali", "key": "condizioni-ambientali", "class": "crm:E55_Type" },
+    { "name": "Contesto", "key": "contesto", "class": "crm:E55_Type" },
+    { "name": "Degrado", "key": "degrado", "class": "basecpm:CP42_Material_Decay" },
+    { "name": "Descrizione del campione", "key": "descrizione-del-campione", "class": "crm:E55_Type" },
+    { "name": "Competenza", "key": "competenza", "class": "crm:E55_Type" },
+    { "name": "Elemento costruttivo", "key": "elemento-costruttivo", "class": "crm:E55_Type" },
+    { "name": "Fase di analisi", "key": "fase-di-analisi", "class": "crm:E55_Type" },
+    { "name": "Quesito diagnostico", "key": "quesito-diagnostico", "class": "crm:E55_Type" },
+    { "name": "Inquadramento cronologico", "key": "inquadramento-cronologico", "class": "crm:E55_Type" },
+    { "name": "Luogo di analisi", "key": "luogo-di-analisi", "class": "crm:E55_Type" },
+    { "name": "Materiale", "key": "materiale", "class": "crm:E55_Type" },
+    { "name": "Medium", "key": "medium", "class": "crm:E55_Type" },
+    { "name": "Modalità di indagine", "key": "modalita-di-indagine", "class": "crm:E55_Type" },
+    { "name": "Unità di misura", "key": "unita-di-misura", "class": "crm:E58_Measurement_Unit" },
+    { "name": "Output", "key": "output", "class": "crm:E55_Type" },
+    { "name": "Preparazione campione", "key": "preparazione-campione", "class": "crm:E55_Type" },
+    { "name": "Processo di campionamento", "key": "processo-di-campionamento", "class": "crm:E29_Design_or_Procedure" },
+    { "name": "Strumentazione", "key": "strumentazione", "class": "crm:E55_Type" },
+    { "name": "Tafonomia e stato di conservazione", "key": "tafonomia-e-stato-di-conservazione", "class": "crm:E55_Type" },
+    { "name": "Tecnica diagnostica", "key": "tecnica-diagnostica", "class": "crm:E55_Type" },
+    { "name": "Tipo campione", "key": "Tipo-campione", "class": "crm:E55_Type" },
+    { "name": "Tipo indagine", "key": "tipo-indagine", "class": "crm:E55_Type" },
+    { "name": "Tipologia inquadramento cronologico", "key": "tipologia-inquadramento-cronologico", "class": "base:I2_Belief" },
+    { "name": "Input", "key": "input", "class": "crm:E55_Type" },
+    { "name": "Dissesti strutturali", "key": "dissesti-strutturali", "class": "basecpm:CP43_Structural_Damage" },
+    { "name": "Natura oggetto", "key": "natura-oggetto", "class": "crm:E55_Type" }
 ];  
 
 OAC_VOCABOLARIES.sort((a, b) => {
@@ -41,9 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 @prefix ex:   <http://example.org/shapes/> .
                 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
                 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
-                @prefix crm:  <http://www.cidoc-crm.org/cidoc-crm/> .
                 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
                 @prefix dcterms: <http://purl.org/dc/terms/> .
+                @prefix crm:  <http://www.cidoc-crm.org/cidoc-crm/> .
+                @prefix basecpm: <http://ontome.net/ns/cpm/> .
+                @prefix base: <http://www.ics.forth.gr/isl/CRMinf/> .
 
                 ex:Vocab_Shape
                 a sh:NodeShape ;
