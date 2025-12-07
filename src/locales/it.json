@@ -86,7 +86,9 @@
             "uploading": "Caricamento in corso...",
             "upload_ok": "File caricati con successo",
             "upload_error": "Errore durante il caricamento dei file",
-            "invalid_file": "Tipo di file non valido"
+            "invalid_file": "Tipo di file non valido",
+            "select_vocabolary": "Seleziona un vocabolario per visualizzarne gli elementi",
+            "terms": "Termini"
         }
     },
     "investigation": {

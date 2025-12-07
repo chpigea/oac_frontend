@@ -3,7 +3,9 @@
 
 {% block extendHead %}
     <link rel="stylesheet" href="/{{ root }}/css/drop-file.css">
+    <script src="/{{ root }}/js/lib/shacl-form.bundle.js" type="module"></script>
     <script src="/{{ root }}/js/vocabolaries/vocabolaries.js"></script>
+    <script src="/{{ root }}/js/app/vue-vocabolary-view.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -23,6 +25,22 @@
         </p>
         <input id="fileInput" type="file" style="display:none" multiple>
         <div class="files-list" id="filesList"></div>
+    </div>
+
+    <div id="vocabolary-view" style="margin-left:100px; width: calc(100% - 200px)"
+        data-lang_terms="{{ t('users.vocabolaries.terms') }}" 
+    >
+        <div><span style="font-weight:bold;">{{ t('users.vocabolaries.select_vocabolary') }}:</span></div>
+        <select size="10" v-model="vocabolary" style="min-width:350px;">
+            <option v-for="item in vocabolaries" :value="item">{@ item.name @}</option>
+        </select>
+        <div v-if="vocabolary">
+            <div style="
+                margin-top:30px; font-size:24px; 
+                border: dashed 2px gray; border-radius:5px;">
+                <shacl-form :data-shapes="selectedShapes"></shacl-form>
+            </div>
+        </div>
     </div>
 
     <script>
