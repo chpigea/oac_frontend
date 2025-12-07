@@ -83,7 +83,9 @@
             "upload_error": "Error uploading files",
             "invalid_file": "Invalid file type",
             "max_files": "You can upload up to 5 files at a time",
-            "max_size": "Each file must be less than 10MB"
+            "max_size": "Each file must be less than 10MB",
+            "select_vocabolary": "Select a vocabolary to view its items",
+            "terms": "Terms"
         }
     },
     "investigation":{

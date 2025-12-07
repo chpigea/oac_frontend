@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         data() {
             return {
                 root: el.dataset.root,
+                messages: {
+                    terms: el.dataset.lang_terms    
+                },
                 vocabolary: null,
                 vocabolaries: OAC_VOCABOLARIES,
                 exposed: {
@@ -49,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     sh:class        owl:Class ;
                     sh:path         crm:P127_has_broader_term ;
                     owl:imports <OAC_EXPOSED_PROTOCOL://OAC_EXPOSED_HOST:OAC_EXPOSED_PORT/backend/fuseki/get-vocabolary-terms/__KEY__> ;
-                    sh:name "Vocabolario:" ;
+                    sh:name "__NAME__" ;
                     sh:minCount 0 ; 
                     sh:maxCount 1 ;
                 ] .
@@ -66,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .replace("OAC_EXPOSED_PROTOCOL", this.exposed.protocol)
                 .replace("OAC_EXPOSED_HOST", this.exposed.host)
                 .replace("OAC_EXPOSED_PORT", this.exposed.port)
+                .replace("__NAME__", this.messages.terms + ":")
                 .replace("__CLASS__", _class)
                 .replace("__KEY__", this.vocabolary.key); 
             }

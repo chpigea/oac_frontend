@@ -27,8 +27,10 @@
         <div class="files-list" id="filesList"></div>
     </div>
 
-    <div id="vocabolary-view" style="margin-left:100px; width: calc(100% - 200px)">
-        <div><span style="font-weight:bold;">Seleziona vocabolario:</span></div>
+    <div id="vocabolary-view" style="margin-left:100px; width: calc(100% - 200px)"
+        data-lang_terms="{{ t('users.vocabolaries.terms') }}" 
+    >
+        <div><span style="font-weight:bold;">{{ t('users.vocabolaries.select_vocabolary') }}:</span></div>
         <select size="10" v-model="vocabolary" style="min-width:350px;">
             <option v-for="item in vocabolaries" :value="item">{@ item.name @}</option>
         </select>
