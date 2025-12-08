@@ -2,8 +2,10 @@ const {createApp} = Vue;
 
 const appId = 'investigation-app';
 const shaclId = 'shacl-form';
+
+const templateIRIOfIndagine = "http://diagnostica/indagine/$UUID$";
 const templateIRIToExcludeFromSearch = [
-    "http://diagnostica/indagine/$UUID$"
+    templateIRIOfIndagine
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         data() {
             return {
                 cur_role: parseInt(el.dataset.cur_role),
-                uuid: parseInt(el.dataset.uuid) || null,
+                uuid: el.dataset.uuid || null,
                 form: null,
                 enabled: el.dataset.editing == "true",
                 serializedForm: "",
@@ -35,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         mounted() {
             this.initShaclForm();
-            this.load();
         },
         computed:{
             outputStyle(){
@@ -77,23 +78,26 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             initShaclForm() {
                 var _this = this;
-                this.form = document.querySelector("shacl-form");
-                const output = document.getElementById("shacl-output")
-                this.form.addEventListener('change', event => {
-                    // check if form data validates according to the SHACL shapes
-                    _this.validForm = event.detail?.valid;
-                    _this.serializedForm = _this.form.serialize();
-                });
-                this.form.addEventListener("ready", () => {
-                    var intervalId = setInterval(() => {
-                        if(_this.form.shadowRoot){
-                            clearInterval(intervalId);
-                            _this.inputIdentifizier();
-                            if(!_this.enabled)
-                                _this.disableInteractions(_this.form);
-                        }
-                    }, 100);
-                });
+                setTimeout(async ()=>{
+                    _this.form = document.querySelector("shacl-form");
+                    const output = document.getElementById("shacl-output")
+                    _this.form.addEventListener('change', event => {
+                        // check if form data validates according to the SHACL shapes
+                        _this.validForm = event.detail?.valid;
+                        _this.serializedForm = _this.form.serialize();
+                    });
+                    await _this.load(this.uuid);
+                    _this.form.addEventListener("ready", () => {
+                        var intervalId = setInterval(() => {
+                            if(_this.form.shadowRoot){
+                                clearInterval(intervalId);
+                                _this.inputIdentifizier();
+                                if(!_this.enabled)
+                                    _this.disableInteractions(_this.form);
+                            }
+                        }, 100);
+                    });
+                })
             },
             searchByPrefixStart(rokitInput, prefix){
                 this.search.offset = 0;
@@ -167,15 +171,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Disabilita rokit-input
                         const rokitInput = container.querySelector("rokit-input");
                         if (rokitInput) {
+                            var isIndagineIdField = templateIRIOfIndagine === rokitInput.placeholder;
                             if(rokitInput.value == ""){
                                 rokitInput.value = _this.generateIRI(rokitInput.placeholder);
+                            }
+                            if(isIndagineIdField){
+                                this.uuid = rokitInput.value.split("/").pop();
                             }
                             rokitInput.setAttribute("disabled", "true");
                             rokitInput.style.opacity   = "0.6";
                             rokitInput.style.pointerEvents = "none";
                            
                             var escludeSearchButton = templateIRIToExcludeFromSearch.includes(rokitInput.placeholder);
-
+                                   
                             if(_this.enabled && !escludeSearchButton){
                                 // Aggiungo bottone IMG per la ricerca 
                                 let next = label.nextElementSibling;
@@ -258,11 +266,68 @@ document.addEventListener('DOMContentLoaded', () => {
                 var _uuid = uuid || crypto.randomUUID();
                 return template.replace("$uuid$", _uuid).replace("$UUID$", _uuid);        
             },
-            load() {
-                
+            async load(uuid) {
+                if(uuid){
+                    const dataTTL = await fetch("/backend/ontology/form/" + uuid).then(resp => resp.text())
+                    this.form.dataset['values'] = dataTTL;
+                    /*        
+                    var request = axios.get("/backend/ontology/form/" + uuid);
+                    request.then(response => {
+                        var data = response.data;
+                        this.form.dataset['values'] = data;
+                        callback()
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                    */
+                }
             },
+
+            async load_(uuid, callback){
+                this.form.setClassInstanceProvider((clazz) => { 
+                    if (clazz === 'http://example.org/Material') {
+                        return `
+                        <http://example.org/steel> a <http://example.org/Material>; <http://www.w3.org/2000/01/rdf-schema#label> "Steel".
+                        <http://example.org/wood> a <http://example.org/Material>; <http://www.w3.org/2000/01/rdf-schema#label> "Wood".
+                        <http://example.org/alloy> a <http://example.org/Material>; <http://www.w3.org/2000/01/rdf-schema#label> "Alloy".
+                        <http://example.org/plaster> a <http://example.org/Material>; <http://www.w3.org/2000/01/rdf-schema#label> "Plaster".
+                        `
+                    }
+                });
+                const shapesTTL = await fetch("https://ulb-darmstadt.github.io/shacl-form/complex-example.ttl").then(resp => resp.text())
+                const dataTTL = await fetch("https://ulb-darmstadt.github.io/shacl-form/complex-example-data.ttl").then(resp => resp.text())
+                this.form.dataset['shapes'] = shapesTTL
+                this.form.dataset['values'] = dataTTL
+                callback()
+            },
+
             save() {
-                
+                var request = axios.post("/backend/ontology/form/save", {
+                    turtle: this.serializedForm,
+                    uuid: this.uuid
+                });
+                request.then(response => {
+                    var obj = response.data;
+                    if(obj.success)
+                        alert("Saved: OK")
+                    else
+                        alert("Error: " + obj.message)
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            validate() {
+                var request = axios.post("/backend/ontology/validate", {
+                    turtle: this.serializedForm
+                });
+                request.then(response => {
+                    var obj = response.data;
+                    var data = obj.data
+                    console.log(data.conforms);
+                    console.log(data.details);
+                }).catch(error => {
+                    console.log(error);
+                });
             },
             reset() {
                 window.location.reload();

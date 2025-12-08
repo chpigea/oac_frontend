@@ -71,16 +71,18 @@
         </h2>
     </div>
 
-    <div id="investigation-app"
+    <div v-cloak id="investigation-app"
       data-cur_role="{{ user.role }}"
       data-uuid="{{ uuid }}"
       data-editing="{{ user.role != 3 }}"
     >
 
       <shacl-form id="shacl-form" data-collapse="open"
-        data-shapes-url="/backend/ontology/schema/ttl2">
+        data-shapes-url="/backend/ontology/schema/ttl2"
+        data-values-subject__="http://example.org/shapes/da4c29c4-f90e-41bf-8ac6-7714800fcc04"
+      >
       </shacl-form>
-
+      
       {% if user.role != 3 %}
         <!-- Buttons -->
         <div class="col-12 text-center mt-4">
@@ -93,8 +95,19 @@
               @click="download('ttl')" type="button" class="btn btn-secondary">
                 <span>TURTLE</span><i class="fa-solid fa-file-arrow-down"></i>
             </button>
+
+            <button style="margin-left:30px;" title="{{ t('investigation.new.validate') }}"
+              @click="validate()" type="button" class="btn btn-warning">
+              <i class="fa-solid fa-certificate"></i>
+            </button>
+
+            <button style="margin-left:30px;" title="{{ t('investigation.new.confirm') }}"
+              @click="save()" type="button" class="btn btn-primary">
+              <i class="fa-solid fa-save"></i>
+            </button>
+
             <button style="margin-left:30px;" title="{{ t('investigation.new.reset') }}"
-              @click="reset()" type="button" class="btn btn-secondary">
+              @click="reset()" type="button" class="btn btn-info">
               <i class="fa-solid fa-broom"></i>
             </button>
         </div>
@@ -103,7 +116,7 @@
               border: solid 1px gray;
               border-radius: 10px;
               padding: 10px;">
-            <legend>Generated output: [{@ validForm @}]</legend>
+            <legend>{{ t('investigation.new.generated_output') }}: [{@ validForm @}]</legend>
             <pre :style="outputStyle">{@ serializedForm @}</pre>
           </fieldset>
         {% endif %}
@@ -125,7 +138,7 @@
         <div class="modal-content">
             <div class="row" style="line-height:40px; margin-bottom:10px;">
               <span style="font-weight:bold; float:left; max-width:570px;">
-                Seleziona istanza:
+                {{ t('investigation.new.select_instance') }}:
               </span>
               <span style="float:right; max-width:24px;" class="close-btn" @click="searchByPrefixStart(null, null);">&times;</span>            
             </div>

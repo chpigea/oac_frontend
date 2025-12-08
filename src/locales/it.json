@@ -98,9 +98,12 @@
             "form_invalid": "La scheda contiene errori. Correggerli per poterla salvare correttamente.",
             "submit": "Invia",
             "reset": "Reimposta",
+            "validate": "Valida",
             "show_more": "Mostra di più",
             "confirm": "Conferma",
-            "download": "Scarica"
+            "download": "Scarica",
+            "select_instance": "Seleziona un'istanza",
+            "generated_output": "Output generato"
         }
     },
     "search": {
