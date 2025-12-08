@@ -18,7 +18,7 @@ module.exports = function(serviceName) {
     }
 
     router.get('/form', (req, res) => {
-        renderForm(req, res, null);
+        renderForm(req, res, '');
     });
 
     router.get('/form/:uuid', (req, res) => {

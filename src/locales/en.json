@@ -95,9 +95,12 @@
             "form_invalid": "The form contains errors. Please correct them before submitting.",
             "submit": "Save",
             "reset": "Reset",
+            "validate": "Validate",
             "show_more": "Show more",
             "confirm": "Confirm",
-            "download": "Download"
+            "download": "Download",
+            "select_instance": "Select an instance",
+            "generated_output": "Generated output"
         }
     },
     "search": {
