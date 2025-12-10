@@ -4,15 +4,25 @@ const DataModel = require('../models/DataModel');
 
 module.exports = function(serviceName) {
     /**
-     * @route   GET /users/manage: redirect to the users page with list of users
+     * @route   GET /investigation/form/:uuid? redirect to the investigation form
      */
-    router.get('/new', (req, res) => {
+
+    const renderForm = function(req, res, uuid){
         let data = new DataModel(req, {  
             root: serviceName, 
-            title: 'Ivestigation Creation',
+            title: 'Investigation Creation',
             currentPath:  req.baseUrl +req.path,
+            uuid
         });    
-        res.render('investigation/new.twig', data.toJson()); 
+        res.render('investigation/form.twig', data.toJson()); 
+    }
+
+    router.get('/form', (req, res) => {
+        renderForm(req, res, '');
+    });
+
+    router.get('/form/:uuid', (req, res) => {
+        renderForm(req, res, req.params.uuid);
     });
 
     return router

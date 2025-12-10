@@ -86,7 +86,24 @@
             "uploading": "Caricamento in corso...",
             "upload_ok": "File caricati con successo",
             "upload_error": "Errore durante il caricamento dei file",
-            "invalid_file": "Tipo di file non valido"
+            "invalid_file": "Tipo di file non valido",
+            "select_vocabolary": "Seleziona un vocabolario per visualizzarne gli elementi",
+            "terms": "Termini"
+        }
+    },
+    "investigation": {
+        "new": {
+            "title": "Nuova Indagine",
+            "description": "Compila il modulo sottostante per creare una nuova indagine.",
+            "form_invalid": "La scheda contiene errori. Correggerli per poterla salvare correttamente.",
+            "submit": "Invia",
+            "reset": "Reimposta",
+            "validate": "Valida",
+            "show_more": "Mostra di più",
+            "confirm": "Conferma",
+            "download": "Scarica",
+            "select_instance": "Seleziona un'istanza",
+            "generated_output": "Output generato"
         }
     },
     "search": {
