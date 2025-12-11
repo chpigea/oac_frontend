@@ -85,7 +85,7 @@
             "max_files": "You can upload up to 5 files at a time",
             "max_size": "Each file must be less than 10MB",
             "select_vocabolary": "Select a vocabolary to view its items",
-            "terms": "Terms"
+            "terms": "Vocabulary entries"
         }
     },
     "investigation":{
