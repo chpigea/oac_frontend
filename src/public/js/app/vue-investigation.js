@@ -81,12 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(async ()=>{
                     _this.form = document.querySelector("shacl-form");
                     const output = document.getElementById("shacl-output")
+                    
+                    //await _this.load(this.uuid);
+
                     _this.form.addEventListener('change', event => {
                         // check if form data validates according to the SHACL shapes
                         _this.validForm = event.detail?.valid;
                         _this.serializedForm = _this.form.serialize();
                     });
-                    await _this.load(this.uuid);
+                    
                     _this.form.addEventListener("ready", () => {
                         var intervalId = setInterval(() => {
                             if(_this.form.shadowRoot){
@@ -97,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         }, 100);
                     });
+                    
                 })
             },
             searchByPrefixStart(rokitInput, prefix){
@@ -173,11 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (rokitInput) {
                             var isIndagineIdField = templateIRIOfIndagine === rokitInput.placeholder;
                             if(rokitInput.value == ""){
-                                rokitInput.value = _this.generateIRI(rokitInput.placeholder);
+                                rokitInput.value = _this.generateIRI(rokitInput, isIndagineIdField);
                             }
-                            if(isIndagineIdField){
-                                this.uuid = rokitInput.value.split("/").pop();
-                            }
+                            
                             rokitInput.setAttribute("disabled", "true");
                             rokitInput.style.opacity   = "0.6";
                             rokitInput.style.pointerEvents = "none";
@@ -262,24 +264,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             },
-            generateIRI(template, uuid){
-                var _uuid = uuid || crypto.randomUUID();
-                return template.replace("$uuid$", _uuid).replace("$UUID$", _uuid);        
+            generateIRI(input, isIndagne){
+                var template = input.placeholder;
+                setTimeout((async function(){
+                    var _uuid = crypto.randomUUID();
+                    template = template.replace("$uuid$", _uuid).replace("$UUID$", _uuid);
+                    for(var i=1; i<=9; i++){
+                        var seq = "seq" + i; 
+                        var searchStr = "$" + seq + "$";
+                        var searchStrUpp = searchStr.toUpperCase();
+                        if(template.toLowerCase().includes(searchStr)){ 
+                            var response = await fetch('/backend/ontology/counter/' + seq ).then(resp => resp.json());
+                            if(response.success && response.data){
+                                var counter = response.data;
+                                template = template.replace(searchStr, counter).replace(searchStrUpp, counter);
+                            }
+                        }  
+                    }
+                    input.value = template;
+                    if(isIndagne){
+                        this.uuid = input.value.split("/").pop();
+                    }
+                }).bind(this));
             },
             async load(uuid) {
                 if(uuid){
                     const dataTTL = await fetch("/backend/ontology/form/" + uuid).then(resp => resp.text())
                     this.form.dataset['values'] = dataTTL;
-                    /*        
-                    var request = axios.get("/backend/ontology/form/" + uuid);
-                    request.then(response => {
-                        var data = response.data;
-                        this.form.dataset['values'] = data;
-                        callback()
-                    }).catch(error => {
-                        console.log(error);
-                    });
-                    */
                 }
             },
 

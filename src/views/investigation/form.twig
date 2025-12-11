@@ -77,12 +77,23 @@
       data-editing="{{ user.role != 3 }}"
     >
 
+    {% if uuid %}
       <shacl-form id="shacl-form" data-collapse="open"
+        data-values-namespace="pref:"
         data-shapes-url="/backend/ontology/schema/ttl2"
-        data-values-subject__="http://example.org/shapes/da4c29c4-f90e-41bf-8ac6-7714800fcc04"
-      >
-      </shacl-form>
-      
+        data-values-url="/backend/ontology/form/{{ uuid }}"
+        data-shape-subject="http://example.org/shapes/E7ActivityShape"
+        data-values-subject_="http://diagnostica/e2d49af0-6c52-4fc5-8290-936b87472adf"
+        data-values-subject="http://diagnostica/e2d49af0-6c52-4fc5-8290-936b87472adf"
+                
+      ></shacl-form>
+    {% else %}
+      <shacl-form id="shacl-form" data-collapse="open"
+        data-values-namespace="pref:"
+        data-shapes-url="/backend/ontology/schema/ttl2"
+      ></shacl-form>
+    {% endif %}
+
       {% if user.role != 3 %}
         <!-- Buttons -->
         <div class="col-12 text-center mt-4">

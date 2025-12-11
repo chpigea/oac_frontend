@@ -88,7 +88,7 @@
             "upload_error": "Errore durante il caricamento dei file",
             "invalid_file": "Tipo di file non valido",
             "select_vocabolary": "Seleziona un vocabolario per visualizzarne gli elementi",
-            "terms": "Termini"
+            "terms": "Voci del vocabolario"
         }
     },
     "investigation": {
