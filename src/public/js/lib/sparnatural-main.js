@@ -26,10 +26,19 @@ Yasr.registerPlugin("TableX",SparnaturalYasguiPlugins.TableX);
 Yasr.registerPlugin("Grid",SparnaturalYasguiPlugins.GridPlugin);
 delete Yasr.plugins['table'];
 
+
 const yasr = new Yasr(document.getElementById("yasr"), {
 	pluginOrder: ["TableX", "Grid", "response"],
 	defaultPlugin: "TableX"
 });
+
+yasr.plugins["TableX"].config.uriHrefAdapter = function(uri) {
+	if(uri.startsWith("http://diagnostica/")) {
+		return "/frontend/investigation/form/" + uri.split("/").pop();
+	} else {
+		return uri;
+	}
+};
 
 // link yasqe and yasr
 yasqe.on("queryResponse", function(_yasqe, response, duration) {
@@ -104,3 +113,5 @@ const treeValues = [
 
 const widget = new TreeSelectWidget("myWidgetContainer", treeValues);
 */
+
+
