@@ -103,7 +103,9 @@
             "confirm": "Conferma",
             "download": "Scarica",
             "select_instance": "Seleziona un'istanza",
-            "generated_output": "Output generato"
+            "generated_output": "Output generato",
+            "valid": "Valido",
+            "not_valid": "Non valido"
         }
     },
     "search": {
