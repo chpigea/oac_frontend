@@ -23,7 +23,7 @@ const OAC_VOCABOLARIES = [
     { "name": "Strumentazione", "key": "strumentazione", "class": "crm:E55_Type" },
     { "name": "Tafonomia e stato di conservazione", "key": "tafonomia-e-stato-di-conservazione", "class": "crm:E55_Type" },
     { "name": "Tecnica diagnostica", "key": "tecnica-diagnostica", "class": "crm:E55_Type" },
-    { "name": "Tipo campione", "key": "Tipo-campione", "class": "crm:E55_Type" },
+    { "name": "Tipo campione", "key": "tipo-campione", "class": "crm:E55_Type" },
     { "name": "Tipo indagine", "key": "tipo-indagine", "class": "crm:E55_Type" },
     { "name": "Tipologia inquadramento cronologico", "key": "tipologia-inquadramento-cronologico", "class": "base:I2_Belief" },
     { "name": "Input", "key": "input", "class": "crm:E55_Type" },

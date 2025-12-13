@@ -3,7 +3,7 @@ const {createApp} = Vue;
 const appId = 'investigation-app';
 const shaclId = 'shacl-form';
 
-const templateIRIOfIndagine = "http://diagnostica/indagine/$UUID$";
+const templateIRIOfIndagine = "http://indagine/$SEQ1$";
 const templateIRIToExcludeFromSearch = [
     templateIRIOfIndagine
 ];
