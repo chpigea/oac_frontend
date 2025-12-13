@@ -8,6 +8,12 @@ const templateIRIToExcludeFromSearch = [
     templateIRIOfIndagine
 ];
 
+const sequenceValues = ["$UUID$", 
+    "$SEQ1$", "$SEQ2$", "$SEQ3$",
+    "$SEQ4$", "$SEQ5$", "$SEQ6$",
+    "$SEQ7$", "$SEQ8$", "$SEQ9$"
+];  
+                    
 document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(appId);
 
@@ -120,11 +126,12 @@ document.addEventListener('DOMContentLoaded', () => {
             searchByPrefix(){
                 if(this.search.end) return;
                 var _this = this;
-                var request = axios.post("/backend/fuseki/search/by-prefix", {
+                var data = {
                     limit: this.search.limit, 
                     offset: this.search.offset, 
                     prefix: this.search.prefix
-                });
+                }
+                var request = axios.post("/backend/fuseki/search/by-prefix", data);
                 request.then(response => {
                     var data = response.data;
                     if(data.success){
@@ -160,20 +167,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     const shadow = form.shadowRoot;
                     if (!shadow) return false;  
                     
-                    // Trova la label "ID"
-                    const labels = Array.from(shadow.querySelectorAll("label"))
-                        .filter(l => l.textContent.trim() === "ID");
+                    const rokitInputList = Array.from(shadow.querySelectorAll("rokit-input"))
+                        .filter(l => sequenceValues.some(v =>
+                            (l.placeholder || '').toLowerCase().includes(v.toLowerCase())
+                        ));
 
-                    if (labels.length == 0) return false;
-                    for(var i=0; i<labels.length; i++){
-                        const label = labels[i];
-                        if (!label) continue;
-                        // Container della property
-                        const container = label.closest(".property-instance");
-                        if (!container) return false;
-                        
-                        // Disabilita rokit-input
-                        const rokitInput = container.querySelector("rokit-input");
+                    if (rokitInputList.length == 0) return false;
+                    for(var i=0; i<rokitInputList.length; i++){
+                        const rokitInput = rokitInputList[i];
+                        const container = rokitInput.closest(".property-instance");
+                        const label = container.querySelector("label");
+
                         if (rokitInput) {
                             var isIndagineIdField = templateIRIOfIndagine === rokitInput.placeholder;
                             if(rokitInput.value == ""){
@@ -185,7 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             rokitInput.style.pointerEvents = "none";
                            
                             var escludeSearchButton = templateIRIToExcludeFromSearch.includes(rokitInput.placeholder);
-                                   
+                            
+                            //escludeSearchButton = false;
                             if(_this.enabled && !escludeSearchButton){
                                 // Aggiungo bottone IMG per la ricerca 
                                 let next = label.nextElementSibling;
@@ -200,8 +205,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                     img.style.cursor = "pointer";
                                     img.classList.add(imgClass);
                                     img.onclick = function(){
-                                        var prefix = rokitInput.placeholder.replace("$uuid$", "").replace("$UUID$", "");   
-                                        //prefix = "http://diagnostica/vocabularies/quesito-diagnostico/";
+                                        var prefix = rokitInput.placeholder;   
+                                        sequenceValues.forEach(seqVal => {
+                                            var searchStr = seqVal;
+                                            var searchStrUpp = seqVal.toUpperCase();
+                                            prefix = prefix.replace(searchStr, "").replace(searchStrUpp, "");
+                                        });       
                                         _this.searchByPrefixStart(rokitInput, prefix);
                                     }
                                     // inserisco subito dopo la label
