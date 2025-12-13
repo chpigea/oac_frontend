@@ -100,7 +100,9 @@
             "confirm": "Confirm",
             "download": "Download",
             "select_instance": "Select an instance",
-            "generated_output": "Generated output"
+            "generated_output": "Generated output",
+            "valid": "Valid",
+            "not_valid": "Not valid"
         }
     },
     "search": {

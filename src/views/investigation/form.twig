@@ -95,7 +95,7 @@
       {% if user.role != 3 %}
         <!-- Buttons -->
         <div class="col-12 text-center mt-4">
-            <button v-if="validForm" @click="save()" type="submit" class="btn btn-primary me-2">{{ t('investigation.new.submit') }}</button>
+
             <button style="margin-left:30px;" title="{{ t('investigation.new.download') }}"
               @click="download('xml')" type="button" class="btn btn-secondary">
                 <span>RDF/XML</span><i class="fa-solid fa-file-arrow-down"></i>
@@ -105,12 +105,14 @@
                 <span>TURTLE</span><i class="fa-solid fa-file-arrow-down"></i>
             </button>
 
+            <!--
             <button style="margin-left:30px;" title="{{ t('investigation.new.validate') }}"
               @click="validate()" type="button" class="btn btn-warning">
               <i class="fa-solid fa-certificate"></i>
             </button>
+            -->
 
-            <button style="margin-left:30px;" title="{{ t('investigation.new.confirm') }}"
+            <button v-if="validForm" style="margin-left:30px;" title="{{ t('investigation.new.confirm') }}"
               @click="save()" type="button" class="btn btn-primary">
               <i class="fa-solid fa-save"></i>
             </button>
@@ -119,13 +121,16 @@
               @click="reset()" type="button" class="btn btn-info">
               <i class="fa-solid fa-broom"></i>
             </button>
+
         </div>
         {% if user.role in [0, 1] %}
           <fieldset id="shacl-output" style="margin-top:10px;
               border: solid 1px gray;
               border-radius: 10px;
               padding: 10px;">
-            <legend>{{ t('investigation.new.generated_output') }}: [{@ validForm @}]</legend>
+            <legend>{{ t('investigation.new.generated_output') }}: 
+              [{@ validForm ? '{{ t('investigation.new.valid') }}': '{{ t('investigation.new.not_valid') }}' @}]
+            </legend>
             <pre :style="outputStyle">{@ serializedForm @}</pre>
           </fieldset>
         {% endif %}
