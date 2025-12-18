@@ -67,14 +67,26 @@
             <i class="fa-solid fa-chevron-down submenu-arrow"></i>
         </a>
         <div class="submenu">
-            <a href="/{{ root }}/search/fast" class="{% if '/search/fast' in currentPath %}active{% endif %}">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <span>{{ t('search.fast.title') }}</span>
-            </a>
             <a href="/{{ root }}/search/advanced" class="{% if '/search/advanced' in currentPath %}active{% endif %}">
                 <i class="fa-solid fa-magnifying-glass-dollar"></i>
                 <span>{{ t('search.advanced.title') }}</span>
             </a>
+            <a href="/{{ root }}/search/fast/1" class="{% if '/search/fast/1' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>{{ t('search.fast.investigations') }}</span>
+            </a>
+            <a href="/{{ root }}/search/fast/2" class="{% if '/search/fast/2' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>{{ t('search.fast.samples') }}</span>
+            </a>
+            <a href="/{{ root }}/search/fast/3" class="{% if '/search/fast/3' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>{{ t('search.fast.diagnostics') }}</span>
+            </a>
+            <a href="/{{ root }}/search/fast/4" class="{% if '/search/fast/4' in currentPath %}active{% endif %}">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>{{ t('search.fast.materials') }}</span>
+            </a>            
         </div>
     </div>
 

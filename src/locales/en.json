@@ -107,7 +107,11 @@
     },
     "search": {
         "fast": {
-            "title": "Fast search"
+            "title": "Fast search",
+            "investigations": "Investigations",
+            "samples": "Samples",
+            "diagnostics": "Diagnostic activities",
+            "materials": "Materials"
         },
         "advanced": {
             "title": "Advanced search"
