@@ -91,6 +91,9 @@ getPort.default({
     const investigationRouter = require('./controllers/investigation.js')(serviceName);
     app.use(`/${serviceName}/investigation`, investigationRouter);
 
+    const rdfRouter = require('./controllers/rdf.js')(serviceName);
+    app.use(`/${serviceName}/rdf`, rdfRouter);
+
     const captchaRouter = require('./controllers/captcha.js');
     app.use(`/${serviceName}/captcha`, captchaRouter);
     // ---------------------------------------------------------------------
