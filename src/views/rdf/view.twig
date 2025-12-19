@@ -1,0 +1,35 @@
+{% set showSidebar = false %}
+{% extends "../base.twig" %}
+
+{% block extendHead %}
+
+    <!-- Font Awesome -->    
+    <link rel="stylesheet" href="/{{ root }}/css/fa/css/all.min.css" />
+
+    <style>
+      .tree-node {
+        margin: 4px 0px;
+        margin-left: 20px;
+        border: solid 1px gray;
+      }
+      .node-label {
+        cursor: pointer;
+      }
+      .node-label:hover {
+        font-weight: bold;
+      }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    
+    <div id="rdf-viewer-app" 
+      data-root_iri="{{ iri }}"
+      style="margin-top:1rem!important; margin-bottom:1rem!important;">
+      <tree-view :tree-data="treeData"></tree-view>
+    </div>
+
+    <script src="/{{ root }}/js/app/vue-rdf.js"></script>
+
+{% endblock %}
