@@ -44,6 +44,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     style="width:32px; height:32px;"
                 >
                 <i v-else style="margin-left:10px;"></i>
+                <i v-if="node.loadStatus == 'done' && node.predicates.length==0" 
+                    class="fa-solid fa-link-slash"
+                    style="margin-right:10px;"
+                ></i>
                 {{ node.label + ' ' + classesLabelFor(node) }}
             </div>
             <div v-if="expanded">
