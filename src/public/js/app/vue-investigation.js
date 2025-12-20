@@ -13,6 +13,8 @@ const sequenceValues = ["$UUID$",
     "$SEQ4$", "$SEQ5$", "$SEQ6$",
     "$SEQ7$", "$SEQ8$", "$SEQ9$"
 ];  
+
+const uploadValues = ["$UPLOAD$"];
                     
 document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(appId);
@@ -181,14 +183,85 @@ document.addEventListener('DOMContentLoaded', () => {
                     const shadow = form.shadowRoot;
                     if (!shadow) return false;  
                     
-                    const rokitInputList = Array.from(shadow.querySelectorAll("rokit-input"))
+                    const rokitSequenceList = Array.from(shadow.querySelectorAll("rokit-input"))
                         .filter(l => sequenceValues.some(v =>
                             (l.placeholder || '').toLowerCase().includes(v.toLowerCase())
                         ));
+                    
+                    const rokitUploadList = Array.from(shadow.querySelectorAll("rokit-input"))
+                        .filter(l => uploadValues.some(v =>
+                            (l.placeholder || '').toLowerCase().includes(v.toLowerCase())
+                        ));    
 
-                    if (rokitInputList.length == 0) return false;
-                    for(var i=0; i<rokitInputList.length; i++){
-                        const rokitInput = rokitInputList[i];
+                    if (rokitSequenceList.length + rokitUploadList.length == 0) 
+                        return false;
+                    
+                    // Uploads
+                    for(var i=0; i<rokitUploadList.length; i++){
+                        const rokitInput = rokitUploadList[i];
+                        const container = rokitInput.closest(".property-instance");
+                        const label = container.querySelector("label");
+                        if (rokitInput) {
+                            rokitInput.setAttribute("disabled", "true");
+                            rokitInput.style.opacity = "0.0";
+                            rokitInput.style.pointerEvents = "none";
+                            
+                            // Aggiungo bottone IMG per upload 
+                            let next = label.nextElementSibling;
+                            let imgClass = "search-identifier-icon";
+                            if (!(next && next.tagName === "IMG" 
+                                && next.classList.contains(imgClass))) {
+                                // creo immagine
+                                const img = document.createElement("img");
+                                img.src = "/frontend/images/upload.png";
+                                img.style.width = "24px"; img.style.height = "24px";
+                                img.style["margin-left"] = "5px"; img.style["margin-right"] = "5px";
+                                img.style.cursor = "pointer";
+                                img.classList.add(imgClass);
+                                img._mode = "UPLOAD";
+                                if(rokitInput.value !== "")
+                                    img._mode = "DOWNLOAD";
+                                img.onclick = function(){
+                                    if(img._mode == "DOWNLOAD"){
+                                        window.open(rokitInput.value,"_BLANK");
+                                        return;
+                                    }  
+                                    // Crea un input file nascosto
+                                    const fileInput = document.createElement("input");
+                                    fileInput.type = "file";
+                                    fileInput.style.display = "none";
+                                    document.body.appendChild(fileInput);
+                                    fileInput.onchange = async function() {
+                                        const file = fileInput.files[0];
+                                        if (!file) return;
+                                        const formData = new FormData();
+                                        formData.append("file", file);
+                                        try {
+                                            const response = await axios.post("/backend/fuseki/attachment", formData, {
+                                                headers: { "Content-Type": "multipart/form-data" }
+                                            });
+                                            console.log(response.data);
+                                            if(response.data.success){
+                                                rokitInput.style.opacity = "0.6";
+                                                rokitInput.value = response.data.data;
+                                                img._mode = "DOWNLOAD";
+                                                img.src = "/frontend/images/download.png";
+                                            }
+                                        } catch (error) {
+                                            console.error(error);
+                                        }
+                                        document.body.removeChild(fileInput);
+                                    };
+                                    fileInput.click();
+                                }
+                                // inserisco subito dopo la label
+                                label.insertAdjacentElement("afterend", img); 
+                            }
+                        }
+                    }
+                    // Sequences    
+                    for(var i=0; i<rokitSequenceList.length; i++){
+                        const rokitInput = rokitSequenceList[i];
                         const container = rokitInput.closest(".property-instance");
                         const label = container.querySelector("label");
 
@@ -203,8 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             rokitInput.style.pointerEvents = "none";
                            
                             var escludeSearchButton = templateIRIToExcludeFromSearch.includes(rokitInput.placeholder);
-                            
-                            //escludeSearchButton = false;
+                            escludeSearchButton = true; //FORCED to true (we need to understand if the serach button will require specific placeholders: $SEARCH1$)
                             if(_this.enabled && !escludeSearchButton){
                                 // Aggiungo bottone IMG per la ricerca 
                                 let next = label.nextElementSibling;
