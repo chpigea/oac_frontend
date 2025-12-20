@@ -7,7 +7,7 @@ const OAC_VOCABOLARIES = [
     { "name": "Contesto", "key": "contesto", "class": "crm:E55_Type" },
     { "name": "Degrado", "key": "degrado", "class": "basecpm:CP42_Material_Decay" },
     { "name": "Descrizione del campione", "key": "descrizione-del-campione", "class": "crm:E55_Type" },
-    { "name": "Competenza", "key": "competenza", "class": "crm:E55_Type" },
+    { "name": "Competenza", "key": "competenza", "class": "crm:E39_Actor" },
     { "name": "Elemento costruttivo", "key": "elemento-costruttivo", "class": "crm:E55_Type" },
     { "name": "Fase di analisi", "key": "fase-di-analisi", "class": "crm:E55_Type" },
     { "name": "Quesito diagnostico", "key": "quesito-diagnostico", "class": "crm:E55_Type" },
