@@ -2,11 +2,33 @@ const { createApp, ref } = Vue;
 
 const appId = 'rdf-viewer-app';
 
-const classColors = {
-    'E55_Type': 'rgba(0,255,0,0.70)',
-    'E7_Activity': 'rgba(174, 93, 56, 0.5)',
-    'E42_Identifier': 'rgba(0,0,255,0.5)',
+//----------------------------------------------------------
+
+const classConfig = {
+    'E7_Activity': {
+        'color': 'rgba(174, 93, 56, 0.5)',
+        'label': 'Attività'
+    },
+    'E42_Identifier': {
+        'color': 'rgba(0,0,255,0.5)',
+        'label': 'Identificatore'
+    },
+    'E54_Dimension': {
+        'label':'Dimensione'
+    },
+    'E55_Type': {
+        'color': 'rgba(0,255,0,0.70)', 
+        'label': 'Tipo'
+    },
+    'P90_has_value': {
+        'label': 'Ha valore'
+    },
+    'S13_Sample': {
+        'label': 'Campione'
+    }
 };
+
+//----------------------------------------------------------
 
 const splitName = function(name){
     name = name.split("/").pop();
@@ -48,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     class="fa-solid fa-link-slash"
                     style="margin-right:10px;"
                 ></i>
-                {{ node.label + ' ' + classesLabelFor(node) }}
+                {{ classesLabelFor(node) + ' ' + classesTagFor(node) }}
             </div>
             <div v-if="expanded">
                 <template v-if="node.predicates && node.predicates.length > 0">
@@ -100,9 +122,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (node.classes && node.classes.length > 0) {
                     for(var i=0; i<node.classes.length; i++){
                         var clazz = node.classes[i];
-                        if(classColors.hasOwnProperty(clazz)){
-                            color = classColors[clazz];
-                            break;
+                        if(classConfig.hasOwnProperty(clazz)){
+                            var _color = classConfig[clazz].color || null;
+                            if(_color){
+                                color = _color;
+                                break;
+                            }
+                            
                         }
                     }
                 }
@@ -110,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     'background-color': `${color}`
                 };
             },
-            classesLabelFor(node){
+            classesTagFor(node){
                 var label = "";
                 if(node.classes && node.classes.length > 0){
                     var int_label = "";
@@ -121,6 +147,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     if(int_label.trim()!=""){
                         label = "[" + int_label + "]";
+                    }
+                }
+                return label;
+            },
+            classesLabelFor(node){
+                var label = node.label;
+                if(node.classes && node.classes.length > 0){
+                    for(var i=0; i<node.classes.length; i++){
+                        var part = splitName(node.classes[i]);
+                        if(classConfig.hasOwnProperty(part)){
+                            var _label = classConfig[part].label || null;
+                            if(_label){
+                                label = _label;
+                                break; 
+                            }
+                        }
                     }
                 }
                 return label;

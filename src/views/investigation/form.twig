@@ -83,12 +83,14 @@
         data-shapes-url="/backend/ontology/schema/ttl2"
         data-values-url="/backend/ontology/form/{{ uuid }}"
         data-shape-subject="http://example.org/shapes/E7ActivityShape"
-        data-values-subject="http://diagnostica/e2d49af0-6c52-4fc5-8290-936b87472adf"        
+        data-values-subject="http://diagnostica/e2d49af0-6c52-4fc5-8290-936b87472adf" 
+        data-generate-node-shape-reference=""       
       ></shacl-form>
     {% else %}
       <shacl-form id="shacl-form" data-collapse="open"
         data-values-namespace="pref:"
         data-shapes-url="/backend/ontology/schema/ttl2"
+        data-generate-node-shape-reference=""
       ></shacl-form>
     {% endif %}
 
@@ -112,9 +114,10 @@
             </button>
             -->
 
-            <button v-if="validForm" style="margin-left:30px;" title="{{ t('investigation.new.confirm') }}"
-              @click="save()" type="button" class="btn btn-primary">
-              <i class="fa-solid fa-save"></i>
+            <button v-if="validForm" :disabled="saving" style="margin-left:30px;" title="{{ t('investigation.new.confirm') }}"
+              @click="save(false)" type="button" :class="['btn', saving ? 'btn-secondary' : 'btn-primary']">
+              <i v-if="saving"class="fa-solid fa-spinner"></i>
+              <i v-else class="fa-solid fa-save"></i>
             </button>
 
             <button style="margin-left:30px;" title="{{ t('investigation.new.reset') }}"
