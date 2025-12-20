@@ -27,9 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 enabled: el.dataset.editing == "true",
                 serializedForm: "",
                 validForm: false,
-                labels: {
-                
-                },
+                saving: false,
+                lastUpdateTs: 0,
+                lastSaveTs: 0,
+                isNew: true,
+                labels: {},
                 search: {
                     offset: 0,
                     limit: 10,
@@ -43,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         mounted() {
             this.initShaclForm();
+            setInterval(this.autoSave.bind(this), 30*1000);
         },
         computed:{
             outputStyle(){
@@ -59,6 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         methods: {
+            autoSave(){
+                // Form must be valid and change time after the last save time
+                if(this.lastUpdateTs > this.lastSaveTs && this.validForm){
+                    // A new "indagine" must have to be saved manually 
+                    // from the user the first time
+                    if(this.isNew && this.lastSaveTs==0)
+                        return;
+                    this.save(true);
+                }
+            },
             download(outFormat){
                 this.openPostInNewTab("/backend/ontology/convert/ttl/" + outFormat, {
                     file: this.serializedForm
@@ -94,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // check if form data validates according to the SHACL shapes
                         _this.validForm = event.detail?.valid;
                         _this.serializedForm = _this.form.serialize();
+                        _this.lastUpdateTs = (new Date()).getTime();
                     });
                     
                     _this.form.addEventListener("ready", () => {
@@ -321,18 +335,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 callback()
             },
 
-            save() {
+            save(automatic) {
+                if(this.saving) return;
+                this.lastSaveTs = (new Date()).getTime();
+                automatic = automatic || false;
+                this.saving = true;
                 var request = axios.post("/backend/ontology/form/save", {
                     turtle: this.serializedForm,
                     uuid: this.uuid
                 });
                 request.then(response => {
                     var obj = response.data;
-                    if(obj.success)
-                        alert("Saved: OK")
-                    else
-                        alert("Error: " + obj.message)
+                    if(!automatic){
+                        if(obj.success)
+                            alert("Saved: OK");
+                        else
+                            alert("Error: " + obj.message);
+                    }
+                    this.saving = false;
                 }).catch(error => {
+                    this.saving = false;
                     console.log(error);
                 });
             },
