@@ -71,6 +71,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     style="margin-right:10px;"
                 ></i>
                 {{ classesLabelFor(node) + ' ' + classesTagFor(node) }}
+                <i v-if="labelIsAttachment(node)" 
+                    @click="downloadAttachment(node)"
+                    style="margin-left:20px;"
+                    class="fa-solid fa-file-arrow-down">
+                </i>  
             </div>
             <div v-if="expanded">
                 <template v-if="node.predicates && node.predicates.length > 0">
@@ -150,6 +155,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
                 return label;
+            },
+            labelIsAttachment(node){
+                var label = node.label || '';
+                return label.indexOf("/backend/fuseki/attachment/") >= 0;
+            },
+            downloadAttachment(node){
+                window.open(node.label,"_BLANK");
             },
             classesLabelFor(node){
                 var label = node.label;
