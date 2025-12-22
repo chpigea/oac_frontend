@@ -77,6 +77,14 @@ const yasr = new Yasr(document.getElementById("yasr"), {
   defaultPlugin: "TableX",
 });
 
+yasr.plugins["TableX"].config.uriHrefAdapter = function(uri) {
+	if(uri.startsWith("http://diagnostica/")) {
+		return "/frontend/investigation/form/" + uri.split("/").pop();
+	} else {
+		return uri;
+	}
+};
+
 // Link query response to YASR
 yasqe.on("queryResponse", (_yasqe, response, duration) => {
   yasr.setResponse(response, duration);
@@ -133,3 +141,4 @@ document.getElementById("switch-language").onclick = function () {
   // Force form to re-render with new language
   sparnaturalForm.display();
 };
+

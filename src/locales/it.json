@@ -88,7 +88,7 @@
             "upload_error": "Errore durante il caricamento dei file",
             "invalid_file": "Tipo di file non valido",
             "select_vocabolary": "Seleziona un vocabolario per visualizzarne gli elementi",
-            "terms": "Termini"
+            "terms": "Voci del vocabolario"
         }
     },
     "investigation": {
@@ -103,13 +103,19 @@
             "confirm": "Conferma",
             "download": "Scarica",
             "select_instance": "Seleziona un'istanza",
-            "generated_output": "Output generato"
+            "generated_output": "Output generato",
+            "valid": "Valido",
+            "not_valid": "Non valido"
         }
     },
     "search": {
         "title" : "Ricerca",
         "fast": {
-            "title": "Ricerca veloce"
+            "title": "Ricerca veloce",
+            "investigations": "Indagini",
+            "samples": "Campioni",
+            "diagnostics": "Attività diagnostiche",
+            "materials": "Materiali"
         },
         "advanced": {
             "title": "Ricerca avanzata"

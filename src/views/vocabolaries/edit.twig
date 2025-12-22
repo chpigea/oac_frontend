@@ -31,7 +31,7 @@
         data-lang_terms="{{ t('users.vocabolaries.terms') }}" 
     >
         <div><span style="font-weight:bold;">{{ t('users.vocabolaries.select_vocabolary') }}:</span></div>
-        <select size="10" v-model="vocabolary" style="min-width:350px;">
+        <select size="10" v-model="vocabolary" style="min-width:500px;">
             <option v-for="item in vocabolaries" :value="item">{@ item.name @}</option>
         </select>
         <div v-if="vocabolary">

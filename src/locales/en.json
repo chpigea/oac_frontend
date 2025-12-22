@@ -85,7 +85,7 @@
             "max_files": "You can upload up to 5 files at a time",
             "max_size": "Each file must be less than 10MB",
             "select_vocabolary": "Select a vocabolary to view its items",
-            "terms": "Terms"
+            "terms": "Vocabulary entries"
         }
     },
     "investigation":{
@@ -100,12 +100,18 @@
             "confirm": "Confirm",
             "download": "Download",
             "select_instance": "Select an instance",
-            "generated_output": "Generated output"
+            "generated_output": "Generated output",
+            "valid": "Valid",
+            "not_valid": "Not valid"
         }
     },
     "search": {
         "fast": {
-            "title": "Fast search"
+            "title": "Fast search",
+            "investigations": "Investigations",
+            "samples": "Samples",
+            "diagnostics": "Diagnostic activities",
+            "materials": "Materials"
         },
         "advanced": {
             "title": "Advanced search"

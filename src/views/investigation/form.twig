@@ -77,16 +77,27 @@
       data-editing="{{ user.role != 3 }}"
     >
 
+    {% if uuid %}
       <shacl-form id="shacl-form" data-collapse="open"
+        data-values-namespace="pref:"
         data-shapes-url="/backend/ontology/schema/ttl2"
-        data-values-subject__="http://example.org/shapes/da4c29c4-f90e-41bf-8ac6-7714800fcc04"
-      >
-      </shacl-form>
-      
+        data-values-url="/backend/ontology/form/{{ uuid }}"
+        data-shape-subject="http://example.org/shapes/E7ActivityShape"
+        data-values-subject="http://diagnostica/e2d49af0-6c52-4fc5-8290-936b87472adf" 
+        data-generate-node-shape-reference=""       
+      ></shacl-form>
+    {% else %}
+      <shacl-form id="shacl-form" data-collapse="open"
+        data-values-namespace="pref:"
+        data-shapes-url="/backend/ontology/schema/ttl2"
+        data-generate-node-shape-reference=""
+      ></shacl-form>
+    {% endif %}
+
       {% if user.role != 3 %}
         <!-- Buttons -->
         <div class="col-12 text-center mt-4">
-            <button v-if="validForm" @click="save()" type="submit" class="btn btn-primary me-2">{{ t('investigation.new.submit') }}</button>
+
             <button style="margin-left:30px;" title="{{ t('investigation.new.download') }}"
               @click="download('xml')" type="button" class="btn btn-secondary">
                 <span>RDF/XML</span><i class="fa-solid fa-file-arrow-down"></i>
@@ -96,27 +107,33 @@
                 <span>TURTLE</span><i class="fa-solid fa-file-arrow-down"></i>
             </button>
 
+            <!--
             <button style="margin-left:30px;" title="{{ t('investigation.new.validate') }}"
               @click="validate()" type="button" class="btn btn-warning">
               <i class="fa-solid fa-certificate"></i>
             </button>
+            -->
 
-            <button style="margin-left:30px;" title="{{ t('investigation.new.confirm') }}"
-              @click="save()" type="button" class="btn btn-primary">
-              <i class="fa-solid fa-save"></i>
+            <button v-if="validForm" :disabled="saving" style="margin-left:30px;" title="{{ t('investigation.new.confirm') }}"
+              @click="save(false)" type="button" :class="['btn', saving ? 'btn-secondary' : 'btn-primary']">
+              <i v-if="saving"class="fa-solid fa-spinner"></i>
+              <i v-else class="fa-solid fa-save"></i>
             </button>
 
             <button style="margin-left:30px;" title="{{ t('investigation.new.reset') }}"
               @click="reset()" type="button" class="btn btn-info">
               <i class="fa-solid fa-broom"></i>
             </button>
+
         </div>
         {% if user.role in [0, 1] %}
           <fieldset id="shacl-output" style="margin-top:10px;
               border: solid 1px gray;
               border-radius: 10px;
               padding: 10px;">
-            <legend>{{ t('investigation.new.generated_output') }}: [{@ validForm @}]</legend>
+            <legend>{{ t('investigation.new.generated_output') }}: 
+              [{@ validForm ? '{{ t('investigation.new.valid') }}': '{{ t('investigation.new.not_valid') }}' @}]
+            </legend>
             <pre :style="outputStyle">{@ serializedForm @}</pre>
           </fieldset>
         {% endif %}

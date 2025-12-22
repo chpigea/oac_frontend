@@ -3,11 +3,19 @@ const {createApp} = Vue;
 const appId = 'investigation-app';
 const shaclId = 'shacl-form';
 
-const templateIRIOfIndagine = "http://diagnostica/indagine/$UUID$";
+const templateIRIOfIndagine = "http://indagine/$SEQ1$";
 const templateIRIToExcludeFromSearch = [
     templateIRIOfIndagine
 ];
 
+const sequenceValues = ["$UUID$", 
+    "$SEQ1$", "$SEQ2$", "$SEQ3$",
+    "$SEQ4$", "$SEQ5$", "$SEQ6$",
+    "$SEQ7$", "$SEQ8$", "$SEQ9$"
+];  
+
+const uploadValues = ["$UPLOAD$"];
+                    
 document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(appId);
 
@@ -21,9 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 enabled: el.dataset.editing == "true",
                 serializedForm: "",
                 validForm: false,
-                labels: {
-                
-                },
+                saving: false,
+                lastUpdateTs: 0,
+                lastSaveTs: 0,
+                isNew: true,
+                labels: {},
                 search: {
                     offset: 0,
                     limit: 10,
@@ -37,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         mounted() {
             this.initShaclForm();
+            setInterval(this.autoSave.bind(this), 30*1000);
         },
         computed:{
             outputStyle(){
@@ -53,6 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         methods: {
+            autoSave(){
+                // Form must be valid and change time after the last save time
+                if(this.lastUpdateTs > this.lastSaveTs && this.validForm){
+                    // A new "indagine" must have to be saved manually 
+                    // from the user the first time
+                    if(this.isNew && this.lastSaveTs==0)
+                        return;
+                    this.save(true);
+                }
+            },
             download(outFormat){
                 this.openPostInNewTab("/backend/ontology/convert/ttl/" + outFormat, {
                     file: this.serializedForm
@@ -81,12 +102,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(async ()=>{
                     _this.form = document.querySelector("shacl-form");
                     const output = document.getElementById("shacl-output")
+                    
+                    //await _this.load(this.uuid);
+
                     _this.form.addEventListener('change', event => {
                         // check if form data validates according to the SHACL shapes
                         _this.validForm = event.detail?.valid;
                         _this.serializedForm = _this.form.serialize();
+                        _this.lastUpdateTs = (new Date()).getTime();
                     });
-                    await _this.load(this.uuid);
+                    
                     _this.form.addEventListener("ready", () => {
                         var intervalId = setInterval(() => {
                             if(_this.form.shadowRoot){
@@ -97,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         }, 100);
                     });
+                    
                 })
             },
             searchByPrefixStart(rokitInput, prefix){
@@ -116,11 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
             searchByPrefix(){
                 if(this.search.end) return;
                 var _this = this;
-                var request = axios.post("/backend/fuseki/search/by-prefix", {
+                var data = {
                     limit: this.search.limit, 
                     offset: this.search.offset, 
                     prefix: this.search.prefix
-                });
+                }
+                var request = axios.post("/backend/fuseki/search/by-prefix", data);
                 request.then(response => {
                     var data = response.data;
                     if(data.success){
@@ -156,34 +183,100 @@ document.addEventListener('DOMContentLoaded', () => {
                     const shadow = form.shadowRoot;
                     if (!shadow) return false;  
                     
-                    // Trova la label "ID"
-                    const labels = Array.from(shadow.querySelectorAll("label"))
-                        .filter(l => l.textContent.trim() === "ID");
+                    const rokitSequenceList = Array.from(shadow.querySelectorAll("rokit-input"))
+                        .filter(l => sequenceValues.some(v =>
+                            (l.placeholder || '').toLowerCase().includes(v.toLowerCase())
+                        ));
+                    
+                    const rokitUploadList = Array.from(shadow.querySelectorAll("rokit-input"))
+                        .filter(l => uploadValues.some(v =>
+                            (l.placeholder || '').toLowerCase().includes(v.toLowerCase())
+                        ));    
 
-                    if (labels.length == 0) return false;
-                    for(var i=0; i<labels.length; i++){
-                        const label = labels[i];
-                        if (!label) continue;
-                        // Container della property
-                        const container = label.closest(".property-instance");
-                        if (!container) return false;
-                        
-                        // Disabilita rokit-input
-                        const rokitInput = container.querySelector("rokit-input");
+                    if (rokitSequenceList.length + rokitUploadList.length == 0) 
+                        return false;
+                    
+                    // Uploads
+                    for(var i=0; i<rokitUploadList.length; i++){
+                        const rokitInput = rokitUploadList[i];
+                        const container = rokitInput.closest(".property-instance");
+                        const label = container.querySelector("label");
+                        if (rokitInput) {
+                            rokitInput.setAttribute("disabled", "true");
+                            rokitInput.style.opacity = "0.0";
+                            rokitInput.style.pointerEvents = "none";
+                            
+                            // Aggiungo bottone IMG per upload 
+                            let next = label.nextElementSibling;
+                            let imgClass = "search-identifier-icon";
+                            if (!(next && next.tagName === "IMG" 
+                                && next.classList.contains(imgClass))) {
+                                // creo immagine
+                                const img = document.createElement("img");
+                                img.src = "/frontend/images/upload.png";
+                                img.style.width = "24px"; img.style.height = "24px";
+                                img.style["margin-left"] = "5px"; img.style["margin-right"] = "5px";
+                                img.style.cursor = "pointer";
+                                img.classList.add(imgClass);
+                                img._mode = "UPLOAD";
+                                if(rokitInput.value !== "")
+                                    img._mode = "DOWNLOAD";
+                                img.onclick = function(){
+                                    if(img._mode == "DOWNLOAD"){
+                                        window.open(rokitInput.value,"_BLANK");
+                                        return;
+                                    }  
+                                    // Crea un input file nascosto
+                                    const fileInput = document.createElement("input");
+                                    fileInput.type = "file";
+                                    fileInput.style.display = "none";
+                                    document.body.appendChild(fileInput);
+                                    fileInput.onchange = async function() {
+                                        const file = fileInput.files[0];
+                                        if (!file) return;
+                                        const formData = new FormData();
+                                        formData.append("file", file);
+                                        try {
+                                            const response = await axios.post("/backend/fuseki/attachment", formData, {
+                                                headers: { "Content-Type": "multipart/form-data" }
+                                            });
+                                            console.log(response.data);
+                                            if(response.data.success){
+                                                rokitInput.style.opacity = "0.6";
+                                                rokitInput.value = response.data.data;
+                                                img._mode = "DOWNLOAD";
+                                                img.src = "/frontend/images/download.png";
+                                            }
+                                        } catch (error) {
+                                            console.error(error);
+                                        }
+                                        document.body.removeChild(fileInput);
+                                    };
+                                    fileInput.click();
+                                }
+                                // inserisco subito dopo la label
+                                label.insertAdjacentElement("afterend", img); 
+                            }
+                        }
+                    }
+                    // Sequences    
+                    for(var i=0; i<rokitSequenceList.length; i++){
+                        const rokitInput = rokitSequenceList[i];
+                        const container = rokitInput.closest(".property-instance");
+                        const label = container.querySelector("label");
+
                         if (rokitInput) {
                             var isIndagineIdField = templateIRIOfIndagine === rokitInput.placeholder;
                             if(rokitInput.value == ""){
-                                rokitInput.value = _this.generateIRI(rokitInput.placeholder);
+                                rokitInput.value = _this.generateIRI(rokitInput, isIndagineIdField);
                             }
-                            if(isIndagineIdField){
-                                this.uuid = rokitInput.value.split("/").pop();
-                            }
+                            
                             rokitInput.setAttribute("disabled", "true");
                             rokitInput.style.opacity   = "0.6";
                             rokitInput.style.pointerEvents = "none";
                            
                             var escludeSearchButton = templateIRIToExcludeFromSearch.includes(rokitInput.placeholder);
-                                   
+                            escludeSearchButton = true; //FORCED to true (we need to understand if the serach button will require specific placeholders: $SEARCH1$)
                             if(_this.enabled && !escludeSearchButton){
                                 // Aggiungo bottone IMG per la ricerca 
                                 let next = label.nextElementSibling;
@@ -198,8 +291,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                     img.style.cursor = "pointer";
                                     img.classList.add(imgClass);
                                     img.onclick = function(){
-                                        var prefix = rokitInput.placeholder.replace("$uuid$", "").replace("$UUID$", "");   
-                                        //prefix = "http://diagnostica/vocabularies/quesito-diagnostico/";
+                                        var prefix = rokitInput.placeholder;   
+                                        sequenceValues.forEach(seqVal => {
+                                            var searchStr = seqVal;
+                                            var searchStrUpp = seqVal.toUpperCase();
+                                            prefix = prefix.replace(searchStr, "").replace(searchStrUpp, "");
+                                        });       
                                         _this.searchByPrefixStart(rokitInput, prefix);
                                     }
                                     // inserisco subito dopo la label
@@ -262,24 +359,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             },
-            generateIRI(template, uuid){
-                var _uuid = uuid || crypto.randomUUID();
-                return template.replace("$uuid$", _uuid).replace("$UUID$", _uuid);        
+            generateIRI(input, isIndagne){
+                var template = input.placeholder;
+                setTimeout((async function(){
+                    var _uuid = crypto.randomUUID();
+                    template = template.replace("$uuid$", _uuid).replace("$UUID$", _uuid);
+                    for(var i=1; i<=9; i++){
+                        var seq = "seq" + i; 
+                        var searchStr = "$" + seq + "$";
+                        var searchStrUpp = searchStr.toUpperCase();
+                        if(template.toLowerCase().includes(searchStr)){ 
+                            var response = await fetch('/backend/ontology/counter/' + seq ).then(resp => resp.json());
+                            if(response.success && response.data){
+                                var counter = response.data;
+                                template = template.replace(searchStr, counter).replace(searchStrUpp, counter);
+                            }
+                        }  
+                    }
+                    input.value = template;
+                    if(isIndagne){
+                        this.uuid = input.value.split("/").pop();
+                    }
+                }).bind(this));
             },
             async load(uuid) {
                 if(uuid){
                     const dataTTL = await fetch("/backend/ontology/form/" + uuid).then(resp => resp.text())
                     this.form.dataset['values'] = dataTTL;
-                    /*        
-                    var request = axios.get("/backend/ontology/form/" + uuid);
-                    request.then(response => {
-                        var data = response.data;
-                        this.form.dataset['values'] = data;
-                        callback()
-                    }).catch(error => {
-                        console.log(error);
-                    });
-                    */
                 }
             },
 
@@ -301,18 +407,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 callback()
             },
 
-            save() {
+            save(automatic) {
+                if(this.saving) return;
+                this.lastSaveTs = (new Date()).getTime();
+                automatic = automatic || false;
+                this.saving = true;
                 var request = axios.post("/backend/ontology/form/save", {
                     turtle: this.serializedForm,
                     uuid: this.uuid
                 });
                 request.then(response => {
                     var obj = response.data;
-                    if(obj.success)
-                        alert("Saved: OK")
-                    else
-                        alert("Error: " + obj.message)
+                    if(!automatic){
+                        if(obj.success)
+                            alert("Saved: OK");
+                        else
+                            alert("Error: " + obj.message);
+                    }
+                    this.saving = false;
                 }).catch(error => {
+                    this.saving = false;
                     console.log(error);
                 });
             },
