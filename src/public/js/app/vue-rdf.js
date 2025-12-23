@@ -139,11 +139,13 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             classesLabelFor(node){
                 var label = node.label;
+                var lang = "it";
+                var label_key = "label_" + lang;
                 if(node.classes && node.classes.length > 0){
                     for(var i=0; i<node.classes.length; i++){
                         var part = splitName(node.classes[i]);
                         if(classConfig.hasOwnProperty(part)){
-                            var _label = classConfig[part].label_it || null;
+                            var _label = classConfig[part][label_key] || classConfig[part]["label_it"] || null;
                             if(_label){
                                 label = _label;
                                 break; 
