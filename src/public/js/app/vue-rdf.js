@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     for(var i=0; i<node.classes.length; i++){
                         var part = splitName(node.classes[i]);
                         if(classConfig.hasOwnProperty(part)){
-                            var _label = classConfig[part].label || null;
+                            var _label = classConfig[part].label_it || null;
                             if(_label){
                                 label = _label;
                                 break; 
