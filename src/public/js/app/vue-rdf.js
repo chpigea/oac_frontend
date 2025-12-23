@@ -97,17 +97,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 el.dispatchEvent(event);
             },
             styleNode(node) {
-                var color = '#bbccdd';
+                var color = '#BE808080';
                 if (node.classes && node.classes.length > 0) {
                     for(var i=0; i<node.classes.length; i++){
                         var clazz = node.classes[i];
                         if(classConfig.hasOwnProperty(clazz)){
                             var _color = classConfig[clazz].color || null;
                             if(_color){
-                                color = _color;
+                                color = _color.replace("#", "#BE");
                                 break;
                             }
-                            
                         }
                     }
                 }
