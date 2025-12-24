@@ -2,6 +2,7 @@ const { createApp, ref } = Vue;
 
 const appId = 'rdf-viewer-app';
 
+
 //----------------------------------------------------------
 
 const splitName = function(name){
@@ -86,10 +87,25 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         data() {
             return {
-                expanded: true
+                expanded: true,
+                language: 'it'
             };
         },
+        mounted() {
+            this.language = this.getSupportedLanguage();
+        },
         methods: {
+            getSupportedLanguage(){
+                let supported_languages = ["it", "en"];
+                for(let i=0; i<navigator.languages.length; i++){
+                    const language = navigator.languages[i];
+                    const lang = language.substring(0,2); 
+                    if(supported_languages.indexOf(lang) != -1){
+                        return lang;
+                    }
+                }
+                return supported_languages[0];
+            },
             loadNode(node){
                 //this.$emit('load-node', node);
                 let event = new Event('load-node');
@@ -138,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             classesLabelFor(node){
                 var label = node.label;
-                var lang = "it";
+                var lang = this.language;
                 var label_key = "label_" + lang;
                 if(node.classes && node.classes.length > 0){
                     for(var i=0; i<node.classes.length; i++){
@@ -240,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         var data = r.data;
                         var prev_predicate = null;
                         var index_predicate = -1;
-                        for(var i=0; data.length; i++){
+                        for(var i=0; i<data.length; i++){
                             var predicate = splitName(data[i].predicate);
                             if(predicate != prev_predicate){
                                 node.predicates.push({
