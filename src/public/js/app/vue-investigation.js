@@ -1,6 +1,7 @@
 const {createApp} = Vue;
 
 const appId = 'investigation-app';
+const searchId = 'investigation-search';
 const shaclId = 'shacl-form';
 
 const templateIRIOfIndagine = "http://indagine/$SEQ1$";
@@ -15,8 +16,72 @@ const sequenceValues = ["$UUID$",
 ];  
 
 const uploadValues = ["$UPLOAD$"];
-                    
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // App separata per l'autocomplete
+    if (typeof __AUTO_COMPLETE_COMPONENT__ !== 'undefined') {
+        try {
+            const elSearch = document.getElementById(searchId);
+            const searchApp = createApp({
+                template: `
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
+                        <autocomplete-search
+                            search-url="/backend/ontology/form/search"
+                            :min-chars="3"
+                            :placeholder="labels.search"
+                            @select="handleAutocompleteSelect"
+                        />
+                        <button v-if="existingInstance != null || inEdit" :title="labels.edit"
+                            @click="editInstance()" type="button" class="btn btn-info">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button v-if="!inEdit" :title="labels.new"
+                            @click="newInstance()" type="button" class="btn btn-success">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                `,
+                data() {
+                    return {
+                        existingInstance: null, 
+                        inEdit:false, 
+                        labels:{
+                            edit: elSearch.dataset.label_edit,
+                            new: elSearch.dataset.label_new,
+                            search: elSearch.dataset.label_search + "...",
+                        }  
+                    }
+                },
+                methods: {
+                    handleAutocompleteSelect(value) {
+                        this.existingInstance = value;
+                        window.dispatchEvent(
+                            new CustomEvent('select-item', { detail: value.uuid })
+                        );
+                    },
+                    editInstance(){
+                        window.dispatchEvent(
+                            new CustomEvent('edit-item', { detail: this.existingInstance.uuid })
+                        );
+                    },
+                    newInstance(){
+                        window.dispatchEvent(
+                            new CustomEvent('new-item')
+                        );
+                    }
+                }
+            });
+            searchApp.component('autocomplete-search', __AUTO_COMPLETE_COMPONENT__);
+            searchApp.mount('#investigation-search');
+            console.log('Search app mounted successfully');
+        } catch (error) {
+            console.error('Error mounting search app:', error);
+        }
+    } else {
+        console.error('__AUTO_COMPLETE_COMPONENT__ not defined');
+    }
+
     const el = document.getElementById(appId);
 
     const app = createApp({
@@ -26,6 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 cur_role: parseInt(el.dataset.cur_role),
                 uuid: el.dataset.uuid || null,
                 form: null,
+                inEditing: false,
+                isVisible: false,
                 enabled: el.dataset.editing == "true",
                 serializedForm: "",
                 validForm: false,
@@ -48,6 +115,31 @@ document.addEventListener('DOMContentLoaded', () => {
         mounted() {
             this.initShaclForm();
             setInterval(this.autoSave.bind(this), 30*1000);
+            // Ascolta eventi dall'autocomplete
+            var _this = this;
+            window.addEventListener('select-item', (event) => {
+                var uuid = event.detail;
+                console.log('select-item...', uuid);
+                _this.enabled = false;
+                _this.isVisible = true;
+                _this.inEditing = false;
+                _this.resetShaclForm(uuid, false);
+            });
+            window.addEventListener('edit-item', (event) => {
+                var uuid = event.detail;
+                console.log('edit-item...', uuid);
+                _this.enabled = true;
+                _this.isVisible = true;
+                _this.inEditing = true;
+                _this.resetShaclForm(uuid, true);
+            });
+            window.addEventListener('new-item', (event) => {
+                console.log('new-item...');
+                _this.enabled = true;
+                _this.isVisible = true;
+                _this.inEditing = true;
+                _this.resetShaclForm(null, true);
+            });
         },
         computed:{
             outputStyle(){
@@ -64,6 +156,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         methods: {
+            onSelect(){
+
+            },
             autoSave(){
                 // Form must be valid and change time after the last save time
                 if(this.lastUpdateTs > this.lastSaveTs && this.validForm){
@@ -97,12 +192,65 @@ document.addEventListener('DOMContentLoaded', () => {
                 form.submit();
                 form.remove();
             },
+            resetShaclForm(uuid, edit) {
+                // Trova il form esistente
+                const oldForm = document.querySelector("shacl-form");
+                const parent = document.getElementById("shacl-container");
+                
+                if (oldForm) oldForm.remove();
+                if(!parent){
+                    setTimeout((function(){
+                        this.resetShaclForm(uuid, edit);
+                    }).bind(this), 150);
+                    return;
+                }
+
+                // Crea un nuovo shacl-form con gli stessi attributi
+                const newForm = document.createElement("shacl-form");
+                newForm.id = "shacl-form";
+                newForm.dataset.collapse = "open";
+                newForm.dataset.valuesNamespace = "indagine:";
+                newForm.dataset.shapesUrl = "/backend/ontology/schema/ttl2";
+                newForm.dataset.generateNodeShapeReference = "";
+
+                //newForm.dataset.editing = edit;
+                if(!edit){
+                    newForm.dataset.view = "";
+                }
+                
+                newForm.dataset.shapeSubject="http://example.org/shapes/E7Activity01Shape";
+                    
+                if(uuid){
+                    newForm.dataset.valuesUrl="/backend/ontology/form/" + uuid;
+                    newForm.dataset.valuesSubject="http://indagine/" + uuid;
+                }
+
+                // Inserisci il nuovo form
+                parent.appendChild(newForm);
+
+                // Resetta il riferimento e reinizializza
+                this.form = null;
+                this.initShaclForm();
+                
+            },
             initShaclForm() {
                 var _this = this;
                 setTimeout(async ()=>{
                     _this.form = document.querySelector("shacl-form");
+
+                    if(!_this.form){
+                        setTimeout(_this.initShaclForm.bind(_this), 150);
+                        return;
+                    }
+
+                    if(!_this.isVisible){
+                        _this.form.style.display = 'none';
+                    }else{
+                        _this.form.style.display = '';
+                    }
+
                     const output = document.getElementById("shacl-output")
-                    
+
                     //await _this.load(this.uuid);
 
                     _this.form.addEventListener('change', event => {
@@ -116,7 +264,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         var intervalId = setInterval(() => {
                             if(_this.form.shadowRoot){
                                 clearInterval(intervalId);
-                                _this.inputIdentifizier();
+                                if(_this.inEditing)
+                                    _this.inputIdentifizier();
                                 if(!_this.enabled)
                                     _this.disableInteractions(_this.form);
                             }
@@ -448,5 +597,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // Configura Vue per ignorare i custom elements (Web Components)
+    app.config.compilerOptions.isCustomElement = (tag) => {
+        return tag.startsWith('shacl-') || tag === 'shacl-form';
+    };
+
     app.mount(`#${appId}`);
+
 });
