@@ -106,7 +106,11 @@
             "generated_output": "Output generato",
             "valid": "Valido",
             "not_valid": "Non valido"
-        }
+        },
+        "title": "Indagine",
+        "edit_item": "Modifica",
+        "new_item": "Nuova",
+        "search": "Ricerca"
     },
     "search": {
         "title" : "Ricerca",

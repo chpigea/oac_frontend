@@ -103,7 +103,11 @@
             "generated_output": "Generated output",
             "valid": "Valid",
             "not_valid": "Not valid"
-        }
+        },
+        "title": "Investigation",
+        "edit_item": "Edit",
+        "new_item": "New",
+        "search": "Search"
     },
     "search": {
         "fast": {
