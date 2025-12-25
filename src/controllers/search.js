@@ -19,7 +19,7 @@ module.exports = function(serviceName) {
             root: serviceName, 
             title: 'Advanced Search',
             currentPath:  req.baseUrl +req.path,
-            schema: 'ttl2'
+            schema: 'advanced'
         });    
         res.render('search/advanced.twig', data.toJson()); 
     });
