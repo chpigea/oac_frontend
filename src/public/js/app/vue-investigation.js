@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 newForm.id = "shacl-form";
                 newForm.dataset.collapse = "open";
                 newForm.dataset.valuesNamespace = "indagine:";
-                newForm.dataset.shapesUrl = "/backend/ontology/schema/ttl2";
+                newForm.dataset.shapesUrl = "/backend/ontology/schema/editing";
                 newForm.dataset.generateNodeShapeReference = "";
 
                 //newForm.dataset.editing = edit;
