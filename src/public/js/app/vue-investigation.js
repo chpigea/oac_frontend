@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 newForm.dataset.shapeSubject="http://example.org/shapes/E7Activity01Shape";
                     
                 if(uuid){
-                    var rnd = Math.ceil(Math.random()*100000000000000000);
+                    var rnd = (new Date()).getTime();
                     newForm.dataset.valuesUrl="/backend/ontology/form/" + uuid + "?rnd=" + rnd;
                     newForm.dataset.valuesSubject="http://indagine/" + uuid;
                 }
