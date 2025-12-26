@@ -1,0 +1,367 @@
+/* =========================
+   RESET E BASE
+   ========================= */
+
+/* Reset minimo */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body.layout-v2 {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
+.header-wrapper {
+  display: grid;
+  grid-template-columns: 220px 1fr; /* sidebar | contenuto */
+  grid-template-rows: 100px 45px;   /* banner | menu */
+  width: 100%;
+}
+
+/* --- POSIZIONAMENTO GRID (FONDAMENTALE) --- */
+
+.header-logo {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.header-banner {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.header-spacer {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.header-menu {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* --- COLONNA SINISTRA HEADER --- */
+
+.header-left {
+  background: #fafafa;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  border-bottom: 1px solid #ddd;
+}
+
+/* --- BANNER --- */
+
+.header-banner {
+  background-image: url('/frontend/v2/images/banner.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top center;
+  background-color: #519EA4;
+}
+
+/* --- MENU SOTTO IL BANNER --- */
+
+.header-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: #519EA4;
+  border-bottom: 1px solid #ddd;
+}
+
+/* =========================
+   MENU TOP (LINK)
+   ========================= */
+
+.topbar a {
+  text-decoration: none;
+  margin-right: 15px;
+  color: #333;
+}
+
+.topbar-center a {
+  padding: 6px 10px;
+  text-decoration: none;
+  color: #333;
+  position: relative;
+}
+
+/* Voce attiva */
+.topbar-center a.active {
+  font-weight: 600;
+}
+
+/* Sottolineatura */
+.topbar-center a.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 2px;
+  background-color: #0056b3;
+}
+
+/* =========================
+   LAYOUT
+   ========================= */
+
+.layout-body {
+  display: flex;
+  min-height: calc(100vh - 120px - 56px - 40px); /* header + footer */
+}
+
+/* =========================
+   SIDEBAR
+   ========================= */
+
+.sidebar {
+  width: 220px;
+  padding: 15px;
+  border-right: 1px solid #ddd;
+  background: #fafafa;
+}
+
+.sidebar a {
+  display: block;
+  padding: 6px 0;
+  color: #333;
+  text-decoration: none;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+}
+
+.sidebar-nav a.active {
+  font-weight: bold;
+  background-color: #eef3f8;
+  border-left: 3px solid #0056b3;
+}
+
+/* =========================
+   MAIN CONTENT
+   ========================= */
+
+.main-content {
+  flex: 1;
+  display: flex;
+  padding: 0;
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.footer-bar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid #ddd;
+  background: #f8f9fa;
+}
+
+/* =========================
+   SYSTEM PAGE
+   ========================= */
+
+.system-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.system-header h1 {
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+}
+
+.system-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.5fr 1.5fr;
+  gap: 24px;
+}
+
+/* =========================
+   SYSTEM – COLONNA 1 (AREE)
+   ========================= */
+
+.system-col-areas {
+  display: flex;
+  align-items: center;
+}
+
+.system-areas {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 50%;
+}
+
+.system-areas li {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.system-areas li::first-letter {
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-right: 4px;
+}
+
+/* =========================
+   SYSTEM AREAS – BULLETED
+   ========================= */
+
+.system-col-areas:has(.system-areas--bulleted) {
+  align-items: flex-start;
+}
+
+
+.system-areas--bulleted {
+  list-style: disc;
+  height: 50%;                 /* occupa il 50% */
+  justify-content: space-between; /* parte dall’alto */
+  
+}
+
+.system-areas--bulleted li::first-letter {
+  font-size: 1em;
+  font-weight: normal;
+  line-height: normal;
+  margin-right: 0;
+}
+
+/* =========================
+   SYSTEM AREAS – BULLETED (TOP + 50%)
+   ========================= */
+
+
+
+
+/* =========================
+   SYSTEM – COLONNA 3
+   ========================= */
+
+.system-col-images-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.system-images-2-wrapper {
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 70%;
+}
+
+.system-images-2-wrapper img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+/* =========================
+   SYSTEM – COLONNA 4
+   ========================= */
+
+.system-col-image-1 {
+  display: flex;
+  align-items: center;
+}
+
+.system-image-1-wrapper img {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+
+.department-banners {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.department-banner {
+  position: relative;
+  min-height: 90px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+
+  background-size: cover;
+  background-position: center;
+
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+
+  border-radius: 4px;
+  cursor: default;
+}
+
+.department-banner:hover {
+  filter: grayscale(0%);
+}
+
+.department-banner span {
+  position: relative;
+  z-index: 1;
+
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+
+.banner-sdara {
+  background-image: url('/frontend/v2/images/dip_sdara.jpg');
+}
+
+.banner-antichita {
+  background-image: url('/frontend/v2/images/dip_antichita.jpg');
+}
+
+.banner-terra {
+  background-image: url('/frontend/v2/images/dip_terra.png');
+}
+
+.banner-biologia {
+  background-image: url('/frontend/v2/images/dip_biologia.jpg');
+}

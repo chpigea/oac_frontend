@@ -1,0 +1,41 @@
+<header class="header-wrapper" id="top-menu">
+
+  {# RIGA 1 #}
+  <div class="header-logo">
+    <a href="/{{ root }}/home" class="logo">HD-LSD</a>
+  </div>
+
+  <div class="header-banner"></div>
+
+  {# RIGA 2 #}
+  <div class="header-spacer"></div>
+
+  <div class="header-menu">
+
+    <nav class="topbar-center">
+      <a href="/frontend/v2/introduction"
+         :class="{ active: activeMenu === 'introduction' }">
+        Presentazione
+      </a>
+
+      <a href="/{{ root }}/investigation/new"
+         :class="{ active: activeMenu === 'investigation' }">
+        Nuova indagine
+      </a>
+
+      <a href="/{{ root }}/search"
+         :class="{ active: activeMenu === 'search' }">
+        Ricerca
+      </a>
+    </nav>
+
+    <div class="topbar-right">
+      {% if user is defined %}
+        <span class="user-name">{{ user.name|default('') }}</span>
+        <a href="/{{ root }}/users/logout">Logout</a>
+      {% endif %}
+    </div>
+
+  </div>
+
+</header>

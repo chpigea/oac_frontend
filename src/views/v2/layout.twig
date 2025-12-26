@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+
+    
+
+    <title>{{ title|default('HD-LSD') }}</title>
+
+    {# ASSET v2 #}
+    
+<link rel="stylesheet" href="/frontend/v2/css/v2.css">
+
+    <script src="/frontend/js/lib/axios.min.js"></script>
+    <script src="/frontend/js/lib/vue.global.js"></script>
+    <script src="/frontend/js/lib/bootstrap.bundle.min.js"></script>
+    
+
+
+    {% block extendHead %}{% endblock %}
+</head>
+<body class="layout-v2"
+      data-active-menu="{{ activeMenu|default('') }}"
+      data-active-sidebar="{{ activeSidebar|default('') }}"
+      data-active-sidebar-item="{{ activeSidebarItem|default('') }}">
+
+    {% include 'v2/partials/header.twig' %}
+
+    <div class="layout-body">
+        {# SIDEBAR: dipende dalla macro-sezione #}
+        {% if activeSidebar %}
+            {% include 'v2/sidebars/' ~ activeSidebar ~ '.twig' %}
+        {% endif %}
+
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    {% include 'v2/partials/footer.twig' %}
+    <script src="/frontend/v2/js/v2.js"></script>
+</body>
+</html>
+
+
+

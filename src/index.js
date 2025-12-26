@@ -6,8 +6,9 @@ const getPort = require('get-port');
 const cookieParser = require('cookie-parser');
 const path = require("path");
 const i18n = require('i18n');
-const jwtLibFactory = require('@igea/oac_jwt_helpers')
+const jwtLibFactory = require('@igea/oac_jwt_helpers');
 const serviceName = "frontend"
+const serviceNameV2 = "frontend2";
 const DataModel = require('./models/DataModel');
 const jwtLib = jwtLibFactory({
     secret: process.env.JWT_SECRET || config.jwt_secret,
@@ -38,8 +39,11 @@ i18n.configure({
 const app = express();
 let newPort = null
 
+app.set('trust proxy', true);
+
 app.use(i18n.init);
 app.use(`/${serviceName}`, express.static(path.join(__dirname, 'public')));
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(jwtLib.middleware); 
@@ -51,6 +55,15 @@ app.use((req, res, next) => {
   res.locals.t = req.t;
   next();
 });
+
+app.use((req, res, next) => {
+  const proto = req.headers['x-forwarded-proto'] || req.protocol;
+  const host  = req.headers['x-forwarded-host']  || req.get('host');
+
+  res.locals.baseUrl = `${proto}://${host}/`;
+  next();
+});
+
 
 const register = async function(){
     try {
@@ -75,27 +88,36 @@ getPort.default({
     // Defining routers
     const healthRouter = require('./controllers/health.js');
     app.use(`/${serviceName}/health`, healthRouter);
+    app.use(`/${serviceNameV2}/health`, healthRouter);
 
     const usersRouter = require('./controllers/users.js')(serviceName);
     app.use(`/${serviceName}/users`, usersRouter);
+    app.use(`/${serviceNameV2}/users`, usersRouter);
 
     const vocabolariesRouter = require('./controllers/vocabolaries.js')(serviceName);
     app.use(`/${serviceName}/vocabolaries`, vocabolariesRouter);
+    app.use(`/${serviceNameV2}/vocabolaries`, vocabolariesRouter);
 
     const searchRouter = require('./controllers/search.js')(serviceName);
     app.use(`/${serviceName}/search`, searchRouter);
+    app.use(`/${serviceNameV2}/search`, searchRouter);
 
     const introductionRouter = require('./controllers/introduction.js')(serviceName);
     app.use(`/${serviceName}/introduction`, introductionRouter);
+    app.use(`/${serviceNameV2}/introduction`, introductionRouter);
 
     const investigationRouter = require('./controllers/investigation.js')(serviceName);
     app.use(`/${serviceName}/investigation`, investigationRouter);
+    app.use(`/${serviceNameV2}/investigation`, investigationRouter);
 
     const rdfRouter = require('./controllers/rdf.js')(serviceName);
     app.use(`/${serviceName}/rdf`, rdfRouter);
+    app.use(`/${serviceNameV2}/rdf`, rdfRouter);
 
     const captchaRouter = require('./controllers/captcha.js');
     app.use(`/${serviceName}/captcha`, captchaRouter);
+    app.use(`/${serviceNameV2}/captcha`, captchaRouter);
+
     // ---------------------------------------------------------------------
     // Application routes
     // ---------------------------------------------------------------------
@@ -112,6 +134,75 @@ getPort.default({
         });  
         res.render('home', data.toJson());
     });
+
+    // V2
+    app.get(`/${serviceNameV2}`, (req, res) => {
+    // puoi decidere se:
+    // - mostrare direttamente la home
+    // - oppure riusare il login
+    res.render('v2/login', { root: serviceNameV2, title: 'Login' });
+    });
+
+    app.get(`/${serviceName}/v2/home`, (req, res) => {
+    let data = new DataModel(req, {
+        root: `/${serviceName}/v2`,
+        title: 'HD-LSD',
+    });
+    res.render('v2/home', data.toJson());
+    });
+
+    app.get('/frontend/v2/introduction', (req, res) => {
+    let data = new DataModel(req, {
+        root: 'frontend/v2',
+        title: 'Introduzione',
+        activeMenu: 'introduction',
+        activeSidebar: 'presentazione',
+        activeSidebarItem: 'sistema'
+    });
+    res.render('v2/presentazione/sistema', data.toJson());
+    });
+
+    app.get('/frontend/v2/finalita', (req, res) => {
+        let data = new DataModel(req, {
+        root: 'frontend/v2',
+        title: 'Finalità',
+
+        activeMenu: 'introduction',
+        activeSidebar: 'presentazione',
+        activeSidebarItem: 'finalita'
+    });
+        res.render('v2/presentazione/finalita', data.toJson());
+    });
+
+    app.get('/frontend/v2/partecipanti', (req, res) => {
+        let data = new DataModel(req, {
+        root: 'frontend/v2',
+        title: 'Partecipanti',
+
+        activeMenu: 'introduction',
+        activeSidebar: 'presentazione',
+        activeSidebarItem: 'partecipanti'
+    });
+        res.render('v2/presentazione/partecipanti', data.toJson());
+    });
+
+    app.get('/frontend/v2/sistema', (req, res) => {
+        let data = new DataModel(req, {
+            root: 'frontend/v2',
+            title: 'Il sistema',
+
+            activeMenu: 'introduction',
+            activeSidebar: 'presentazione',
+            activeSidebarItem: 'sistema'
+        });
+        res.render('v2/presentazione/sistema', data.toJson());
+    });
+
+
+
+
+
+
     // ---------------------------------------------------------------------
     // Start listing on the specified port
     app.listen(port, async () => {
