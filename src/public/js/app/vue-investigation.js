@@ -17,6 +17,10 @@ const sequenceValues = ["$UUID$",
 
 const uploadValues = ["$UPLOAD$"];
 
+const CLIENT_UUID = crypto.randomUUID();
+
+const KEEP_LOCK_EVERY = 60*1000;
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // App separata per l'autocomplete
@@ -26,13 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const searchApp = createApp({
                 template: `
                     <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
-                        <autocomplete-search
+                        <autocomplete-search v-if="!inEdit"
                             search-url="/backend/ontology/form/search"
                             :min-chars="3"
                             :placeholder="labels.search"
                             @select="handleAutocompleteSelect"
                         />
-                        <button v-if="existingInstance != null || inEdit" :title="labels.edit"
+                        <button v-if="existingInstance != null && !inEdit" :title="labels.edit"
                             @click="editInstance()" type="button" class="btn btn-info">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
@@ -63,14 +67,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         this.existingInstance = value;
                         this.inEdit = false;
                         window.dispatchEvent(
-                            new CustomEvent('select-item', { detail: value.uuid })
+                            new CustomEvent('select-item', { 
+                                detail: {
+                                    id: this.existingInstance.id,
+                                    uuid: this.existingInstance.uuid
+                                } 
+                            })
                         );
                     },
                     editInstance(){
-                        this.inEdit = true;
-                        window.dispatchEvent(
-                            new CustomEvent('edit-item', { detail: this.existingInstance.uuid })
-                        );
+                        setTimeout((async function(){
+                            var response = await fetch(
+                                '/backend/ontology/form/lock/' + this.existingInstance.id + "/" + CLIENT_UUID 
+                            ).then(resp => resp.json());
+                            if(response.success){
+                                this.inEdit = true;
+                                window.dispatchEvent(
+                                    new CustomEvent('edit-item', { 
+                                        detail: {
+                                            id: this.existingInstance.id,
+                                            uuid: this.existingInstance.uuid
+                                        } 
+                                    })
+                                );
+                            }else{
+                                alert("Record in editing da un altro utente")
+                            }
+                        }).bind(this))
                     },
                     newInstance(){
                         this.inEdit = true;
@@ -79,10 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         );
                     },
                     stopEdit(){
-                        this.inEdit = false;
-                        window.dispatchEvent(
-                            new CustomEvent('edit-stop')
-                        );
+                        setTimeout((async function(){
+                            this.inEdit = false;
+                            this.existingInstance = null; 
+                            window.dispatchEvent(
+                                new CustomEvent('edit-stop')
+                            );
+                        }).bind(this))
                     }
                 }
             });
@@ -105,6 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 cur_role: parseInt(el.dataset.cur_role),
                 uuid: el.dataset.uuid || null,
                 form: null,
+                form_id: null,
+                form_keep_lock_timer: null,
+                form_keep_locking: false,
                 inEditing: false,
                 isVisible: false,
                 enabled: el.dataset.editing == "true",
@@ -132,20 +161,28 @@ document.addEventListener('DOMContentLoaded', () => {
             // Ascolta eventi dall'autocomplete
             var _this = this;
             window.addEventListener('select-item', (event) => {
-                var uuid = event.detail;
+                var detail = event.detail;
+                var id = detail.id;
+                var uuid = detail.uuid;
+                _this.form_id = id;
                 console.log('select-item...', uuid);
                 _this.enabled = false;
                 _this.isVisible = true;
                 _this.inEditing = false;
                 _this.resetShaclForm(uuid, false);
+                
             });
             window.addEventListener('edit-item', (event) => {
-                var uuid = event.detail;
+                var detail = event.detail;
+                var id = detail.id;
+                var uuid = detail.uuid;
+                _this.form_id = id;
                 console.log('edit-item...', uuid);
                 _this.enabled = true;
                 _this.isVisible = true;
                 _this.inEditing = true;
                 _this.resetShaclForm(uuid, true);
+                _this.form_keep_lock_timer = setInterval(_this.keepLock.bind(_this), KEEP_LOCK_EVERY)
             });
             window.addEventListener('new-item', (event) => {
                 console.log('new-item...');
@@ -153,14 +190,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 _this.isVisible = true;
                 _this.inEditing = true;
                 _this.resetShaclForm(null, true);
+                _this.form_id = null;
             });
-            window.addEventListener('edit-stop', (event) => {
+            window.addEventListener('edit-stop', async (event) => {
                 console.log('edit-stop...');
+                if(_this.form_id){
+                    await fetch(
+                        '/backend/ontology/form/unlock/' + _this.form_id + "/" + CLIENT_UUID 
+                    ).then(resp => resp.json());
+                }
                 _this.enabled = false;
                 _this.isVisible = false;
                 _this.inEditing = false;
+                _this.form_id = null;
                 //_this.resetShaclForm(null, true);
+                clearInterval(_this.form_keep_lock_timer);
             });
+
+            window.addEventListener('beforeunload', () => {
+                if(this.form_id){
+                    var url = '/backend/ontology/form/unlock/' + this.form_id + "/" + CLIENT_UUID;
+                    navigator.sendBeacon(url);
+                }
+            });
+
         },
         computed:{
             outputStyle(){
@@ -177,6 +230,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         methods: {
+            keepLock(){
+                if(this.form_id && !this.form_keep_locking){
+                    this.form_keep_locking = true;
+                    setTimeout((async function(){
+                        var url = '/backend/ontology/form/lock-keep/' + this.form_id + "/" + CLIENT_UUID;
+                        await fetch(url);
+                        this.form_keep_locking = false;
+                    }).bind(this))
+                }
+            },
             onSelect(){
 
             },
@@ -584,6 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             save(automatic) {
                 if(this.saving) return;
+                var _this = this;
                 this.lastSaveTs = (new Date()).getTime();
                 automatic = automatic || false;
                 this.saving = true;
@@ -591,17 +655,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     turtle: this.serializedForm,
                     uuid: this.uuid
                 });
-                request.then(response => {
+                request.then(async response => {
                     var obj = response.data;
+                    console.log(obj);
                     if(!automatic){
-                        if(obj.success)
+                        if(obj.success){
                             alert("Saved: OK");
-                        else
+                            if(_this.isNew && obj.data){
+                                _this.form_id = obj.data;
+                                await fetch('/backend/ontology/form/lock/' + obj.data + "/" + CLIENT_UUID)
+                                _this.form_keep_lock_timer = setInterval(_this.keepLock.bind(_this), KEEP_LOCK_EVERY)
+                            }
+                        }else
                             alert("Error: " + obj.message);
                     }
-                    this.saving = false;
+                    _this.saving = false;
                 }).catch(error => {
-                    this.saving = false;
+                    _this.saving = false;
                     console.log(error);
                 });
             },
