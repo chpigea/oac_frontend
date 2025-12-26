@@ -111,7 +111,8 @@
         "edit_item": "Modifica",
         "new_item": "Nuova",
         "stop_edit": "Fine modifica",
-        "search": "Ricerca"
+        "search": "Ricerca",
+        "edit_from_other_user": "Un altro utente sta modificando questo elemento"
     },
     "search": {
         "title" : "Ricerca",
