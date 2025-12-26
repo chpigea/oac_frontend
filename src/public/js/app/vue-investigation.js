@@ -305,7 +305,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 newForm.dataset.shapeSubject="http://example.org/shapes/E7Activity01Shape";
                     
                 if(uuid){
-                    newForm.dataset.valuesUrl="/backend/ontology/form/" + uuid;
+                    var rnd = (new Date()).getTime();
+                    newForm.dataset.valuesUrl="/backend/ontology/form/" + uuid + "?rnd=" + rnd;
                     newForm.dataset.valuesSubject="http://indagine/" + uuid;
                 }
 
