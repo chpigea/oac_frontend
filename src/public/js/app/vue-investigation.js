@@ -40,6 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             @click="newInstance()" type="button" class="btn btn-success">
                             <i class="fa-solid fa-plus"></i>
                         </button>
+                        <button v-if="inEdit" :title="labels.stop_edit"
+                            @click="stopEdit()" type="button" class="btn btn-success">
+                            <i class="fa-solid fa-circle-stop" style="color:red;"></i>
+                        </button>
                     </div>
                 `,
                 data() {
@@ -49,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         labels:{
                             edit: elSearch.dataset.label_edit,
                             new: elSearch.dataset.label_new,
+                            stop_edit: elSearch.dataset.label_stop_edit,
                             search: elSearch.dataset.label_search + "...",
                         }  
                     }
@@ -56,18 +61,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 methods: {
                     handleAutocompleteSelect(value) {
                         this.existingInstance = value;
+                        this.inEdit = false;
                         window.dispatchEvent(
                             new CustomEvent('select-item', { detail: value.uuid })
                         );
                     },
                     editInstance(){
+                        this.inEdit = true;
                         window.dispatchEvent(
                             new CustomEvent('edit-item', { detail: this.existingInstance.uuid })
                         );
                     },
                     newInstance(){
+                        this.inEdit = true;
                         window.dispatchEvent(
                             new CustomEvent('new-item')
+                        );
+                    },
+                    stopEdit(){
+                        this.inEdit = false;
+                        window.dispatchEvent(
+                            new CustomEvent('edit-stop')
                         );
                     }
                 }
@@ -139,6 +153,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 _this.isVisible = true;
                 _this.inEditing = true;
                 _this.resetShaclForm(null, true);
+            });
+            window.addEventListener('edit-stop', (event) => {
+                console.log('edit-stop...');
+                _this.enabled = false;
+                _this.isVisible = false;
+                _this.inEditing = false;
+                //_this.resetShaclForm(null, true);
             });
         },
         computed:{
@@ -266,8 +287,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 clearInterval(intervalId);
                                 if(_this.inEditing)
                                     _this.inputIdentifizier();
+                                
+                                _this.validForm = true;
+                                _this.serializedForm = _this.form.serialize();
+                                
                                 if(!_this.enabled)
                                     _this.disableInteractions(_this.form);
+                                                        
                             }
                         }, 100);
                     });
