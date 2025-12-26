@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             new: elSearch.dataset.label_new,
                             stop_edit: elSearch.dataset.label_stop_edit,
                             search: elSearch.dataset.label_search + "...",
+                            edit_from_other_user: elSearch.dataset.label_edit_from_other_user
                         }  
                     }
                 },
@@ -91,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     })
                                 );
                             }else{
-                                alert("Record in editing da un altro utente")
+                                alert(this.labels.edit_from_other_user);
                             }
                         }).bind(this))
                     },
