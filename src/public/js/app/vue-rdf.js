@@ -45,10 +45,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     class="fa-solid fa-link-slash"
                     style="margin-right:10px;"
                 ></i>
-                {{ classesLabelFor(node) + ' ' + classesTagFor(node) }}
+                <template v-if="labelIsAttachment(node)">
+                    {{ urlFor(node) }}
+                </template>
+                <template v-else>
+                    {{ classesLabelFor(node) + ' ' + classesTagFor(node) }}
+                </template>
                 <i v-if="labelIsAttachment(node)" 
                     @click="downloadAttachment(node)"
-                    style="margin-left:20px;"
+                    style="margin-left:20px; cursor:pointer;"
                     class="fa-solid fa-file-arrow-down">
                 </i>  
             </div>
@@ -147,10 +152,18 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             labelIsAttachment(node){
                 var label = node.label || '';
-                return label.indexOf("/backend/fuseki/attachment/") >= 0;
+                var iri = node.iri || '';
+                return label.indexOf("/backend/fuseki/attachment/") >= 0 || iri.indexOf("/backend/fuseki/attachment/") >= 0;
+            },
+            urlFor(node){
+                var label = node.label || '';
+                var url = node.iri || '';
+                if(label.indexOf("/backend/fuseki/attachment/")>=0)
+                    url = label
+                return url.replace("<", "").replace(">", "");
             },
             downloadAttachment(node){
-                window.open(node.label,"_BLANK");
+                window.open(this.urlFor(node),"_BLANK");
             },
             classesLabelFor(node){
                 var label = node.label;
