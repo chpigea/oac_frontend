@@ -443,7 +443,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         const label = container.querySelector("label");
                         if (rokitInput) {
                             rokitInput.setAttribute("disabled", "true");
-                            rokitInput.style.opacity = "0.0";
+                            if(rokitInput.value === "")
+                                rokitInput.style.opacity = "0.0";
                             rokitInput.style.pointerEvents = "none";
                             
                             // Aggiungo bottone IMG per upload 
@@ -453,14 +454,19 @@ document.addEventListener('DOMContentLoaded', () => {
                                 && next.classList.contains(imgClass))) {
                                 // creo immagine
                                 const img = document.createElement("img");
+                                img._mode = "UPLOAD";
                                 img.src = "/frontend/images/upload.png";
+                                if(rokitInput.value !== ""){
+                                    img._mode = "DOWNLOAD";
+                                    img.src = "/frontend/images/download.png";
+                                }
                                 img.style.width = "24px"; img.style.height = "24px";
                                 img.style["margin-left"] = "5px"; img.style["margin-right"] = "5px";
                                 img.style.cursor = "pointer";
                                 img.classList.add(imgClass);
-                                img._mode = "UPLOAD";
-                                if(rokitInput.value !== "")
-                                    img._mode = "DOWNLOAD";
+                                
+                                console.log(rokitInput);
+                                
                                 img.onclick = function(){
                                     if(img._mode == "DOWNLOAD"){
                                         window.open(rokitInput.value,"_BLANK");
