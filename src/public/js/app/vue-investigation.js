@@ -319,10 +319,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Resetta il riferimento e reinizializza
                 this.form = null;
-                this.initShaclForm();
+                this.initShaclForm(uuid);
                 
             },
-            initShaclForm() {
+            initShaclForm(uuid) {
                 var _this = this;
                 setTimeout(async ()=>{
                     _this.form = document.querySelector("shacl-form");
@@ -358,8 +358,15 @@ document.addEventListener('DOMContentLoaded', () => {
                                 else
                                     _this.makeAttachmentClickable();
                                 _this.validForm = true;
-                                _this.serializedForm = _this.form.serialize();
-                                
+                                if(_this.inEditing)
+                                    _this.serializedForm = _this.form.serialize();
+                                else{
+                                    setTimeout(async function(){
+                                        var rnd = (new Date()).getTime();
+                                        const response = await fetch("/backend/ontology/form/" + uuid + "?rnd=" + rnd)    
+                                        _this.serializedForm = await response.text();
+                                    });        
+                                }
                                 if(!_this.enabled)
                                     _this.disableInteractions(_this.form);
                                                         
