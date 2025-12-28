@@ -1,0 +1,31 @@
+{% extends 'v2/layout.twig' %}
+
+{% block extendHead %}
+  <script src="/frontend/js/lib/shacl-form.bundle.js" type="module"></script>
+  <script src="/frontend/js/app/vue-autocomplete-component.js"></script>
+  <script src="/frontend/js/app/vue-investigation.js"></script>
+
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 650px;
+      width: 90%;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% include 'v2/investigation/form_content.twig' %}
+{% endblock %}

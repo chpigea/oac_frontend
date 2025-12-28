@@ -1,0 +1,114 @@
+
+{% extends "/v2/layout.twig" %}
+
+{% block extendHead %}
+    <script src="/frontend/js/app/vue-users-edit.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div id="edit-user"
+        data-root="frontend/v2"
+        data-role_sudo="{{ t('users.role.sudo') }}" 
+        data-role_admin="{{ t('users.role.admin') }}" 
+        data-role_editor="{{ t('users.role.editor') }}" 
+        data-role_reader="{{ t('users.role.reader') }}"
+        data-user_id = "{{ id }}"
+        data-save_ok="{{ t('users.edit.save_ok') }}"
+        data-cur_id="{{ cur_id }}"
+        data-cur_role="{{ user.role }}"
+    >
+        <h2 style="display:flex; justify-content:space-between; align-items:center;">
+            {% if id == 0 %}
+                <span>{{ t('users.edit.title') }}: {{ t('users.edit.new') }}</span>
+            {% else %}
+                <span>{{ t('users.edit.title') }} #{{id}}: {{ t('users.edit.update') }}</span>
+            {% endif %}
+        </h2>
+
+        <form class="container mt-4" style="width:80%; margin-left:10%;">
+            <div class="row g-3">
+                
+                <!-- Name -->
+                <div class="col-md-6">
+                    <label for="name" class="form-label">{{ t('users.manage.name') }}:</label>
+                    <input v-model="user.name" type="text" class="form-control" id="name" placeholder="">
+                    <div v-if="!validator.name" id="nameHelp" class="form-text warning">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        {{ t('users.edit.invalid_name') }}
+                    </div>
+                </div>
+                
+                <!-- Surname -->
+                <div class="col-md-6">
+                    <label for="surname" class="form-label">{{ t('users.manage.surname') }}:</label>
+                    <input v-model="user.surname" type="text" class="form-control" id="surname" placeholder="">
+                    <div v-if="!validator.surname" id="surnameHelp" class="form-text warning">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        {{ t('users.edit.invalid_surname') }}
+                    </div>
+                </div>
+                
+                <!-- Username -->
+                <div class="col-md-6">
+                    <label for="username" class="form-label">{{ t('users.manage.username') }}:</label>
+                    <input v-model="user.username" type="text" class="form-control" id="username" placeholder="">
+                    <div v-if="!validator.username" id="usernameHelp" class="form-text warning">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        {{ t('users.edit.invalid_username') }}
+                    </div>
+                </div>
+                
+                <!-- Email -->
+                <div class="col-md-6">
+                    <label for="email" class="form-label">{{ t('users.manage.email') }}:</label>
+                    <input v-model="user.email" type="email" class="form-control" id="email" placeholder="">
+                    <div v-if="!validator.email" id="emailHelp" class="form-text warning">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        {{ t('users.edit.invalid_email') }}
+                    </div>
+                </div>
+                
+                <!-- Password -->
+                <div class="col-md-6">
+                    <label for="password" class="form-label">{{ t('users.edit.password') }}:</label>
+                    <input v-model="user.password" type="password" class="form-control" id="password" placeholder="">
+                    <div v-if="!validator.password" id="passwordHelp" class="form-text warning">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        {{ t('users.edit.invalid_password') }}
+                    </div>
+                </div>
+                
+                <!-- Confirm Password -->
+                <div class="col-md-6">
+                    <label for="password2" class="form-label">{{ t('users.edit.confirm_password') }}:</label>
+                    <input v-model="user.confirm_password" type="password" class="form-control" id="password2" placeholder="">
+                    <div v-if="!validator.confirm_password" id="password2Help" class="form-text warning">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        {{ t('users.edit.different_password') }}
+                    </div>
+                </div>
+                
+                <!-- Role -->
+                <div class="col-md-6">
+                    <label for="role" class="form-label">{{ t('users.manage.role') }}:</label>
+                    <select v-model.number="user.role" id="role" class="form-select" :disabled="cur_id==user.id">
+                        <option :value="0">{{ t('users.role.sudo') }}</option>
+                        <option :value="1">{{ t('users.role.admin') }}</option>
+                        <option :value="2">{{ t('users.role.editor') }}</option>
+                        <option :value="3">{{ t('users.role.reader') }}</option>
+                    </select>
+                </div>
+                
+                <!-- Buttons -->
+                <div v-if="validForm" class="col-12 text-center mt-4">
+                    <button @click="save()" type="submit" class="btn btn-primary me-2">{{ t('users.edit.save') }}</button>
+                    <button @click="cancel()" type="button" class="btn btn-secondary">{{ t('users.edit.cancel') }}</button>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

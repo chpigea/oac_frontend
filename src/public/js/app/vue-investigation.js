@@ -125,6 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const el = document.getElementById(appId);
 
+    if (!el) {
+        console.warn('[vue-investigation] #investigation-app not found, skipping mount');
+        return;
+    }
+    const showForm = (el.dataset.showForm === 'true');
+
     const app = createApp({
         delimiters: ['{@', '@}'],
         data() {
@@ -160,6 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }    
         },
         mounted() {
+            if (showForm) {
+                this.resetShaclForm(null, true);
+            }
+
             this.initShaclForm();
             setInterval(this.autoSave.bind(this), 30*1000);
             // Ascolta eventi dall'autocomplete

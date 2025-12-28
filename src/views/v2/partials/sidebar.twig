@@ -1,0 +1,51 @@
+<aside class="sidebar">
+
+  {% if sidebarMode == 'investigation' %}
+    <div class="sidebar-title-only">
+      Indagine
+    </div>
+  {% else %}
+
+  <nav class="sidebar-nav">
+
+
+
+    <a href="/frontend/v2/system"
+       class="{% if activeInfo == 'system' %}active{% endif %}">
+       Il sistema
+    </a>
+
+    <a href="/frontend/v2/finalita"
+       class="{% if activeInfo == 'finalita' %}active{% endif %}">
+       Finalità
+    </a>
+
+    <a href="/frontend/v2/partecipanti"
+       class="{% if activeInfo == 'partecipanti' %}active{% endif %}">
+       Partecipanti
+    </a>
+
+    <a href="/frontend/v2/bibliografia"
+       class="{% if activeInfo == 'bibliografia' %}active{% endif %}">
+       Riferimenti e Bibliografia
+    </a>
+
+    <a href="/frontend/v2/modelli"
+       class="{% if activeInfo == 'modelli' %}active{% endif %}">
+       Modelli Utilizzati
+    </a>
+
+    <a href="/frontend/v2/crediti"
+       class="{% if activeInfo == 'crediti' %}active{% endif %}">
+       Crediti
+    </a>
+
+    <a href="/frontend/v2/contatti"
+       class="{% if activeInfo == 'contatti' %}active{% endif %}">
+       Contatti
+    </a>
+
+  </nav>
+{% endif %}
+
+</aside>

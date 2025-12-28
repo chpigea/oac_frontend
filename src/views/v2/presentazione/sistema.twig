@@ -1,0 +1,62 @@
+{% extends 'v2/layout.twig' %}
+
+{% block content %}
+
+<section class="system-page">
+
+  {# TITOLO #}
+  <header class="system-header">
+    <h1>Il sistema</h1>
+  </header>
+
+  {# GRIGLIA A 4 COLONNE #}
+  <div class="system-grid">
+
+    {# COLONNA 1 — Aree #}
+    <div class="system-col system-col-areas">
+      <ul class="system-areas">
+        <li>Heritage</li>
+        <li>Diagnostics</li>
+        <li>Linked</li>
+        <li>Semantic</li>
+        <li>Data</li>
+      </ul>
+    </div>
+
+
+    {# COLONNA 2 — Testo #}
+    <div class="system-col system-col-text">
+      <p>
+        <!-- TESTO DA INSERIRE -->
+            <p style="margin-top:20px; line-height:2.0;">
+    <b>HD-LSD (Heritage & Diagnostics – Linked Semantic Data)</b> è uno strumento di raccolta e gestione dei dati diagnostici nel settore dei beni culturali, negli ambiti architettonici, archeologici, storico-
+    artistici e ambientali.<br/>
+    La consultazione consente di porre domande sull'interpretazione dei dati, fornendo flussi di lavoro e best practice sia per le attività sul campo che per quelle di laboratorio e
+    offrendo una documentazione che va dal livello macroscopico fino alla scala microscopica, esplorando tecniche di caratterizzazione dei materiali, di analisi della produzione, di identificazione
+    del degrado, di datazione e di ricostruzione del paleoambiente e delle pratiche di coltivazione.
+    </p>
+      </p>
+    </div>
+
+    {# COLONNA 3 — 2 immagini verticali #}
+    <div class="system-col system-col-images-2">
+      <div class="system-images-2-wrapper">
+        <img src="/frontend/v2/images/Osservazione in microscopia ottica.jpg" alt="Osservazione Microscopica">
+        <img src="/frontend/v2/images/Preparazione campioni.jpg" alt="Campioni">
+      </div>
+    </div>
+
+
+    {# COLONNA 4 — 1 immagine #}
+    <div class="system-col system-col-image-1">
+      <div class="system-image-1-wrapper">
+        <img src="/frontend/v2/images/Prospezione georadar.jpg" alt="Georadar">
+      </div>
+    </div>
+
+
+  </div>
+
+</section>
+
+{% endblock %}
