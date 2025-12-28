@@ -355,7 +355,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 clearInterval(intervalId);
                                 if(_this.inEditing)
                                     _this.inputIdentifizier();
-                                
+                                else
+                                    _this.makeAttachmentClickable();
                                 _this.validForm = true;
                                 _this.serializedForm = _this.form.serialize();
                                 
@@ -417,6 +418,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     //characterData: true    // monitora testo interno dei nodi
                 });
                 return observer;
+            },
+            getAttachmentElements(root = document){
+                var selector = 'a[href*="/backend/fuseki/attachment/"]'
+                const results = [...root.querySelectorAll(selector)];
+                // Cerca in tutti gli shadow root
+                const allElements = root.querySelectorAll('*');
+                for (const el of allElements) {
+                    if (el.shadowRoot) {
+                        results.push(...this.getAttachmentElements(el.shadowRoot));
+                    }
+                }
+                return results;
+            },
+            makeAttachmentClickable(){
+                var links = this.getAttachmentElements();
+                console.log(links)
+                for(var i=0; i<links.length; i++){
+                    var link = links[i];
+                    var url = link.href;
+                    link.removeAttribute('href');  // Rimuovi href
+                    link.style.pointerEvents='auto';
+                    link.style.cursor = 'pointer'; 
+                    link.style.textDecoration = 'underline';
+                    link.style.color = 'darkblue';
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
+                        window.open(url, '_blank');
+                    }, true);  // true = capture phase
+                }
             },
             inputIdentifizier(){
                 const form = this.form;
