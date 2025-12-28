@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 isNew: true,
                 labels: {
                     save_ok: el.dataset.label_save_ok,
-                    save_err: el.dataset.label_save_ok
+                    save_err: el.dataset.label_save_err
                 },
                 search: {
                     offset: 0,
