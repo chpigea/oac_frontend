@@ -1,6 +1,6 @@
 {
   "name": "@igea/oac_frontend",
-  "version": "1.0.76",
+  "version": "1.0.87",
   "description": "Frontend service for the OAC project",
   "main": "src/index.js",
   "bin": {
@@ -16,8 +16,8 @@
     "type": "git",
     "url": "git+https://github.com/chpigea/oac_frontend.git"
   },
-  "author": "Christian R. Picone",
-  "license": "ISC",
+  "author": "Christian R. Picone <ch.picone@gmail.com>",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/chpigea/oac_frontend/issues"
   },
