@@ -672,7 +672,7 @@ document.addEventListener('DOMContentLoaded', () => {
             generateIRI(input, isIndagne){
                 var template = input.placeholder;
                 setTimeout((async function(){
-                    var _uuid = crypto.randomUUID();
+                    var _uuid = generateUUID();
                     template = template.replace("$uuid$", _uuid).replace("$UUID$", _uuid);
                     for(var i=1; i<=9; i++){
                         var seq = "seq" + i; 
