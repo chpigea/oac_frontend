@@ -1,7 +1,14 @@
 <aside class="sidebar">
 
+  {% if sidebarMode == 'investigation' %}
+    <div class="sidebar-title-only">
+      Indagine
+    </div>
+  {% else %}
 
   <nav class="sidebar-nav">
+
+
 
     <a href="/frontend/v2/system"
        class="{% if activeInfo == 'system' %}active{% endif %}">
@@ -39,6 +46,6 @@
     </a>
 
   </nav>
-
+{% endif %}
 
 </aside>

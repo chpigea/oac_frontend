@@ -8,7 +8,6 @@ const path = require("path");
 const i18n = require('i18n');
 const jwtLibFactory = require('@igea/oac_jwt_helpers');
 const serviceName = "frontend"
-const serviceNameV2 = "frontend2";
 const DataModel = require('./models/DataModel');
 const jwtLib = jwtLibFactory({
     secret: process.env.JWT_SECRET || config.jwt_secret,
@@ -88,35 +87,37 @@ getPort.default({
     // Defining routers
     const healthRouter = require('./controllers/health.js');
     app.use(`/${serviceName}/health`, healthRouter);
-    app.use(`/${serviceNameV2}/health`, healthRouter);
+
 
     const usersRouter = require('./controllers/users.js')(serviceName);
     app.use(`/${serviceName}/users`, usersRouter);
-    app.use(`/${serviceNameV2}/users`, usersRouter);
+
 
     const vocabolariesRouter = require('./controllers/vocabolaries.js')(serviceName);
     app.use(`/${serviceName}/vocabolaries`, vocabolariesRouter);
-    app.use(`/${serviceNameV2}/vocabolaries`, vocabolariesRouter);
+
 
     const searchRouter = require('./controllers/search.js')(serviceName);
     app.use(`/${serviceName}/search`, searchRouter);
-    app.use(`/${serviceNameV2}/search`, searchRouter);
+    const searchRouterV2 = require('./controllers/search_v2.js')(serviceName);
+    app.use(`/frontend/v2/search`, searchRouterV2);
+
 
     const introductionRouter = require('./controllers/introduction.js')(serviceName);
     app.use(`/${serviceName}/introduction`, introductionRouter);
-    app.use(`/${serviceNameV2}/introduction`, introductionRouter);
+  
 
     const investigationRouter = require('./controllers/investigation.js')(serviceName);
     app.use(`/${serviceName}/investigation`, investigationRouter);
-    app.use(`/${serviceNameV2}/investigation`, investigationRouter);
+
 
     const rdfRouter = require('./controllers/rdf.js')(serviceName);
     app.use(`/${serviceName}/rdf`, rdfRouter);
-    app.use(`/${serviceNameV2}/rdf`, rdfRouter);
+
 
     const captchaRouter = require('./controllers/captcha.js');
     app.use(`/${serviceName}/captcha`, captchaRouter);
-    app.use(`/${serviceNameV2}/captcha`, captchaRouter);
+
 
     // ---------------------------------------------------------------------
     // Application routes
@@ -135,13 +136,6 @@ getPort.default({
         res.render('home', data.toJson());
     });
 
-    // V2
-    app.get(`/${serviceNameV2}`, (req, res) => {
-    // puoi decidere se:
-    // - mostrare direttamente la home
-    // - oppure riusare il login
-    res.render('v2/login', { root: serviceNameV2, title: 'Login' });
-    });
 
     app.get(`/${serviceName}/v2/home`, (req, res) => {
     let data = new DataModel(req, {
@@ -197,6 +191,32 @@ getPort.default({
         });
         res.render('v2/presentazione/sistema', data.toJson());
     });
+
+app.get('/frontend/v2/investigation/form', async (req, res) => {
+  let data = new DataModel(req, {
+    root: 'frontend/v2',
+    title: 'Indagine',
+    activeMenu: 'investigation',
+activeSidebar: 'investigation',
+    showForm: true
+  });
+
+  res.render('v2/investigation/form', data.toJson());
+});
+
+  app.get('/frontend/v2/search', (req, res) => {
+  let data = new DataModel(req, {
+    root: 'frontend/v2',
+    title: 'Ricerca',
+    activeMenu: 'search',
+    activeSidebar: 'search',
+    activeSidebarItem: 'fast',
+    fastType: 1,
+    schema: 'fast_' + 1
+  });
+
+  res.render('v2/search/advanced', data.toJson());
+});
 
 
 

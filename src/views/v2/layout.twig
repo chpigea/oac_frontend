@@ -15,7 +15,9 @@
     <script src="/frontend/js/lib/vue.global.js"></script>
     <script src="/frontend/js/lib/bootstrap.bundle.min.js"></script>
     
-
+    <link rel="stylesheet" href="/frontend/css/style.css">
+    <link rel="stylesheet" href="/frontend/css/font-awesome-all.min.css">
+    <link rel="stylesheet" href="/frontend/css/bootstrap.min.css">
 
     {% block extendHead %}{% endblock %}
 </head>
@@ -29,8 +31,11 @@
     <div class="layout-body">
         {# SIDEBAR: dipende dalla macro-sezione #}
         {% if activeSidebar %}
-            {% include 'v2/sidebars/' ~ activeSidebar ~ '.twig' %}
+            <aside class="sidebar">
+                {% include 'v2/sidebars/' ~ activeSidebar ~ '.twig' %}
+            </aside>
         {% endif %}
+
 
         <main class="main-content">
             {% block content %}{% endblock %}

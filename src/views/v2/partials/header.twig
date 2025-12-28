@@ -2,7 +2,7 @@
 
   {# RIGA 1 #}
   <div class="header-logo">
-    <a href="/{{ root }}/home" class="logo">HD-LSD</a>
+    <a href="/frontend/v2/presentazione/sistema" class="logo">HD-LSD</a>
   </div>
 
   <div class="header-banner"></div>
@@ -18,12 +18,12 @@
         Presentazione
       </a>
 
-      <a href="/{{ root }}/investigation/new"
+      <a href="/frontend/v2/investigation/form"
          :class="{ active: activeMenu === 'investigation' }">
-        Nuova indagine
+        Indagine
       </a>
 
-      <a href="/{{ root }}/search"
+      <a href="/frontend/v2/search/fast/1"
          :class="{ active: activeMenu === 'search' }">
         Ricerca
       </a>
@@ -32,9 +32,10 @@
     <div class="topbar-right">
       {% if user is defined %}
         <span class="user-name">{{ user.name|default('') }}</span>
-        <a href="/{{ root }}/users/logout">Logout</a>
+        <a href="/frontend/">Logout</a>
       {% endif %}
     </div>
+
 
   </div>
 

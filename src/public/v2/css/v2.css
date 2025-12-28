@@ -15,7 +15,16 @@ body {
 body.layout-v2 {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.layout-body {
+  display: flex;
+  min-height: calc(100vh - 120px - 56px - 40px);
 }
 
 /* =========================
@@ -27,6 +36,14 @@ body.layout-v2 {
   grid-template-columns: 220px 1fr; /* sidebar | contenuto */
   grid-template-rows: 100px 45px;   /* banner | menu */
   width: 100%;
+}
+
+.header-wrapper {
+  flex-shrink: 0;
+}
+
+.footer-bar {
+  flex-shrink: 0;
 }
 
 /* --- POSIZIONAMENTO GRID (FONDAMENTALE) --- */
@@ -59,12 +76,23 @@ body.layout-v2 {
 }
 
 .header-logo {
+  grid-column: 1;
+  grid-row: 1 / span 2;   /* 🔑 OCCUPA BANNER + MENU */
+
+  background-image: url('/frontend/v2/images/logo.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: #fafafa;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fafafa;
+
   border-bottom: 1px solid #ddd;
 }
+
+
 
 /* --- BANNER --- */
 
@@ -120,14 +148,33 @@ body.layout-v2 {
   background-color: #0056b3;
 }
 
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* 🔑 spazio tra utente e logout */
+}
+
+.topbar-right a {
+  color: #333;            /* stesso colore del testo */
+  text-decoration: none;  /* niente sottolineatura */
+}
+
+.topbar-right a:hover {
+  text-decoration: underline; /* opzionale: feedback hover */
+}
+
+
+
 /* =========================
    LAYOUT
    ========================= */
 
 .layout-body {
+  flex: 1;
   display: flex;
-  min-height: calc(100vh - 120px - 56px - 40px); /* header + footer */
+  min-height: 0; /* 🔑 fondamentale per evitare overflow */
 }
+
 
 /* =========================
    SIDEBAR
@@ -160,15 +207,58 @@ body.layout-v2 {
   border-left: 3px solid #0056b3;
 }
 
+
+
+/* =========================
+   SIDEBAR – GROUP TITLE (LIKE TOP MENU)
+   ========================= */
+
+.sidebar-group-title {
+  padding: 8px 12px;
+  position: relative;
+  font-weight: 500;
+}
+
+.sidebar-group-title.active {
+  font-weight: 600;
+}
+
+/* sottolineatura come menu top */
+.sidebar-group-title.active::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 2px;
+  height: 2px;
+  background-color: #0056b3;
+}
+
+/* =========================
+   SIDEBAR – FAST SEARCH SUBMENU INDENT
+   ========================= */
+
+.sidebar-submenu {
+  margin-left: 14px;        /* rientro visivo */
+  border-left: 1px solid #ddd;
+  padding-left: 8px;
+}
+
+.sidebar-submenu a {
+  padding-left: 6px;
+}
+
+
 /* =========================
    MAIN CONTENT
    ========================= */
 
 .main-content {
   flex: 1;
-  display: flex;
-  padding: 0;
+  min-width: 0;
+  overflow: auto;
 }
+
 
 /* =========================
    FOOTER
@@ -365,3 +455,29 @@ body.layout-v2 {
 .banner-biologia {
   background-image: url('/frontend/v2/images/dip_biologia.jpg');
 }
+
+/* =========================
+   SIDEBAR – TITLE ONLY
+   ========================= */
+
+.sidebar-title-only {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+
+  padding: 12px 8px;
+  margin-top: 8px;
+
+  border-bottom: 1px solid #ddd;
+}
+
+/* =========================
+   SIDEBAR – INVESTIGATION
+   ========================= */
+
+.sidebar {
+  flex: 0 0 220px;   /* 🔑 blocca a 220px */
+  width: 220px;      /* ridondante ma utile */
+}
+
+

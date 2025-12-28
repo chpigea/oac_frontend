@@ -1,0 +1,51 @@
+<nav class="sidebar-nav">
+
+  {% set ft = fastType|default(null) %}
+
+  {# =========================
+     RICERCA VELOCE (GRUPPO)
+     ========================= #}
+
+  <div class="sidebar-group {% if activeSidebarItem == 'fast' %}open{% endif %}">
+
+    <div class="sidebar-group-title
+         {% if activeSidebarItem == 'fast' %}active{% endif %}">
+      {{ t('search.fast.title')|default('Ricerca veloce') }}
+    </div>
+
+    <div class="sidebar-submenu">
+
+      <a href="/frontend/v2/search/fast/1"
+         class="{% if activeSidebarItem == 'fast' and ft == '1' %}active{% endif %}">
+        {{ t('search.fast.investigations') }}
+      </a>
+
+      <a href="/frontend/v2/search/fast/2"
+         class="{% if activeSidebarItem == 'fast' and ft == '2' %}active{% endif %}">
+        {{ t('search.fast.samples') }}
+      </a>
+
+      <a href="/frontend/v2/search/fast/3"
+         class="{% if activeSidebarItem == 'fast' and ft == '3' %}active{% endif %}">
+        {{ t('search.fast.diagnostics') }}
+      </a>
+
+      <a href="/frontend/v2/search/fast/4"
+         class="{% if activeSidebarItem == 'fast' and ft == '4' %}active{% endif %}">
+        {{ t('search.fast.materials') }}
+      </a>
+
+    </div>
+  </div>
+
+  {# =========================
+     RICERCA AVANZATA (RAMO SEPARATO)
+     ========================= #}
+
+  <a href="/frontend/v2/search/advanced"
+     class="sidebar-item
+     {% if activeSidebarItem == 'advanced' %}active{% endif %}">
+    {{ t('search.advanced.title') }}
+  </a>
+
+</nav>

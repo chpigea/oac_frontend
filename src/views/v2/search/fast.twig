@@ -1,0 +1,142 @@
+{% extends "/v2/layout.twig" %}
+
+{% block extendHead %}
+
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="/frontend/css/bootstrap.min.css" />
+
+    <!-- YASGUI CSS -->
+    <link rel="stylesheet" href="/frontend/css/yasgui.min.css" />
+
+    <!-- Font Awesome -->    
+    <link rel="stylesheet" href="/frontend/css/fa/css/all.min.css" />
+
+    <!-- Sparnatural CSS -->
+    <link rel="stylesheet" href="/frontend/css/sparnatural-form.css">
+
+    <style>
+      .yasqe .CodeMirror {
+        font-size: 0.9em;
+        height: 380px;
+      }
+      .yasr_header {
+        display: none;
+      }
+      .form-container {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+      .result-container {
+        margin-top: 20px;
+      }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid mt-4">
+      <div class="row">
+        <!-- Colonne gauche : formulaire + onglets -->
+        <div class="col-md-4">
+          <!-- Onglets -->
+          <ul class="nav nav-tabs" id="formTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="tab1"
+                data-form="form1"
+                type="button"
+                role="tab"
+              >
+                Artwork
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="tab2"
+                data-form="form2"
+                type="button"
+                role="tab"
+              >
+                Museum
+              </button>
+            </li>
+          </ul>
+
+          <!-- Formulaire 1 -->
+          <sparnatural-form
+            id="form1"
+            class="form-instance active-form"
+            style="display: block"
+            lang="en"
+            defaultLang="en"
+            limit="100"
+            endpoint="https://proxy.sparnatural.eu/sparql-proxy/sparql?endpoint=http%3A%2F%2Ffr.dbpedia.org%2Fsparql"
+            prefix="skos:http://www.w3.org/2004/02/skos/core# rico:https://www.ica.org/standards/RiC/ontology#"
+            src="/backend/ontology/schema/config/01"
+            form="/backend/ontology/schema/form/01"
+            query="/backend/ontology/schema/query/01"
+          ></sparnatural-form>
+
+          <!-- Formulaire 2 -->
+          <sparnatural-form
+            id="form2"
+            class="form-instance"
+            style="display: none"
+            lang="en"
+            defaultLang="en"
+            limit="100"
+            endpoint="https://proxy.sparnatural.eu/sparql-proxy/sparql?endpoint=http%3A%2F%2Ffr.dbpedia.org%2Fsparql"
+            prefix="skos:http://www.w3.org/2004/02/skos/core# rico:https://www.ica.org/standards/RiC/ontology#"
+            src="/backend/ontology/schema/config/02"
+            form="/backend/ontology/schema/form/02"
+            query="/backend/ontology/schema/query/02"
+          ></sparnatural-form>
+        </div>
+
+        <!-- Colonne droite : éditeur et résultats -->
+        <div class="col-md-8">
+          <p>
+            Queries are sent to
+            <a id="displayEndpoint" href="#" target="_blank">...</a>
+          </p>
+          <button class="btn btn-primary" id="sparql-toggle">
+            Toggle SPARQL Query
+          </button>
+
+          <div class="row mt-2">
+            <div class="col-md-12">
+              <div id="yasqe"></div>
+            </div>
+          </div>
+
+          <div class="result-container">
+            <div id="yasr"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+
+    <!-- Bootstrap JS -->
+    <script src="/frontend/js/lib/bootstrap.bundle.min.js"></script>
+
+    <!-- YASGUI JS -->
+    <script src="/frontend/js/lib/yasgui.min.js"></script>
+
+    <!-- Sparnatural JS -->
+    <script src="/frontend/js/lib/sparnatural-form.js"></script>
+
+    <!-- Sparnatural Custom YASR plugins -->
+    <script src="/frontend/js/lib/sparnatural-yasgui-plugins.js"></script>
+
+    <!-- This page custom JS -->
+    <script src="/frontend/js/lib/sparnatural-form-main.js"></script>  
+
+
+{% endblock %}
