@@ -2,7 +2,7 @@
 
   {# RIGA 1 #}
   <div class="header-logo">
-    <a href="/frontend/v2/presentazione/sistema" class="logo">HD-LSD</a>
+    <a href="/frontend/v2/presentazione/sistema" class="logo"></a>
   </div>
 
   <div class="header-banner"></div>
@@ -27,7 +27,17 @@
          :class="{ active: activeMenu === 'search' }">
         Ricerca
       </a>
+
+      {% if user is defined and user.role in [0,1] %}
+        <a href="/frontend/v2/admin"
+          :class="{ active: activeMenu === 'admin' }">
+          Amministrazione
+        </a>
+      {% endif %}
     </nav>
+
+
+
 
     <div class="topbar-right">
       {% if user is defined %}

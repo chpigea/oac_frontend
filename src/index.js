@@ -91,10 +91,14 @@ getPort.default({
 
     const usersRouter = require('./controllers/users.js')(serviceName);
     app.use(`/${serviceName}/users`, usersRouter);
+    const usersRouterV2 = require('./controllers/users_v2.js')(serviceName);
+    app.use(`/frontend/v2/users`, usersRouterV2);
 
 
     const vocabolariesRouter = require('./controllers/vocabolaries.js')(serviceName);
     app.use(`/${serviceName}/vocabolaries`, vocabolariesRouter);
+    const vocabolariesRouterV2 = require('./controllers/vocabolaries_v2.js')(serviceName);
+    app.use(`/frontend/v2/vocabolaries`, vocabolariesRouterV2);
 
 
     const searchRouter = require('./controllers/search.js')(serviceName);
@@ -142,7 +146,7 @@ getPort.default({
         root: `/${serviceName}/v2`,
         title: 'HD-LSD',
     });
-    res.render('v2/home', data.toJson());
+    res.render('v2/presentazione/sistema', data.toJson());
     });
 
     app.get('/frontend/v2/introduction', (req, res) => {
@@ -216,6 +220,19 @@ activeSidebar: 'investigation',
   });
 
   res.render('v2/search/advanced', data.toJson());
+});
+
+
+app.get('/frontend/v2/admin', (req, res) => {
+  let data = new DataModel(req, {
+    root: 'frontend/v2',
+    title: 'Amministrazione',
+    activeMenu: 'admin',
+    activeSidebar: 'admin',
+    activeSidebarItem: 'dashboard'
+  });
+
+  res.render('v2/users/index', data.toJson());
 });
 
 

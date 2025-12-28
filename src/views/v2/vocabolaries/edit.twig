@@ -1,0 +1,61 @@
+{% extends "/v2/layout.twig" %}
+
+{% block extendHead %}
+    <link rel="stylesheet" href="/{{ root }}/css/drop-file.css">
+    <script src="/frontend/js/lib/shacl-form.bundle.js" type="module"></script>
+    <script src="/frontend/js/vocabolaries/vocabolaries.js"></script>
+    <script src="/frontend/js/app/vue-vocabolary-view.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2 style="display:flex; justify-content:space-between; align-items:center;">    
+            <span>{{ t('users.vocabolaries.title') }}:</span>
+        </h2>
+    </div>
+
+    <div class="dropzone" id="dropzone" draggable="true" tabindex="0">
+        <p>{{ t('users.vocabolaries.drag_drop') }}
+            <button style="margin-left:20px;" id="browseBtn" class="btn" type="button">
+                <i class="fa-solid fa-folder-open" 
+                    style="font-size:24px; color:darkred;">
+                </i>
+            </button>
+        </p>
+        <input id="fileInput" type="file" style="display:none" multiple>
+        <div class="files-list" id="filesList"></div>
+    </div>
+
+    <div id="vocabolary-view" style="margin-left:100px; width: calc(100% - 200px)"
+        data-lang_terms="{{ t('users.vocabolaries.terms') }}" 
+    >
+        <div><span style="font-weight:bold;">{{ t('users.vocabolaries.select_vocabolary') }}:</span></div>
+        <select size="10" v-model="vocabolary" style="min-width:500px;">
+            <option v-for="item in vocabolaries" :value="item">{@ item.name @}</option>
+        </select>
+        <div v-if="vocabolary">
+            <div style="
+                margin-top:30px; font-size:24px; 
+                border: dashed 2px gray; border-radius:5px;">
+                <shacl-form :data-shapes="selectedShapes"></shacl-form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        dropFilesInit({
+            labels: {
+                no_files: "{{ t('users.vocabolaries.no_files') }}",
+                remove: "{{ t('users.vocabolaries.remove') }}",
+                upload: "{{ t('users.vocabolaries.upload') }}",
+                uploading: "{{ t('users.vocabolaries.uploading') }}",
+                upload_ok: "{{ t('users.vocabolaries.upload_ok') }}",
+                upload_error: "{{ t('users.vocabolaries.upload_error') }}",
+                invalid_file: "{{ t('users.vocabolaries.invalid_file') }}",
+                max_files: "{{ t('users.vocabolaries.max_files') }}",
+                max_size: "{{ t('users.vocabolaries.max_size') }}"
+            }
+        });
+    </script>
+
+{% endblock %}
