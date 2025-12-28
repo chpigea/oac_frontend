@@ -109,7 +109,9 @@
         "new_item": "New",
         "stop_edit": "Stop edit",
         "search": "Search",
-        "edit_from_other_user": "Another user is editing this item"
+        "edit_from_other_user": "Another user is editing this item",
+        "save_ok": "Form saved successfully",
+        "save_err": "Error saving the form"
     },
     "search": {
         "fast": {

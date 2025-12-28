@@ -19,7 +19,7 @@ const uploadValues = ["$UPLOAD$"];
 
 const CLIENT_UUID = crypto.randomUUID();
 
-const KEEP_LOCK_EVERY = 60*1000;
+const KEEP_LOCK_EVERY = 45*1000;
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -144,7 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastUpdateTs: 0,
                 lastSaveTs: 0,
                 isNew: true,
-                labels: {},
+                labels: {
+                    save_ok: el.dataset.label_save_ok,
+                    save_err: el.dataset.label_save_ok
+                },
                 search: {
                     offset: 0,
                     limit: 10,
@@ -668,14 +671,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log(obj);
                     if(!automatic){
                         if(obj.success){
-                            alert("Saved: OK");
+                            alert(_this.labels.save_ok);
                             if(_this.isNew && obj.data){
                                 _this.form_id = obj.data;
                                 await fetch('/backend/ontology/form/lock/' + obj.data + "/" + CLIENT_UUID)
                                 _this.form_keep_lock_timer = setInterval(_this.keepLock.bind(_this), KEEP_LOCK_EVERY)
                             }
                         }else
-                            alert("Error: " + obj.message);
+                            alert(_this.labels.save_err + ": " + obj.message);
                     }
                     _this.saving = false;
                 }).catch(error => {
