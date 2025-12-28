@@ -112,7 +112,10 @@
         "new_item": "Nuova",
         "stop_edit": "Fine modifica",
         "search": "Ricerca",
-        "edit_from_other_user": "Un altro utente sta modificando questo elemento"
+        "edit_from_other_user": "Un altro utente sta modificando questo elemento",
+        "save_ok": "Scheda salvata correttamente",
+        "save_err": "Errore nel salvataggio della scheda"
+
     },
     "search": {
         "title" : "Ricerca",
