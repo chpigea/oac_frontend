@@ -17,7 +17,19 @@ const sequenceValues = ["$UUID$",
 
 const uploadValues = ["$UPLOAD$"];
 
-const CLIENT_UUID = crypto.randomUUID();
+function generateUUID() {
+    if (crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+    // Fallback per HTTP o browser vecchi
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+const CLIENT_UUID = generateUUID();
 
 const KEEP_LOCK_EVERY = 45*1000;
 
