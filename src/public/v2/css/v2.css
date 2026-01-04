@@ -79,11 +79,11 @@ body.layout-v2 {
   grid-column: 1;
   grid-row: 1 / span 2;   /* 🔑 OCCUPA BANNER + MENU */
 
-  background-image: url('/frontend/v2/images/logo.jpg');
+  background-image: url('/frontend/v2/images/logo.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  background-color: #fafafa;
+  background-color: #B1A891;
 
   display: flex;
   align-items: center;
@@ -101,7 +101,7 @@ body.layout-v2 {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: top center;
-  background-color: #519EA4;
+  background-color: #B1A891;
 }
 
 /* --- MENU SOTTO IL BANNER --- */
@@ -111,7 +111,7 @@ body.layout-v2 {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background: #519EA4;
+  background: #B1A891;
   border-bottom: 1px solid #ddd;
 }
 
@@ -184,7 +184,8 @@ body.layout-v2 {
   width: 220px;
   padding: 15px;
   border-right: 1px solid #ddd;
-  background: #fafafa;
+  background-color: white; 
+
 }
 
 .sidebar a {
@@ -203,7 +204,7 @@ body.layout-v2 {
 
 .sidebar-nav a.active {
   font-weight: bold;
-  background-color: #eef3f8;
+  background-color: #B1A891;
   border-left: 3px solid #0056b3;
 }
 
@@ -250,6 +251,36 @@ body.layout-v2 {
 
 
 /* =========================
+   SIDEBAR – FONT SIZE
+   ========================= */
+
+.sidebar,
+.sidebar-nav {
+  font-size: 0.9rem;   /* default ~14.4px */
+  line-height: 1.3;
+}
+
+/* Titolo sezione (es. Ricerca, Amministrazione) */
+.sidebar-title-only,
+.sidebar-group-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Voci normali */
+.sidebar-nav a {
+  font-size: 0.88rem;
+  padding: 6px 10px;
+}
+
+/* Sottovoci (ricerca veloce) */
+.sidebar-submenu a {
+  font-size: 0.85rem;
+  padding-left: 18px;   /* rientro visivo */
+}
+
+
+/* =========================
    MAIN CONTENT
    ========================= */
 
@@ -257,6 +288,7 @@ body.layout-v2 {
   flex: 1;
   min-width: 0;
   overflow: auto;
+  background-color: white;
 }
 
 
@@ -265,13 +297,41 @@ body.layout-v2 {
    ========================= */
 
 .footer-bar {
-  height: 40px;
+  background: #B1A891;
+  height: 60px;                 /* puoi regolarla */
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid #ddd;
-  background: #f8f9fa;
+  padding: 0 24px;
 }
+
+/* Contenitore loghi */
+.footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Loghi */
+/* Altezza di riferimento = Sapienza */
+.footer-logos img {
+  height: 38px;          /* 🔑 tutti si adeguano */
+  width: auto;
+  object-fit: contain;
+}
+
+/* Sapienza leggermente più piccola e “autoriale” */
+.footer-logos img.logo-sapienza {
+  height: 52px;
+}
+
+/* Separatore verticale */
+.footer-separator {
+  width: 1px;
+  height: 50px;
+  background: rgba(255,255,255,0.4);
+}
+
 
 /* =========================
    SYSTEM PAGE

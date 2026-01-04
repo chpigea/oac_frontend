@@ -13,6 +13,7 @@
   <div class="header-menu">
 
     <nav class="topbar-center">
+    {% if user is defined %}
       <a href="/frontend/v2/introduction"
          :class="{ active: activeMenu === 'introduction' }">
         Presentazione
@@ -23,11 +24,11 @@
         Indagine
       </a>
 
-      <a href="/frontend/v2/search/fast/1"
+      <a href="/frontend/v2/search"
          :class="{ active: activeMenu === 'search' }">
         Ricerca
       </a>
-
+{% endif %}
       {% if user is defined and user.role in [0,1] %}
         <a href="/frontend/v2/admin"
           :class="{ active: activeMenu === 'admin' }">

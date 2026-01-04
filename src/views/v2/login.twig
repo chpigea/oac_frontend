@@ -1,0 +1,37 @@
+{% extends 'v2/layout.twig' %}
+
+{% block extendHead %}
+    <link rel="stylesheet" href="/frontend/css/login.css">
+    <script src="/frontend/js/login/login.js"></script>
+{% endblock %}
+
+{% block content %}
+    
+    <div class="login-container">
+        <h2>{{ t('login.title') }}</h2>
+        <div>
+            <label for="username">{{ t('login.user') }}</label>
+            {% if invalidLogin %}
+                <span class=".login-message">{{ t('login.invalid_user') }}</span>
+            {% endif %}
+            <input type="text" id="username" name="username" required />
+            <label for="password">{{ t('login.password') }}</label>
+            <input type="password" id="password" name="password" required />
+            <button onclick="onSubmit('login')">{{ t('login.sign_in') }}</button>
+            <a href="/{{ root }}/password_recovery">
+                <i class="fa-solid fa-key"></i>
+                <span>{{ t('login.password_recovery') }}</span>
+            </a>
+            <button onclick="onSubmit('anonymous');" style="background: #ff0000">
+                {{ t('login.anonymous') }}</button>
+        </div>
+    </div>
+    <script>
+        var input = document.getElementById("password");
+        input.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                onSubmit("login");
+            }
+        });
+    </script>
+{% endblock %}

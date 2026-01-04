@@ -127,7 +127,7 @@ getPort.default({
     // Application routes
     // ---------------------------------------------------------------------
     app.get(`/${serviceName}`, (req, res) => {
-        res.render('login', { root: serviceName, title: 'Login' });
+        res.render('v2/login', { root: serviceName, title: 'Login' });
     });
     app.get(`/${serviceName}/password_recovery`, (req, res) => {
         res.render('password_recovery', { root: serviceName, title: 'Password recovery' });
@@ -196,6 +196,55 @@ getPort.default({
         res.render('v2/presentazione/sistema', data.toJson());
     });
 
+    app.get('/frontend/v2/modelli', (req, res) => {
+        let data = new DataModel(req, {
+        root: 'frontend/v2',
+        title: 'Modelli',
+
+        activeMenu: 'introduction',
+        activeSidebar: 'presentazione',
+        activeSidebarItem: 'modelli'
+    });
+        res.render('v2/presentazione/modelli', data.toJson());
+    });
+
+
+    app.get('/frontend/v2/bibliografia', (req, res) => {
+        let data = new DataModel(req, {
+        root: 'frontend/v2',
+        title: 'Bibliografia',
+
+        activeMenu: 'introduction',
+        activeSidebar: 'presentazione',
+        activeSidebarItem: 'bibliografia'
+    });
+        res.render('v2/presentazione/bibliografia', data.toJson());
+    });
+
+    app.get('/frontend/v2/crediti', (req, res) => {
+        let data = new DataModel(req, {
+        root: 'frontend/v2',
+        title: 'Crediti',
+
+        activeMenu: 'introduction',
+        activeSidebar: 'presentazione',
+        activeSidebarItem: 'crediti'
+    });
+        res.render('v2/presentazione/crediti', data.toJson());
+    });
+
+        app.get('/frontend/v2/contatti', (req, res) => {
+        let data = new DataModel(req, {
+        root: 'frontend/v2',
+        title: 'Contatti',
+
+        activeMenu: 'introduction',
+        activeSidebar: 'presentazione',
+        activeSidebarItem: 'contatti'
+    });
+        res.render('v2/presentazione/contatti', data.toJson());
+    });
+
 app.get('/frontend/v2/investigation/form', async (req, res) => {
   let data = new DataModel(req, {
     root: 'frontend/v2',
@@ -214,12 +263,12 @@ activeSidebar: 'investigation',
     title: 'Ricerca',
     activeMenu: 'search',
     activeSidebar: 'search',
-    activeSidebarItem: 'fast',
-    fastType: 1,
-    schema: 'fast_' + 1
+    //activeSidebarItem: 'fast',
+    //fastType: 1,
+    //schema: 'fast_' + 1
   });
 
-  res.render('v2/search/advanced', data.toJson());
+  res.render('v2/search/index', data.toJson());
 });
 
 
@@ -234,6 +283,7 @@ app.get('/frontend/v2/admin', (req, res) => {
 
   res.render('v2/users/index', data.toJson());
 });
+
 
 
 
