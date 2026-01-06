@@ -117,6 +117,8 @@ getPort.default({
 
     const rdfRouter = require('./controllers/rdf.js')(serviceName);
     app.use(`/${serviceName}/rdf`, rdfRouter);
+    const rdfRouterV2 = require('./controllers/rdf_v2.js')(serviceName);
+    app.use(`/${serviceName}/v2/rdf`, rdfRouterV2);
 
 
     const captchaRouter = require('./controllers/captcha.js');

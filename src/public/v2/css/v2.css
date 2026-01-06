@@ -541,3 +541,71 @@ body.layout-v2 {
 }
 
 
+/* SEZIONE MODELLI UTILIZZATI */
+
+.models-section {
+  padding: 24px;
+}
+
+.models-header h1 {
+  /*margin-bottom: 12px;*/
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+}
+
+.models-intro {
+  max-width: 900px;
+  margin-bottom: 32px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.models-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.model-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 20px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.model-card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.model-card p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.model-card a {
+  margin-top: auto;
+  font-size: 0.85rem;
+  color: #0056b3;
+  word-break: break-all;
+}
+
+.model-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.model-logo {
+  height: 48px;        /* 🔑 riferimento unico */
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+
