@@ -1,3 +1,5 @@
+{% set isRdfViewer = title == 'RDF viewer' %}
+
 <header class="header-wrapper" id="top-menu">
 
   {# RIGA 1 #}
@@ -6,48 +8,49 @@
   </div>
 
   <div class="header-banner"></div>
+  
+    {# RIGA 2 #}
+    <div class="header-spacer"></div>
 
-  {# RIGA 2 #}
-  <div class="header-spacer"></div>
-
-  <div class="header-menu">
-
-    <nav class="topbar-center">
-    {% if user is defined %}
-      <a href="/frontend/v2/introduction"
-         :class="{ active: activeMenu === 'introduction' }">
-        Presentazione
-      </a>
-
-      <a href="/frontend/v2/investigation/form"
-         :class="{ active: activeMenu === 'investigation' }">
-        Indagine
-      </a>
-
-      <a href="/frontend/v2/search"
-         :class="{ active: activeMenu === 'search' }">
-        Ricerca
-      </a>
-{% endif %}
-      {% if user is defined and user.role in [0,1] %}
-        <a href="/frontend/v2/admin"
-          :class="{ active: activeMenu === 'admin' }">
-          Amministrazione
-        </a>
-      {% endif %}
-    </nav>
-
-
-
-
-    <div class="topbar-right">
+    <div class="header-menu">
+      {% if not isRdfViewer %}
+      <nav class="topbar-center">
       {% if user is defined %}
-        <span class="user-name">{{ user.name|default('') }}</span>
-        <a href="/frontend/">Logout</a>
+        <a href="/frontend/v2/introduction"
+          :class="{ active: activeMenu === 'introduction' }">
+          Presentazione
+        </a>
+
+        <a href="/frontend/v2/investigation/form"
+          :class="{ active: activeMenu === 'investigation' }">
+          Indagine
+        </a>
+
+        <a href="/frontend/v2/search"
+          :class="{ active: activeMenu === 'search' }">
+          Ricerca
+        </a>
+  {% endif %}
+        {% if user is defined and user.role in [0,1] %}
+          <a href="/frontend/v2/admin"
+            :class="{ active: activeMenu === 'admin' }">
+            Amministrazione
+          </a>
+        {% endif %}
+      </nav>
+
+
+
+
+      <div class="topbar-right">
+        {% if user is defined %}
+          <span class="user-name">{{ user.name|default('') }}</span>
+          <a href="/frontend/">Logout</a>
+        {% endif %}
+      </div>
       {% endif %}
+
     </div>
-
-
-  </div>
+    
 
 </header>

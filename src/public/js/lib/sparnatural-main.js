@@ -34,7 +34,7 @@ const yasr = new Yasr(document.getElementById("yasr"), {
 
 yasr.plugins["TableX"].config.uriHrefAdapter = function(uri) {
 	if(uri.startsWith("http://diagnostica/") || uri.startsWith("http://indagine/")) {
-		return "/frontend/rdf/view?iri=" + encodeURIComponent("<" + uri + ">");
+		return "/frontend/v2/rdf/view?iri=" + encodeURIComponent("<" + uri + ">");
 	} else {
 		return uri;
 	}

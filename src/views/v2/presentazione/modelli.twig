@@ -2,20 +2,114 @@
 
 {% block content %}
 
-<section class="system-page">
+<section class="models-section">
 
-  {# TITOLO #}
-  <header class="system-header">
-    <h1>Modelli</h1>
+  <header class="models-header">
+    <h1>Modelli di riferimento</h1>
+    <p class="models-intro">
+      HD-LSD si basa su un insieme di modelli ontologici di riferimento.......
+    </p>
   </header>
 
-    <p class="intro-text">
-    Modelli
-  </p>
+  <div class="models-grid">
 
+    <!-- CIDOC CRM -->
+    <article class="model-card">
+      <header class="model-card-header">
+        <img src="/frontend/v2/images/models/Logo_CRM.png"
+            alt="CIDOC CRM"
+            class="model-logo">
 
+        <h2>CIDOC CRM</h2>
+      </header>
+      <p>
+        Il CIDOC Conceptual Reference Model (CRM) è uno strumento teorico e pratico per
+        l’integrazione delle informazioni nel campo del patrimonio culturale. Fornisce
+        definizioni e una struttura formale per descrivere concetti e relazioni utilizzati
+        nella documentazione del patrimonio culturale, consentendo l’integrazione di dati
+        eterogenei e distribuiti in modo indipendente dal software e dagli schemi adottati.
+      </p>
+      <p>
+        Il CIDOC CRM promuove una comprensione condivisa delle informazioni sul patrimonio
+        culturale, fungendo da “colla semantica” tra musei, archivi, biblioteche e altri
+        sistemi informativi.
+      </p>
+      <a href="https://cidoc-crm.org" target="_blank">https://cidoc-crm.org</a>
+    </article>
 
+    <!-- CRMsci -->
+    <article class="model-card">
+      <header class="model-card-header">
+        <img src="/frontend/v2/images/models/CRMsci.png"
+            alt="CRMsci"
+            class="model-logo">
 
+        <h2>CRMsci</h2>
+      </header>
+      <p>
+        Il Scientific Observation Model (CRMsci) è un’ontologia formale progettata come
+        schema globale per l’integrazione dei metadati relativi all’osservazione scientifica,
+        alle misurazioni e ai dati elaborati nelle scienze empiriche e descrittive.
+      </p>
+      <p>
+        Il modello facilita la gestione, l’integrazione e lo scambio dei dati di ricerca
+        attraverso la descrizione delle relazioni semantiche, in particolare di tipo causale,
+        nei contesti di ricerca e nelle infrastrutture digitali.
+      </p>
+      <a href="https://cidoc-crm.org/crmsci" target="_blank">
+        https://cidoc-crm.org/crmsci
+      </a>
+    </article>
+
+    <!-- CRMinf -->
+    <article class="model-card">
+      <header class="model-card-header">
+        <img src="/frontend/v2/images/models/CRMinf.png"
+            alt="CRMinf"
+            class="model-logo">
+
+        <h2>CRMinf</h2>
+      </header>    
+      <p>
+        CRMinf è un’ontologia formale dedicata alla modellazione dell’argomentazione e dei
+        processi inferenziali nelle scienze descrittive ed empiriche. Consente di rappresentare
+        in modo strutturato il ragionamento, le premesse, le conclusioni e le attività cognitive.
+      </p>
+      <p>
+        Il suo obiettivo è supportare l’integrazione, la mediazione e l’accesso ai dati relativi
+        ai processi di ragionamento, favorendo una rappresentazione esplicita della conoscenza
+        interpretativa.
+      </p>
+      <a href="https://cidoc-crm.org/crminf" target="_blank">
+        https://cidoc-crm.org/crminf
+      </a>
+    </article>
+
+    <!-- CPM -->
+    <article class="model-card">
+      <header class="model-card-header">
+        <img src="/frontend/v2/images/models/Logo_CPM.png"
+            alt="CPM"
+            class="model-logo">
+        <h2>CPM</h2>
+      </header>      
+      <p>
+        Il Conservation Process Model (CPM) è un’ontologia formale sviluppata dal 2015 dal
+        gruppo di ricerca della Sapienza Università di Roma per la rappresentazione dei processi
+        di conoscenza, analisi e conservazione dell’architettura storica.
+      </p>
+      <p>
+        Integrata nella struttura del CIDOC CRM, la CPM consente una gestione semantica
+        articolata delle informazioni relative alla conservazione, preservando la complessità
+        e il valore culturale dell’architettura storica.
+      </p>
+      <a href="https://editricesapienza.it/book/10676" target="_blank">
+        https://editricesapienza.it/book/10676
+      </a>
+    </article>
+
+  </div>
 </section>
+
 
 {% endblock %}
