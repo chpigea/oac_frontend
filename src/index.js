@@ -253,6 +253,7 @@ app.get('/frontend/v2/investigation/form', async (req, res) => {
     title: 'Indagine',
     activeMenu: 'investigation',
 activeSidebar: 'investigation',
+activeSidebarItem: 'investigation',
     showForm: true
   });
 

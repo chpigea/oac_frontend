@@ -12,7 +12,8 @@ module.exports = function(serviceName) {
             root: serviceName, 
             title: 'Investigation Creation',
             currentPath:  req.baseUrl +req.path,
-            uuid
+            uuid,
+            mode: 'edit'
         });    
         res.render('investigation/form.twig', data.toJson()); 
     }
@@ -23,6 +24,23 @@ module.exports = function(serviceName) {
 
     router.get('/form/:uuid', (req, res) => {
         renderForm(req, res, req.params.uuid);
+    });
+
+    router.get('/view/:uuid', (req, res) => {
+        const { uuid } = req.params;
+
+        let data = new DataModel(req, {
+            root: serviceName,
+            title: 'Indagine viewer',
+            uuid,
+
+            // 👇 NASCONDE MENU E SIDEBAR
+            activeMenu: null,
+            activeSidebar: null,
+            activeSidebarItem: null
+        });
+
+        res.render('investigation/view.twig', data.toJson());
     });
 
     return router

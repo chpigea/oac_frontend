@@ -607,5 +607,61 @@ body.layout-v2 {
   object-fit: contain;
   flex-shrink: 0;
 }
+/* =====================================================
+   PARTECIPANTI – ACCORDION (SPAZIO BIANCO REALE)
+   ===================================================== */
+
+.department-banner {
+  position: relative;
+  height: 90px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+
+  background-size: cover;
+  background-position: center;
+  border-radius: 4px;
+
+  filter: grayscale(100%);
+}
+
+.department-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+}
 
 
+.department-people {
+  font-size: 1.05rem;
+  font-weight: 600;
+
+  color: #ffffff;                 /* 🔑 bianco pieno */
+  letter-spacing: 0.2px;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.45);    /* 🔑 aiuta molto */
+}
+
+
+.department-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+
+.department-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.35),
+    rgba(0,0,0,0.10)
+  );
+
+  border-radius: 4px;
+  z-index: 0;
+}

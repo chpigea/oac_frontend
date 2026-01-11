@@ -1,0 +1,84 @@
+{% extends "/v2/layout.twig" %}
+
+{% block extendHead %}
+  <script src="/frontend/js/lib/shacl-form.bundle.js" type="module"></script>
+
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 650px;
+      width: 90%;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container my-4">
+  <h2>Indagine</h2>
+
+  <div id="shacl-container"
+       style="border: solid 1px #ccc;
+              padding:15px;
+              border-radius:6px;">
+  </div>
+</div>
+<div class="text-center mt-4">
+  <button class="btn btn-secondary" onclick="tryCloseViewer()">
+    Chiudi
+  </button>
+  <div id="close-hint"
+       style="display:none; margin-top:8px; color:#666; font-size:0.9em;">
+    Puoi chiudere questa scheda dal browser.
+  </div>
+</div>
+
+<script>
+function tryCloseViewer() {
+  window.close();
+  setTimeout(() => {
+    document.getElementById('close-hint').style.display = 'block';
+  }, 200);
+}
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const parent = document.getElementById("shacl-container");
+
+  const form = document.createElement("shacl-form");
+  form.id = "shacl-form";
+  form.dataset.collapse = "open";
+  form.dataset.valuesNamespace = "indagine:";
+  form.dataset.shapesUrl = "/backend/ontology/schema/editing";
+  form.dataset.generateNodeShapeReference = "";
+  form.dataset.view = ""; // 👈 fondamentale (come in editing)
+  form.dataset.shapeSubject = "http://example.org/shapes/E7Activity01Shape";
+
+  const uuid = "{{ uuid }}";
+  const rnd = Date.now();
+
+  form.dataset.valuesUrl = "/backend/ontology/form/" + uuid + "?rnd=" + rnd;
+  form.dataset.valuesSubject = "http://indagine/" + uuid;
+
+  parent.appendChild(form);
+
+  // disabilita interazioni quando pronto
+  form.addEventListener("ready", () => {
+    form.style.pointerEvents = "none";
+  });
+});
+</script>
+
+{% endblock %}
