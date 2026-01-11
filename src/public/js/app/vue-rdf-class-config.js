@@ -604,9 +604,9 @@ window.classConfig = {
         "label_en": "Group",
         "label_it": "Gruppo"
     },
-    "E52_Time-Span": {
+    "E52_Time-span": {
         "color": "#86BBC8",
-        "label_en": "Time-Span",
+        "label_en": "Time-span",
         "label_it": "Intervallo temporale"
     },
     "E53_Place": {
