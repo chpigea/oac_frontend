@@ -36,7 +36,11 @@ const KEEP_LOCK_EVERY = 45*1000;
 document.addEventListener('DOMContentLoaded', () => {
 
     // App separata per l'autocomplete
-    if (typeof __AUTO_COMPLETE_COMPONENT__ !== 'undefined') {
+
+    const elSearch = document.getElementById(searchId);
+
+    if (elSearch && typeof __AUTO_COMPLETE_COMPONENT__ !== 'undefined') {
+    //if (typeof __AUTO_COMPLETE_COMPONENT__ !== 'undefined') {
         try {
             const elSearch = document.getElementById(searchId);
             const searchApp = createApp({
@@ -131,9 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error mounting search app:', error);
         }
-    } else {
+    } /*else {
         console.error('__AUTO_COMPLETE_COMPONENT__ not defined');
-    }
+    }*/
 
     const el = document.getElementById(appId);
 
@@ -178,9 +182,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }    
         },
         mounted() {
-            if (showForm) {
+            console.log("UUID da dataset:", this.uuid);
+            if (showForm && this.uuid == null) {
                 this.resetShaclForm(null, true);
             }
+            else
+                if (showForm && this.uuid) {
+                    this.isVisible = true;
+                    this.inEditing = true;
+                    this.resetShaclForm(this.uuid, true); // ❌ uuid non definito
+                }
 
             this.initShaclForm();
             setInterval(this.autoSave.bind(this), 30*1000);
@@ -303,19 +314,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 form.remove();
             },
             resetShaclForm(uuid, edit) {
-                // Trova il form esistente
                 const oldForm = document.querySelector("shacl-form");
                 const parent = document.getElementById("shacl-container");
-                
+
                 if (oldForm) oldForm.remove();
-                if(!parent){
-                    setTimeout((function(){
-                        this.resetShaclForm(uuid, edit);
-                    }).bind(this), 150);
+                if (!parent) {
+                    setTimeout(() => {
+                    this.resetShaclForm(uuid, edit);
+                    }, 150);
                     return;
                 }
 
-                // Crea un nuovo shacl-form con gli stessi attributi
                 const newForm = document.createElement("shacl-form");
                 newForm.id = "shacl-form";
                 newForm.dataset.collapse = "open";
@@ -323,27 +332,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 newForm.dataset.shapesUrl = "/backend/ontology/schema/editing";
                 newForm.dataset.generateNodeShapeReference = "";
 
-                //newForm.dataset.editing = edit;
-                if(!edit){
+                if (!edit) {
                     newForm.dataset.view = "";
                 }
-                
-                newForm.dataset.shapeSubject="http://example.org/shapes/E7Activity01Shape";
-                    
-                if(uuid){
-                    var rnd = (new Date()).getTime();
-                    newForm.dataset.valuesUrl="/backend/ontology/form/" + uuid + "?rnd=" + rnd;
-                    newForm.dataset.valuesSubject="http://indagine/" + uuid;
+
+                newForm.dataset.shapeSubject =
+                    "http://example.org/shapes/E7Activity01Shape";
+
+                // ✅ QUESTO È IL PEZZO MANCANTE
+                if (uuid) {
+                    const rnd = Date.now();
+                    newForm.dataset.valuesUrl =
+                    "/backend/ontology/form/" + uuid + "?rnd=" + rnd;
+                    newForm.dataset.valuesSubject =
+                    "http://indagine/" + uuid;
                 }
 
-                // Inserisci il nuovo form
                 parent.appendChild(newForm);
 
-                // Resetta il riferimento e reinizializza
                 this.form = null;
                 this.initShaclForm(uuid);
-                
-            },
+                },
             initShaclForm(uuid) {
                 var _this = this;
                 setTimeout(async ()=>{

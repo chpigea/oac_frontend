@@ -1,0 +1,28 @@
+{% extends "/v2/layout.twig" %}
+
+{% block content %}
+
+<div class="container my-4">
+
+  <h2>Indagine</h2>
+
+  <div id="shacl-container"
+       style="margin-top:10px;
+              border: solid 1px #ccc;
+              padding:15px;
+              border-radius:6px;">
+
+    <shacl-form
+      id="shacl-form"
+      data-collapse="open"
+      data-readonly="true"
+      data-values-namespace="indagine:"
+      data-node-iri="indagine:{{ uuid }}"
+      data-shapes-url="/backend/ontology/schema/view"
+    ></shacl-form>
+
+  </div>
+
+</div>
+
+{% endblock %}
