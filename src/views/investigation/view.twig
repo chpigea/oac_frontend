@@ -1,84 +1,155 @@
 {% extends "/v2/layout.twig" %}
 
+{# --------------------------------------------------
+   Forziamo modalità viewer:
+   - niente sidebar
+   - header minimale
+-------------------------------------------------- #}
+{% set activeMenu = null %}
+{% set activeSidebar = null %}
+{% set activeSidebarItem = null %}
+
 {% block extendHead %}
+
+  {# SHACL FORM web component #}
   <script src="/frontend/js/lib/shacl-form.bundle.js" type="module"></script>
 
+  {# Vue investigation (stessa usata per editing) #}
+  <script src="/frontend/js/app/vue-investigation.js"></script>
+
   <style>
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+    .viewer-container {
+      max-width: 1100px;
+      margin: 20px auto;
     }
 
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 650px;
-      width: 90%;
+    .viewer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .viewer-header h2 {
+      margin: 0;
+    }
+
+    .viewer-actions {
+      text-align: center;
+      margin-top: 20px;
     }
   </style>
+
 {% endblock %}
 
 {% block content %}
 
-<div class="container my-4">
-  <h2>Indagine</h2>
+<div class="viewer-container">
 
-  <div id="shacl-container"
-       style="border: solid 1px #ccc;
-              padding:15px;
-              border-radius:6px;">
+  <div class="viewer-header">
+    <h2>Indagine</h2>
   </div>
-</div>
-<div class="text-center mt-4">
-  <button class="btn btn-secondary" onclick="tryCloseViewer()">
-    Chiudi
-  </button>
-  <div id="close-hint"
-       style="display:none; margin-top:8px; color:#666; font-size:0.9em;">
-    Puoi chiudere questa scheda dal browser.
+
+  {# --------------------------------------------------
+     Vue root (SENZA search)
+     UUID passato dal controller
+  -------------------------------------------------- #}
+<div v-cloak
+     id="investigation-app"
+     data-cur_role="{{ user.role }}"
+     data-uuid="{{ uuid }}"
+     data-editing="{{ user.role != 3 }}"
+     data-show-form="true"
+     data-label_save_ok="{{ t('investigation.save_ok') }}"
+     data-label_save_err="{{ t('investigation.save_err') }}"
+>
+
+
+    <template v-if="isVisible">
+
+      {# ---------------- BUTTONS ---------------- #}
+      {% if user.role != 3 %}
+      <div class="col-12 text-center mt-4">
+
+        <button class="btn btn-secondary mx-2"
+                @click="download('xml')">
+          RDF/XML
+        </button>
+
+        <button class="btn btn-secondary mx-2"
+                @click="download('ttl')">
+          TURTLE
+        </button>
+
+        <button v-if="inEditing && validForm"
+                :disabled="saving"
+                class="btn btn-primary mx-2"
+                @click="save(false)">
+          <i v-if="saving" class="fa-solid fa-spinner"></i>
+          <i v-else class="fa-solid fa-save"></i>
+        </button>
+
+      </div>
+      {% endif %}
+
+      {# ---------------- SHACL FORM ---------------- #}
+      <div id="shacl-container"
+           style="margin-top:15px;
+                  border:dashed 2px gray;
+                  padding:15px;
+                  border-radius:6px;">
+
+        <shacl-form id="shacl-form"
+          data-collapse="open"
+          data-values-namespace="indagine:"
+          data-shapes-url="/backend/ontology/schema/editing"
+          data-generate-node-shape-reference=""
+        ></shacl-form>
+
+      </div>
+
+      {# ---------------- DEBUG OUTPUT (admin) ---------------- #}
+      {% if user.role in [0,1] %}
+      <fieldset v-if="inEditing"
+        style="margin-top:15px;
+               border: solid 1px gray;
+               border-radius: 6px;
+               padding: 10px;">
+        <legend>
+          Output SHACL
+          [{@ validForm ? 'valido' : 'non valido' @}]
+        </legend>
+        <pre :style="outputStyle">{@ serializedForm @}</pre>
+      </fieldset>
+      {% endif %}
+
+    </template>
+
   </div>
+
+  {# ---------------- CLOSE TAB ---------------- #}
+  <div class="viewer-actions">
+    <button class="btn btn-outline-secondary"
+            onclick="tryCloseViewer()">
+      Chiudi
+    </button>
+
+    <div id="close-hint"
+         style="display:none; margin-top:6px; color:#666; font-size:0.9em;">
+      Puoi chiudere questa scheda dal browser.
+    </div>
+  </div>
+
 </div>
 
 <script>
 function tryCloseViewer() {
   window.close();
   setTimeout(() => {
-    document.getElementById('close-hint').style.display = 'block';
+    const hint = document.getElementById('close-hint');
+    if (hint) hint.style.display = 'block';
   }, 200);
 }
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const parent = document.getElementById("shacl-container");
-
-  const form = document.createElement("shacl-form");
-  form.id = "shacl-form";
-  form.dataset.collapse = "open";
-  form.dataset.valuesNamespace = "indagine:";
-  form.dataset.shapesUrl = "/backend/ontology/schema/editing";
-  form.dataset.generateNodeShapeReference = "";
-  form.dataset.view = ""; // 👈 fondamentale (come in editing)
-  form.dataset.shapeSubject = "http://example.org/shapes/E7Activity01Shape";
-
-  const uuid = "{{ uuid }}";
-  const rnd = Date.now();
-
-  form.dataset.valuesUrl = "/backend/ontology/form/" + uuid + "?rnd=" + rnd;
-  form.dataset.valuesSubject = "http://indagine/" + uuid;
-
-  parent.appendChild(form);
-
-  // disabilita interazioni quando pronto
-  form.addEventListener("ready", () => {
-    form.style.pointerEvents = "none";
-  });
-});
 </script>
 
 {% endblock %}
