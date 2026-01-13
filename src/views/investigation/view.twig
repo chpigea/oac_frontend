@@ -46,9 +46,7 @@
 
 <div class="viewer-container">
 
-  <div class="viewer-header">
-    <h2>Indagine</h2>
-  </div>
+
 
   {# --------------------------------------------------
      Vue root (SENZA search)
@@ -58,11 +56,38 @@
      id="investigation-app"
      data-cur_role="{{ user.role }}"
      data-uuid="{{ uuid }}"
-     data-editing="{{ user.role != 3 }}"
+     data-form-id="{{ form_id }}"
+     data-editing="false"
      data-show-form="true"
      data-label_save_ok="{{ t('investigation.save_ok') }}"
      data-label_save_err="{{ t('investigation.save_err') }}"
 >
+
+  <div class="viewer-header">
+  {% if user.role != 3 %}
+<!-- MODIFICA -->
+<button v-if="!inEditingViewer"
+        title="{{ t('investigation.edit_item') }}"
+        @click="startEdit"
+        type="button"
+        class="btn btn-info">
+  <i class="fa-solid fa-pen-to-square"></i>
+</button>
+
+<!-- STOP EDITING -->
+<button v-if="inEditingViewer"
+        title="{{ t('investigation.stop_edit') }}"
+        @click="stopEdit"
+        type="button"
+        class="btn btn-success">
+  <i class="fa-solid fa-circle-stop" style="color:red;"></i>
+</button>
+
+{% endif %}
+
+
+
+  </div>
 
 
     <template v-if="isVisible">
@@ -81,13 +106,15 @@
           TURTLE
         </button>
 
-        <button v-if="inEditing && validForm"
+        <button v-if="inEditingViewer  && validForm"
                 :disabled="saving"
                 class="btn btn-primary mx-2"
                 @click="save(false)">
           <i v-if="saving" class="fa-solid fa-spinner"></i>
           <i v-else class="fa-solid fa-save"></i>
         </button>
+
+
 
       </div>
       {% endif %}
@@ -110,7 +137,7 @@
 
       {# ---------------- DEBUG OUTPUT (admin) ---------------- #}
       {% if user.role in [0,1] %}
-      <fieldset v-if="inEditing"
+      <fieldset v-if="inEditingViewer"
         style="margin-top:15px;
                border: solid 1px gray;
                border-radius: 6px;
@@ -150,6 +177,72 @@ function tryCloseViewer() {
     if (hint) hint.style.display = 'block';
   }, 200);
 }
+
+
+async function startEditFromViewer(btn) {
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('disabled');
+  }
+
+  const appEl = document.getElementById('investigation-app');
+  if (!appEl) return;
+
+  const uuid = appEl.dataset.uuid;
+  if (!uuid) {
+    alert("UUID non disponibile");
+    if (btn) btn.disabled = false;
+    return;
+  }
+
+  try {
+    // 🔍 riuso search
+    const res = await fetch('/backend/ontology/form/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: uuid, limit: 1 })
+    });
+
+    const response = await res.json();
+
+    if (!response.success || !response.data?.length) {
+      alert("Indagine non trovata");
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    const item = response.data[0];
+
+    // 🔐 lock
+    const lockResp = await fetch(
+      `/backend/ontology/form/lock/${item.id}/${window.CLIENT_UUID}`
+    ).then(r => r.json());
+
+    if (!lockResp.success) {
+      alert("Indagine in modifica da un altro UTENTES");
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    // 🔥 entra in editing
+    window.dispatchEvent(
+      new CustomEvent('edit-item', {
+        detail: {
+          id: item.id,
+          uuid: item.uuid
+        }
+      })
+    );
+
+  } catch (e) {
+    console.error(e);
+    alert("Errore durante l'attivazione della modifica");
+    if (btn) btn.disabled = false;
+  }
+}
+
+
+
 </script>
 
 {% endblock %}
