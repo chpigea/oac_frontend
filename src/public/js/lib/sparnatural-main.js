@@ -1,3 +1,4 @@
+
 //
 // Place any custom JS here
 //
@@ -11,13 +12,23 @@ const sparnatural = document.querySelector("spar-natural");
 
 let viewMode = "direct";
 
+// cache risultati
+let directResults = null;        // risposta SPARQL originale
+let indaginiResults = null;      // risposta SPARQL costruita
+
+// per evitare race condition
+let currentRunId = 0;
+
+
 document.querySelectorAll('input[name="viewMode"]').forEach(radio => {
   radio.addEventListener("change", e => {
     viewMode = e.target.value;
-	sparnatural.enablePlayBtn();
+    updateView();
+    sparnatural.enablePlayBtn();
     console.log("View mode:", viewMode);
   });
 });
+
 
 /* =========================
    INDAGINE RESOLVERS MAP
@@ -38,6 +49,10 @@ const INDAGINE_RESOLVERS = {
   },
   "j.0:S13_Sample": {
     property: "crm:P16_used_specific_object"
+  },
+  // 🆕 ATTIVITÀ DIAGNOSTICA
+  "crm:E7_Activity": {
+    property: "crm:P134_continued"
   }
 };
 
@@ -89,63 +104,178 @@ yasr.plugins["TableX"].config.uriHrefAdapter = function (uri) {
    QUERY RESPONSE HANDLER
 ========================= */
 
-yasqe.on("queryResponse", function (_yasqe, response, duration) {
-  yasr.setResponse(response, duration);
+yasqe.on("queryResponse", async function (_yasqe, response, duration) {
+  const runId = ++currentRunId;
 
-	if (viewMode === "indagine") {
-		resolvedIndagini.clear();
-		const sparqlResponse = normalizeSparqlResponse(response);
-		if (sparqlResponse) {
-			resolveIndagini(sparqlResponse);
-		}
-	}
-
-
+  const normalized = normalizeSparqlResponse(response);
   sparnatural.enablePlayBtn();
+
+  if (!normalized) {
+    directResults = null;
+    indaginiResults = null;
+    yasr.setResponse(emptyResponse("Risposta SPARQL non valida"), duration);
+    return;
+  }
+
+  // salva risultati diretti
+  directResults = normalized;
+
+  // mostra subito i diretti
+  yasr.setResponse(directResults, duration);
+
+  // calcola DERIVATE (in background)
+  // CASO SPECIALE: ricerca INDAGINE
+  if (await isIndagineSearch(normalized)) {
+
+  // Tabella B = stessa risposta della A
+    indaginiResults = normalized;
+
+    if (viewMode === "indagine") {
+      yasr.setResponse(indaginiResults);
+    }
+
+  } else {
+    resolveIndagini(normalized, runId);
+  }
+
+
 });
+
 
 /* =========================
    RESOLVER PIPELINE
 ========================= */
 
-function resolveIndagini(response) {
+async function isIndagineSearch(response) {
+  const uris = extractUrisFromResponse(response);
+  if (!uris.length) return false;
+
+  // sicurezza: tutte sotto namespace indagine
+  if (!uris.every(u => u.startsWith("http://indagine/"))) {
+    return false;
+  }
+
+  // controllo RDF type
+  return await areAllIndaginiRoot(uris);
+}
+
+function updateView() {
+  if (viewMode === "direct") {
+    yasr.setResponse(directResults ?? emptyResponse("Nessun risultato"));
+  } else if (viewMode === "indagine") {
+    yasr.setResponse(indaginiResults ?? emptyResponse("Calcolo in corso..."));
+  }
+}
+
+async function areAllIndaginiRoot(uris) {
+  const values = uris.map(u => `(<${u}>)`).join(" ");
+
+  const query = `
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+
+SELECT ?x ?type WHERE {
+  VALUES (?x) { ${values} }
+
+  ?x rdf:type crm:E7_Activity .
+
+  # root = non deve essere continuazione di un'altra activity
+  FILTER NOT EXISTS {
+    ?parent crm:P134_continued ?x .
+  }
+}
+`;
+
+  const data = await fetchSparql(query);
+  const bindings = data?.results?.bindings || [];
+
+  // devono tornare TUTTE
+  return bindings.length === uris.length;
+}
+
+
+
+function resolveIndagini(response, runId) {
   const uris = extractUrisFromResponse(response);
 
-  console.log("URIs trovate:", uris);
+  if (!uris.length) {
+    indaginiResults = emptyResponse("Nessuna indagine collegata");
+    return;
+  }
+
+  resolvedIndagini.clear();
+
+  let pending = 0;
 
   uris.forEach(uri => {
-    resolveIndagineFromUri(uri);
+    pending++;
+    resolveIndagineFromUri(uri, runId, () => {
+      pending--;
+      if (pending === 0 && runId === currentRunId) {
+        buildIndaginiResponse();
+      }
+    });
   });
 }
 
-function resolveIndagineFromUri(uri) {
+
+function buildIndaginiResponse() {
+  const bindings = Array.from(resolvedIndagini).map(uri => ({
+    indagine: { type: "uri", value: uri }
+  }));
+
+  indaginiResults = bindings.length
+    ? {
+        head: { vars: ["indagine"] },
+        results: { bindings }
+      }
+    : emptyResponse("Nessuna indagine collegata");
+
+  // se l’utente è già in vista “indagine”, aggiorna subito
+  if (viewMode === "indagine") {
+    yasr.setResponse(indaginiResults);
+  }
+}
+
+
+function resolveIndagineFromUri(uri, runId, done) {
   const typeQuery = `
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-
-SELECT DISTINCT ?type
-WHERE {
+SELECT DISTINCT ?type WHERE {
   <${uri}> rdf:type ?type .
 }
-LIMIT 10
 `;
 
   fetchSparql(typeQuery).then(data => {
     const types = data.results.bindings
-	.map(b => normalizeRdfType(b.type.value))
-	.filter(Boolean);
+      .map(b => normalizeRdfType(b.type.value))
+      .filter(Boolean);
 
-	console.log("Tipi normalizzati:", types);
+    let innerPending = 0;
 
-	types.forEach(t => {
-	const resolver = INDAGINE_RESOLVERS[t];
-	if (!resolver) return;
+    types.forEach(t => {
+      const resolver = INDAGINE_RESOLVERS[t];
+      if (!resolver) return;
 
-	const q = buildResolverQuery(uri, resolver.property);
-	fetchIndagini(q);
-	});
+      innerPending++;
+      const q = buildResolverQuery(uri, resolver.property);
 
+      fetchSparql(q).then(r => {
+        r.results?.bindings?.forEach(b => {
+          if (b.indagine?.type === "uri") {
+            resolvedIndagini.add(b.indagine.value);
+          }
+        });
+      }).finally(() => {
+        innerPending--;
+        if (innerPending === 0) done();
+      });
+    });
+
+    if (types.length === 0) done();
   });
 }
+
 
 let resolvedIndagini = new Set();
 

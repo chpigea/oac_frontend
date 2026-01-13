@@ -29,10 +29,13 @@ module.exports = function(serviceName) {
     router.get('/view/:uuid', (req, res) => {
         const { uuid } = req.params;
 
+        //const formId = OntologyForm.getIdFromUuid(uuid);
+
         let data = new DataModel(req, {
             root: serviceName,
             title: 'Indagine viewer',
             uuid,
+            //form_id: formId,
 
             // 👇 NASCONDE MENU E SIDEBAR
             activeMenu: null,

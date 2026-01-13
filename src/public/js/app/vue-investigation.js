@@ -158,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 form_keep_lock_timer: null,
                 form_keep_locking: false,
                 inEditing: false,
+                inEditingViewer: false,
                 isVisible: false,
                 enabled: el.dataset.editing == "true",
                 serializedForm: "",
@@ -190,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (showForm && this.uuid) {
                     this.isVisible = true;
                     this.inEditing = true;
+                    this.inEditingViewer = false;
                     this.resetShaclForm(this.uuid, true); // ❌ uuid non definito
                 }
 
@@ -242,6 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 _this.form_id = null;
                 //_this.resetShaclForm(null, true);
                 clearInterval(_this.form_keep_lock_timer);
+                window.location.reload();
+                
             });
 
             window.addEventListener('beforeunload', () => {
@@ -771,7 +775,58 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             reset() {
                 window.location.reload();
-            }
+            },
+            stopEdit() {
+                console.log('STOP EDIT (viewer)');
+                window.dispatchEvent(new CustomEvent('edit-stop'));
+            },
+            async startEdit() {
+    try {
+      // entra subito in editing → UI aggiornata
+      this.inEditingViewer = true;
+      this.enabled   = true;
+
+      // cerco l'indagine tramite uuid
+      const res = await fetch('/backend/ontology/form/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: this.uuid, limit: 1 })
+      });
+
+      const response = await res.json();
+      if (!response.success || !response.data?.length) {
+        alert("Indagine non trovata");
+        this.inEditing = false;
+        this.enabled = false;
+        return;
+      }
+
+      const item = response.data[0];
+
+      // lock
+      const lockResp = await fetch(
+        `/backend/ontology/form/lock/${item.id}/${CLIENT_UUID}`
+      ).then(r => r.json());
+
+      if (!lockResp.success) {
+        alert("Indagine in modifica da un altro utente");
+        this.inEditing = false;
+        this.enabled = false;
+        return;
+      }
+
+      // entra ufficialmente in editing
+      window.dispatchEvent(new CustomEvent('edit-item', {
+        detail: { id: item.id, uuid: item.uuid }
+      }));
+
+    } catch (e) {
+      console.error(e);
+      alert("Errore durante l'attivazione della modifica");
+      this.inEditing = false;
+      this.enabled = false;
+    }
+  }
         }
     });
 

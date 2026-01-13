@@ -5,6 +5,15 @@
 <div class="container my-4">
 
   <h2>Indagine</h2>
+  
+  <h2 class="d-flex justify-content-between align-items-center">
+  <span>Indagine</span>
+
+  <button id="btn-edit"
+          class="btn btn-primary btn-sm">
+    <i class="fa-solid fa-pen"></i> Modifica
+  </button>
+</h2>
 
   <div id="shacl-container"
        style="margin-top:10px;
@@ -24,5 +33,20 @@
   </div>
 
 </div>
+
+<script>
+  document.getElementById('btn-edit')?.addEventListener('click', function () {
+    const form = document.getElementById('shacl-form');
+    if (!form) return;
+
+    // rimuove readonly → entra in editing
+    form.removeAttribute('data-readonly');
+
+    // feedback UI
+    this.disabled = true;
+    this.innerHTML = '<i class="fa-solid fa-lock-open"></i> Modifica attiva';
+  });
+</script>
+
 
 {% endblock %}
