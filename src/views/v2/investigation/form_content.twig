@@ -73,6 +73,7 @@
       data-label_search="{{ t('investigation.search') }}"
       data-label_stop_edit="{{ t('investigation.stop_edit') }}"
       data-label_edit_from_other_user="{{ t('investigation.edit_from_other_user') }}" 
+      data-cur_role="{{ user.role }}"
     ></div>
       
     <div v-cloak id="investigation-app"
@@ -108,6 +109,7 @@
               </button>
               -->
           </div>
+          {% endif %}
 
           <div id="shacl-container" 
             style="margin-top:10px; border:dashed 2px gray; padding:10px; border-radius:5px;">
@@ -129,7 +131,7 @@
               <pre :style="outputStyle">{@ serializedForm @}</pre>
             </fieldset>
           {% endif %}
-        {% endif %}
+        
 
         <div style="margin-top:200px;"></div>
 

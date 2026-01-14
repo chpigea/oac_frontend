@@ -11,7 +11,7 @@
         "password_recovery": "Hai dimenticato la password?",
         "invalid_user": "Nome utente o password non validi",
         "sign_in": "Accedi",
-        "anonymous": "Anonimo"
+        "anonymous": "Ospite"
     },
     "password_recovery": {
         "title": "Recupero password",
@@ -133,5 +133,38 @@
     },
     "footer": {
         "text": "Sviluppato da IGEA: tutti i diritti riservati"
+    },
+ 
+
+  "introduzione": {
+    "sistema": {
+      "title": "Il sistema",
+      "area": {
+        "heritage": "Heritage",
+        "diagnostics": "Diagnostics",
+        "linked": "Linked",
+        "semantic": "Semantic",
+        "data": "Data"
+      },
+      "image": {
+        "microscopy": "Osservazione in microscopia ottica",
+        "samples": "Preparazione dei campioni",
+        "georadar": "Prospezione georadar"
+      }
+    },
+    "finalita": {
+      "title": "Finalità",
+      "item": {
+        "documentare": "Documentare",
+        "conoscere": "Conoscere",
+        "comparare": "Comparare",
+        "comprendere": "Comprendere",
+        "analizzare": "Analizzare",
+        "condividere": "Condividere"
+      }
     }
+  }
+
+
+
 }
