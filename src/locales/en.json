@@ -11,7 +11,7 @@
         "password_recovery": "Forgot your password?",
         "invalid_user": "Invalid username or password",
         "sign_in": "Sign in",
-        "anonymous": "Anonymous"
+        "anonymous": "Guest"
     },
     "password_recovery": {
         "title": "Password recovery",
@@ -20,7 +20,7 @@
         "send_instructions": "Send instructions",
         "back_to_login": "Back to login",
         "invalid_email": "Invalid email address",
-        "email_sent": "Instructions have been sent to your email address, if it exists in our system."
+        "email_sent": "Instructions have been sent to your email address, if it exists in our system.",
         "password_reset_success": "Your password has been reset successfully. You can now log in with your new password."        
     },
     "introduction": {
@@ -127,5 +127,35 @@
     },
     "footer": {
         "text": "Powered by IGEA: all rights reserved"
+    },
+    "introduzione": {
+    "sistema": {
+      "title": "The system",
+      "area": {
+        "heritage": "Heritage",
+        "diagnostics": "Diagnostics",
+        "linked": "Linked",
+        "semantic": "Semantic",
+        "data": "Data"
+      },
+      "image": {
+        "microscopy": "Optical microscopy observation",
+        "samples": "Sample preparation",
+        "georadar": "Ground-penetrating radar survey"
+      }
+    },
+    "finalita": {
+      "title": "Purpose",
+      "item": {
+        "documentare": "Document",
+        "conoscere": "Understand",
+        "comparare": "Compare",
+        "comprendere": "Interpret",
+        "analizzare": "Analyse",
+        "condividere": "Share"
+      }
     }
+  }
+
+
 }

@@ -6,56 +6,56 @@
 
   {# TITOLO #}
   <header class="system-header">
-    <h1>Finalità</h1>
+    <h1>{{ t('introduzione.finalita.title') }}</h1>
   </header>
 
   {# GRIGLIA A 4 COLONNE #}
   <div class="system-grid">
 
-    {# COLONNA 1 — Aree #}
+    {# COLONNA 1 — Aree / Finalità #}
     <div class="system-col system-col-areas">
-        <ul class="system-areas system-areas--bulleted">
-        <li>Documentare</li>
-        <li>Conoscere</li>
-        <li>Comparare</li>
-        <li>Comprendere</li>
-        <li>Analizzare</li>
-        <li>Condividere</li>
+      <ul class="system-areas system-areas--bulleted">
+        <li>{{ t('introduzione.finalita.item.documentare') }}</li>
+        <li>{{ t('introduzione.finalita.item.conoscere') }}</li>
+        <li>{{ t('introduzione.finalita.item.comparare') }}</li>
+        <li>{{ t('introduzione.finalita.item.comprendere') }}</li>
+        <li>{{ t('introduzione.finalita.item.analizzare') }}</li>
+        <li>{{ t('introduzione.finalita.item.condividere') }}</li>
       </ul>
     </div>
 
-
-    {# COLONNA 2 — Testo #}
+    {# COLONNA 2 — Testo descrittivo (NON tradotto) #}
     <div class="system-col system-col-text">
-              <p>
-            La principale finalità di <strong>HD-LSD</strong> risiede nel superamento dell’interpretazione settoriale dei dati,
-            aprendo a una lettura <em>interdisciplinare</em> della diagnostica applicata ai beni culturali e facilitando
-            la ricerca e la comprensione dei flussi di lavoro nei diversi ambiti.
-        </p>
+      <p>
+        La principale finalità di <strong>HD-LSD</strong> risiede nel superamento dell’interpretazione settoriale dei dati,
+        aprendo a una lettura <em>interdisciplinare</em> della diagnostica applicata ai beni culturali e facilitando
+        la ricerca e la comprensione dei flussi di lavoro nei diversi ambiti.
+      </p>
 
-        <p>
-            Attraverso l’integrazione e la condivisione delle conoscenze, la piattaforma favorisce una migliore 
-            accessibilità alle informazioni da parte della comunità scientifica, valorizzando sia l’attività di campo
-            che quella laboratoriale.
-        </p>
+      <p>
+        Attraverso l’integrazione e la condivisione delle conoscenze, la piattaforma favorisce una migliore 
+        accessibilità alle informazioni da parte della comunità scientifica, valorizzando sia l’attività di campo
+        che quella laboratoriale.
+      </p>
     </div>
 
     {# COLONNA 3 — 2 immagini verticali #}
     <div class="system-col system-col-images-2">
       <div class="system-images-2-wrapper">
-        <img src="/frontend/v2/images/Osservazione in microscopia ottica.jpg" alt="Osservazione Microscopica">
-        <img src="/frontend/v2/images/Preparazione campioni.jpg" alt="Campioni">
+        <img src="/frontend/v2/images/Osservazione in microscopia ottica.jpg"
+             alt="{{ t('introduzione.image.microscopy') }}">
+        <img src="/frontend/v2/images/Preparazione campioni.jpg"
+             alt="{{ t('introduzione.image.samples') }}">
       </div>
     </div>
-
 
     {# COLONNA 4 — 1 immagine #}
     <div class="system-col system-col-image-1">
       <div class="system-image-1-wrapper">
-        <img src="/frontend/v2/images/Prospezione georadar.jpg" alt="Georadar">
+        <img src="/frontend/v2/images/Prospezione georadar.jpg"
+             alt="{{ t('introduzione.image.georadar') }}">
       </div>
     </div>
-
 
   </div>
 

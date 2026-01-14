@@ -52,11 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             :placeholder="labels.search"
                             @select="handleAutocompleteSelect"
                         />
-                        <button v-if="existingInstance != null && !inEdit" :title="labels.edit"
+                        <button v-if="existingInstance != null && !inEdit && cur_role != 3" :title="labels.edit"
                             @click="editInstance()" type="button" class="btn btn-info">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button v-if="!inEdit" :title="labels.new"
+                        <button v-if="!inEdit && cur_role != 3" :title="labels.new"
                             @click="newInstance()" type="button" class="btn btn-success">
                             <i class="fa-solid fa-plus"></i>
                         </button>
@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `,
                 data() {
                     return {
+                        cur_role: parseInt(elSearch.dataset.cur_role),
                         existingInstance: null, 
                         inEdit:false, 
                         labels:{
