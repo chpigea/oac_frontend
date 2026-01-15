@@ -19,6 +19,13 @@ let indaginiResults = null;      // risposta SPARQL costruita
 // per evitare race condition
 let currentRunId = 0;
 
+const emptyResponse = function(message) {
+  return {
+    head: { vars: [] },
+    results: { bindings: [] },
+    message: message
+  };
+}
 
 document.querySelectorAll('input[name="viewMode"]').forEach(radio => {
   radio.addEventListener("change", e => {
