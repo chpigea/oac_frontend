@@ -428,9 +428,7 @@ sparnatural.addEventListener("init", (event) => {
 
 sparnatural.addEventListener("queryUpdated", (event) => {
   let queryString = sparnatural.expandSparql(event.detail.queryString);
-  // Fix bug Sparnatural: "_ 1" -> "_1", "_ 2" -> "_2", etc.
   yasqe.setValue(queryString);
-
   console.log("Sparnatural JSON query:");
   console.dir(event.detail.queryJson);
 });
