@@ -12,7 +12,26 @@
 
     <!-- Sparnatural CSS -->
     <link rel="stylesheet" href="/frontend/css/sparnatural.css">
-    
+
+    <!-- Layout specifico per Sparnatural: scroll su body invece che su .main-content -->
+    <style>
+        /* Rimuovi overflow da .main-content per permettere posizionamento corretto di Sparnatural */
+        .main-content {
+            overflow: visible !important;
+        }
+
+        /* Mantieni flex ma permetti altezza naturale */
+        .layout-body {
+            min-height: auto !important;
+            height: auto !important;
+        }
+
+        /* Body scrollabile */
+        body.layout-v2 {
+            height: auto !important;
+            min-height: 100vh;
+        }
+    </style>
 
 {% endblock %}
 
@@ -33,10 +52,9 @@
 
         <!-- The sparnatural web component with config attributes. -->
         <!-- See http://docs.sparnatural.eu/Javascript-integration.html#html-attributes-reference -->
-        <spar-natural 
+        <spar-natural
             src="/backend/ontology/schema/{{schema}}"
             endpoint="/backend/fuseki/endpoint/sparql"
-            endpoint_="https://dbpedia.org/sparql"
             lang="en"
             defaultLang="en"
             distinct="true"
@@ -50,7 +68,6 @@
             <input type="radio" name="viewMode" value="direct" checked>
             Oggetto RDF
           </label>
-
           <label>
             <input type="radio" name="viewMode" value="indagine">
             Scheda indagine
@@ -93,7 +110,6 @@
     <script src="/frontend/js/lib/sparnatural-tree-select.js"></script>
 
     <!-- This page custom JS -->
-    <script src="/frontend/js/lib/sparnatural-main.js"></script>  
-
+    <script src="/frontend/js/lib/sparnatural-main.js"></script>
 
 {% endblock %}

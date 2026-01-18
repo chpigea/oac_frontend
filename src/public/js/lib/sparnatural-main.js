@@ -329,6 +329,11 @@ function renderIndaginiResults() {
 ========================= */
 
 function fetchSparql(query) {
+  query = query.replace(/_ (\d+)/g, '0$1');
+  
+  console.log("*********");
+  console.log(query);
+
   const url =
     sparnatural.getAttribute("endpoint") +
     "?query=" + encodeURIComponent(query);
@@ -422,7 +427,8 @@ sparnatural.addEventListener("init", (event) => {
 });
 
 sparnatural.addEventListener("queryUpdated", (event) => {
-  const queryString = sparnatural.expandSparql(event.detail.queryString);
+  let queryString = sparnatural.expandSparql(event.detail.queryString);
+  // Fix bug Sparnatural: "_ 1" -> "_1", "_ 2" -> "_2", etc.
   yasqe.setValue(queryString);
 
   console.log("Sparnatural JSON query:");
