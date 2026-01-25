@@ -16,6 +16,9 @@ let viewMode = "direct";
 let directResults = null;        // risposta SPARQL originale
 let indaginiResults = null;      // risposta SPARQL costruita
 
+let lastLiteralPredicate = null;
+
+
 // per evitare race condition
 let currentRunId = 0;
 
@@ -36,15 +39,58 @@ document.querySelectorAll('input[name="viewMode"]').forEach(radio => {
   });
 });
 
+const INDAGINE_RESOLVERS =  window.INDAGINE_RESOLVERS;
 
 /* =========================
    INDAGINE RESOLVERS MAP
 ========================= */
-
+/*
 const INDAGINE_RESOLVERS = {
-  "crm:E39_Actor": {
-    property: "crm:P14_carried_out_by"
-  },
+"crm:E39_Actor": [
+
+    // =====================================================
+    // CASO 1: Attore direttamente collegato all'Indagine
+    // =====================================================
+    {
+      description: "Attore diretto dell'indagine",
+      query: uri => `
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX indagine: <http://indagine/>
+
+SELECT DISTINCT ?indagine
+WHERE {
+  ?indagine crm:P14_carried_out_by <${uri}> ;
+            crm:P2_has_type ?t .
+
+  # riconoscimento Indagine (pattern robusto)
+  ?t indagine:tipo_indagine ?x .
+}
+`
+    },
+
+    // =====================================================
+    // CASO 2: Attore dell'attività diagnostica
+    // =====================================================
+    {
+      description: "Attore dell'attività diagnostica",
+      query: uri => `
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX indagine: <http://indagine/>
+
+SELECT DISTINCT ?indagine
+WHERE {
+  ?diagnostica crm:P14_carried_out_by <${uri}> .
+
+  ?indagine crm:P134_continued ?diagnostica ;
+            crm:P2_has_type ?t .
+
+  # riconoscimento Indagine (pattern robusto)
+  ?t indagine:tipo_indagine ?x .
+}
+`
+    }
+
+  ],
   "crm:E42_Identifier": {
     property: "crm:P48_has_preferred_identifier"
   },
@@ -61,7 +107,7 @@ const INDAGINE_RESOLVERS = {
   "crm:E7_Activity": {
     property: "crm:P134_continued"
   }
-};
+};*/
 
 /* =========================
    YASQE INIT
@@ -111,6 +157,99 @@ yasr.plugins["TableX"].config.uriHrefAdapter = function (uri) {
    QUERY RESPONSE HANDLER
 ========================= */
 
+async function filterIndaginiOnly(response) {
+  const uris = extractUrisFromResponse(response);
+  if (!uris.length) return response;
+
+  const values = uris.map(u => `(<${u}>)`).join(" ");
+
+  const query = `
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX indagine: <http://indagine/>
+
+SELECT DISTINCT ?indagine WHERE {
+  VALUES (?indagine) { ${values} }
+
+  ?indagine crm:P2_has_type ?t .
+  ?t indagine:tipo_indagine ?x .
+}
+`;
+
+  const data = await fetchSparql(query);
+  const valid = new Set(
+    data.results.bindings.map(b => b.indagine.value)
+  );
+
+  return {
+    head: response.head,
+    results: {
+      bindings: response.results.bindings.filter(row =>
+        Object.values(row).some(
+          v => v.type === "uri" && valid.has(v.value)
+        )
+      )
+    }
+  };
+}
+
+
+yasqe.on("queryResponse", async function (_yasqe, response, duration) {
+  const runId = ++currentRunId;
+
+  const normalized = normalizeSparqlResponse(response);
+  sparnatural.enablePlayBtn();
+
+  if (!normalized) {
+    directResults = null;
+    indaginiResults = null;
+    yasr.setResponse(emptyResponse("Risposta SPARQL non valida"), duration);
+    return;
+  }
+
+  // 👉 capiamo UNA VOLTA SOLA che tipo di ricerca è
+  const isIndagine = await isIndagineSearch(normalized);
+
+  // risposta base
+  let workingResults = normalized;
+
+  // 👉 filtro SOLO SE ricerca Indagini
+  if (isIndagine) {
+    workingResults = await filterIndaginiOnly(normalized);
+  }
+
+  // aggiorno cache
+  directResults = workingResults;
+
+  // mostro direct
+  yasr.setResponse(directResults, duration);
+
+  // ---------------------------
+  // VISTA INDAGINE
+  // ---------------------------
+  if (isIndagine) {
+    indaginiResults = workingResults;
+
+    if (viewMode === "indagine") {
+      yasr.setResponse(indaginiResults);
+    }
+    return;
+  }
+
+  // ---------------------------
+  // RISOLUZIONE DA ALTRI OGGETTI
+  // ---------------------------
+  const uris = extractUrisFromResponse(workingResults);
+
+  if (uris.length > 0) {
+    resolveIndagini(workingResults, runId);
+  } else {
+    resolveIndaginiFromLiteral(workingResults, runId);
+  }
+});
+
+
+
+/*
 yasqe.on("queryResponse", async function (_yasqe, response, duration) {
   const runId = ++currentRunId;
 
@@ -127,6 +266,11 @@ yasqe.on("queryResponse", async function (_yasqe, response, duration) {
   // salva risultati diretti
   directResults = normalized;
 
+  // ✅ se è ricerca semplice INDAGINI, filtra SEMPRE
+if (await isIndagineSearch(normalized)) {
+  directResults = await filterIndaginiOnly(directResults);
+}
+
   // mostra subito i diretti
   yasr.setResponse(directResults, duration);
 
@@ -142,11 +286,17 @@ yasqe.on("queryResponse", async function (_yasqe, response, duration) {
     }
 
   } else {
-    resolveIndagini(normalized, runId);
+    const uris = extractUrisFromResponse(normalized);
+
+    if (uris.length > 0) {
+      resolveIndagini(normalized, runId);
+    } else {
+      resolveIndaginiFromLiteral(normalized, runId);
+    }
   }
 
 
-});
+});*/
 
 
 /* =========================
@@ -180,6 +330,34 @@ async function areAllIndaginiRoot(uris) {
   const query = `
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX indagine: <http://indagine/>
+
+SELECT DISTINCT ?x WHERE {
+  VALUES (?x) { ${values} }
+
+  ?x rdf:type crm:E7_Activity ;
+     crm:P2_has_type ?t .
+
+  # 🔑 vero discriminante Indagine
+  ?t indagine:tipo_indagine ?any .
+}
+`;
+
+  const data = await fetchSparql(query);
+  const bindings = data?.results?.bindings || [];
+
+  // devono tornare TUTTE
+  return bindings.length === uris.length;
+}
+
+
+/*
+async function areAllIndaginiRoot(uris) {
+  const values = uris.map(u => `(<${u}>)`).join(" ");
+
+  const query = `
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
 
 SELECT ?x ?type WHERE {
   VALUES (?x) { ${values} }
@@ -199,7 +377,7 @@ SELECT ?x ?type WHERE {
   // devono tornare TUTTE
   return bindings.length === uris.length;
 }
-
+*/
 
 
 function resolveIndagini(response, runId) {
@@ -244,7 +422,51 @@ function buildIndaginiResponse() {
   }
 }
 
+function resolveIndagineFromUri(uri, runId, done) {
 
+  const typeQuery = `
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT DISTINCT ?type WHERE {
+  <${uri}> rdf:type ?type .
+}
+`;
+
+  fetchSparql(typeQuery).then(data => {
+
+    const types = data.results.bindings
+      .map(b => normalizeRdfType(b.type.value))
+      .filter(Boolean);
+
+    let innerPending = 0;
+
+    types.forEach(t => {
+      const resolvers = INDAGINE_RESOLVERS[t];
+      if (!resolvers) return;
+
+      resolvers.forEach(resolver => {
+        innerPending++;
+
+        const q = resolver.query(uri);
+
+        fetchSparql(q).then(r => {
+          r.results?.bindings?.forEach(b => {
+            if (b.indagine?.type === "uri") {
+              resolvedIndagini.add(b.indagine.value);
+            }
+          });
+        }).finally(() => {
+          innerPending--;
+          if (innerPending === 0) done();
+        });
+      });
+    });
+
+    if (types.length === 0) done();
+  });
+}
+
+
+/*
 function resolveIndagineFromUri(uri, runId, done) {
   const typeQuery = `
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -282,7 +504,7 @@ SELECT DISTINCT ?type WHERE {
     if (types.length === 0) done();
   });
 }
-
+*/
 
 let resolvedIndagini = new Set();
 
@@ -328,12 +550,164 @@ function renderIndaginiResults() {
    SPARQL HELPERS
 ========================= */
 
-function fetchSparql(query) {
-  query = query.replace(/_ (\d+)/g, '0$1');
-  
-  console.log("*********");
-  console.log(query);
+function resolveIndaginiFromLiteral(response, runId) {
 
+  resolvedIndagini.clear();
+
+  const vars = response.head.vars;
+  const rows = response.results.bindings;
+
+  if (!rows.length) {
+    indaginiResults = emptyResponse("Nessuna indagine collegata");
+    return;
+  }
+
+  // prendiamo il PRIMO literal (caso più comune)
+  let literal = null;
+
+  outer:
+  for (const row of rows) {
+    for (const v of vars) {
+      if (row[v]?.type === "literal") {
+        literal = row[v];
+        break outer;
+      }
+    }
+  }
+
+  if (!literal) {
+    indaginiResults = emptyResponse("Nessun valore utilizzabile");
+    return;
+  }
+
+  const value = literal.value;
+  const datatype = literal.datatype || "";
+
+  console.log("Literal search:", value, datatype);
+
+  // scegliamo la query in base al tipo
+  let query = null;
+
+  // -------------------------------
+  // STRINGA
+  // -------------------------------
+  if (
+    datatype === "http://www.w3.org/2001/XMLSchema#string" ||
+    datatype === "" // spesso rdfs:label arriva senza datatype
+  ) {
+    query = buildIndagineFromStringQuery(value);
+  }
+
+  // -------------------------------
+  // NUMERO
+  // -------------------------------
+  else if (
+    datatype === "http://www.w3.org/2001/XMLSchema#integer" ||
+    datatype === "http://www.w3.org/2001/XMLSchema#decimal" ||
+    datatype === "http://www.w3.org/2001/XMLSchema#float"
+  ) {
+    query = buildIndagineFromNumberQuery(value);
+  }
+
+  // -------------------------------
+  // DATA
+  // -------------------------------
+  else if (
+    datatype === "http://www.w3.org/2001/XMLSchema#date" ||
+    datatype === "http://www.w3.org/2001/XMLSchema#dateTime"
+  ) {
+    query = buildIndagineFromDateQuery(value, datatype);
+  }
+
+  if (!query) {
+    indaginiResults = emptyResponse("Tipo di valore non supportato");
+    return;
+  }
+
+  fetchSparql(query).then(data => {
+    data.results?.bindings?.forEach(b => {
+      if (b.indagine?.type === "uri") {
+        resolvedIndagini.add(b.indagine.value);
+      }
+    });
+
+    if (runId === currentRunId) {
+      buildIndaginiResponse();
+    }
+  });
+}
+
+
+function buildIndagineFromStringQuery(value) {
+  return `
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX indagine: <http://indagine/>
+
+SELECT DISTINCT ?indagine
+WHERE {
+  ?indagine crm:P2_has_type indagine:E55TypeIndagine ;
+            rdfs:label ?label .
+
+  FILTER (
+    CONTAINS(
+      LCASE(STR(?label)),
+      LCASE("${escapeSparqlString(value)}")
+    )
+  )
+}
+`;
+}
+
+
+function buildIndagineFromNumberQuery(value) {
+
+  if (!lastLiteralPredicate) return null;
+
+  return `
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX indagine: <http://indagine/>
+
+SELECT DISTINCT ?indagine
+WHERE {
+  ?indagine crm:P2_has_type indagine:E55TypeIndagine ;
+            ${lastLiteralPredicate} ?v .
+
+  FILTER (?v = ${value})
+}
+`;
+}
+
+
+
+function buildIndagineFromDateQuery(value, datatype) {
+  const dt = datatype.endsWith("dateTime")
+    ? `"${value}"^^xsd:dateTime`
+    : `"${value}"^^xsd:date`;
+
+  return `
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX indagine: <http://indagine/>
+
+SELECT DISTINCT ?indagine
+WHERE {
+  ?indagine crm:P2_has_type indagine:E55TypeIndagine ;
+            crm:P4_has_time-span ?ts .
+
+  ?ts crm:P82a_begin_of_the_begin ${dt} .
+}
+`;
+}
+
+
+function escapeSparqlString(str) {
+  return str.replace(/["\\]/g, "\\$&");
+}
+
+
+
+function fetchSparql(query) {
   const url =
     sparnatural.getAttribute("endpoint") +
     "?query=" + encodeURIComponent(query);
@@ -397,6 +771,19 @@ function normalizeRdfType(uri) {
   return uri.split("/").pop();
 }
 
+function extractLiteralPredicate(queryJson) {
+  if (!queryJson?.where) return null;
+
+  for (const w of queryJson.where) {
+    if (w.value && typeof w.value === "string") {
+      return w.property; // es. "indagine:costo"
+    }
+  }
+
+  return null;
+}
+
+
 /* =========================
    SPARQL QUERY BUILDER
 ========================= */
@@ -427,7 +814,11 @@ sparnatural.addEventListener("init", (event) => {
 });
 
 sparnatural.addEventListener("queryUpdated", (event) => {
-  let queryString = sparnatural.expandSparql(event.detail.queryString);
+  const queryString = sparnatural.expandSparql(event.detail.queryString);
+ 
+  const q = event.detail.queryJson;
+  lastLiteralPredicate = extractLiteralPredicate(q);
+
   yasqe.setValue(queryString);
   console.log("Sparnatural JSON query:");
   console.dir(event.detail.queryJson);
