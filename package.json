@@ -1,6 +1,6 @@
 {
   "name": "@igea/oac_frontend",
-  "version": "1.0.104",
+  "version": "1.0.105",
   "description": "Frontend service for the OAC project",
   "main": "src/index.js",
   "bin": {
