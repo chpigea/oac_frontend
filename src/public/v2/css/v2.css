@@ -42,10 +42,6 @@ body.layout-v2 {
   flex-shrink: 0;
 }
 
-.footer-bar {
-  flex-shrink: 0;
-}
-
 /* --- POSIZIONAMENTO GRID (FONDAMENTALE) --- */
 
 .header-logo {
@@ -298,18 +294,20 @@ body.layout-v2 {
 
 .footer-bar {
   background: #B1A891;
-  height: 60px;                 /* puoi regolarla */
+  height: 60px;
   display: flex;
   align-items: center;
-  justify-content: center;
   padding: 0 24px;
+  position: relative;
 }
+
 
 /* Contenitore loghi */
 .footer-logos {
   display: flex;
   align-items: center;
   gap: 24px;
+   margin: 0 auto;
 }
 
 /* Loghi */
@@ -330,6 +328,27 @@ body.layout-v2 {
   width: 1px;
   height: 50px;
   background: rgba(255,255,255,0.4);
+}
+
+.footer-legal {
+  position: absolute;
+  right: 24px;
+  font-size: 0.75rem;
+  color: #eee;
+  white-space: nowrap;
+}
+
+.footer-legal a {
+  color: #eee;
+  text-decoration: none;
+}
+
+.footer-legal a:hover {
+  text-decoration: underline;
+}
+
+.footer-legal-separator {
+  margin: 0 6px;
 }
 
 
@@ -664,4 +683,100 @@ body.layout-v2 {
 
   border-radius: 4px;
   z-index: 0;
+}
+
+.system-video-wrapper {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.system-video {
+  width: 50%;
+  max-width: 960px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* ======================
+   COOKIES
+   ====================== */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #2f2f2f;
+  color: #fff;
+  font-size: 0.8rem;
+  z-index: 9999;
+}
+
+.cookie-banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cookie-banner a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.cookie-btn {
+  background: #B1A891;
+  border: none;
+  color: #000;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.legal-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+}
+
+.legal-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+.legal-modal-content {
+  position: relative;
+  max-width: 880px;
+  max-height: 85vh;
+  margin: 5vh auto;
+  background: #ffffff;
+
+  border-radius: 50px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+
+  overflow: hidden;   /* 🔑 TAGLIA la scrollbar */
+}
+
+.legal-modal-scroll {
+  max-height: 85vh;
+  padding: 40px 48px;
+  overflow-y: auto;   /* 🔑 scroll SOLO qui */
+}
+
+
+.legal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.legal-text h2 {
+  margin-top: 0;
 }

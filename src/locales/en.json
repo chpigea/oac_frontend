@@ -128,6 +128,12 @@
     "footer": {
         "text": "Powered by IGEA: all rights reserved"
     },
+    "footer_leg": {
+        "privacy": "Privacy policy",
+        "cookie": "Cookie policy"
+    },
+
+
     "introduzione": {
     "sistema": {
       "title": "The system",

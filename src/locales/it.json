@@ -134,6 +134,11 @@
     "footer": {
         "text": "Sviluppato da IGEA: tutti i diritti riservati"
     },
+    "footer_leg": {
+        "privacy": "Informativa sulla privacy",
+        "cookie": "Informativa sui cookie"
+    },
+
  
 
   "introduzione": {
@@ -163,7 +168,73 @@
         "condividere": "Condividere"
       }
     }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Ultimo aggiornamento:",
+    "controller": {
+      "title": "Titolare del trattamento",
+      "text": "Il titolare del trattamento dei dati personali raccolti tramite il presente sito è l’ente responsabile del progetto HD-LSD, nell’ambito delle attività di ricerca e sviluppo."
+    },
+    "data": {
+      "title": "Tipologie di dati trattati",
+      "text": "Il sito tratta dati personali forniti volontariamente dagli utenti autorizzati all’accesso ai servizi, nonché dati tecnici necessari al funzionamento del sistema.",
+      "item1": "Dati identificativi e di contatto per l’accesso ai servizi",
+      "item2": "Dati tecnici di navigazione e di sessione"
+    },
+    "purpose": {
+      "title": "Finalità e base giuridica del trattamento",
+      "text": "I dati personali sono trattati esclusivamente per consentire l’erogazione dei servizi richiesti dall’utente e per garantire la sicurezza e il corretto funzionamento del sistema.",
+      "item1": "Esecuzione di un servizio richiesto dall’utente (art. 6.1.b GDPR)",
+      "item2": "Interesse legittimo del titolare per la sicurezza del sistema"
+    },
+    "retention": {
+      "title": "Conservazione dei dati",
+      "text": "I dati personali sono conservati per il tempo strettamente necessario al raggiungimento delle finalità per cui sono stati raccolti e nel rispetto degli obblighi di legge."
+    },
+    "rights": {
+      "title": "Diritti dell’interessato",
+      "text": "Gli interessati possono esercitare i diritti previsti dagli articoli 15 e seguenti del GDPR, tra cui il diritto di accesso, rettifica, cancellazione, limitazione del trattamento e opposizione."
+    },
+    "security": {
+      "title": "Sicurezza dei dati",
+      "text": "Il titolare adotta misure tecniche e organizzative adeguate per garantire la sicurezza dei dati personali e prevenire accessi non autorizzati."
+    },
+    "cookies": {
+      "title": "Cookie",
+      "text": "Il sito utilizza esclusivamente cookie tecnici necessari al funzionamento dei servizi. Per maggiori informazioni si rimanda alla Cookie Policy."
+    }
+  },
+  "cookie": {
+    "title": "Cookie Policy",
+    "updated": "Ultimo aggiornamento:",
+    "what": {
+      "title": "Cosa sono i cookie",
+      "text": "I cookie sono piccoli file di testo che il sito invia al browser dell’utente per consentire il corretto funzionamento delle pagine e dei servizi."
+    },
+    "types": {
+      "title": "Tipologie di cookie utilizzati",
+      "text": "Il sito utilizza esclusivamente cookie tecnici necessari alla navigazione e all’accesso ai servizi riservati.",
+      "item1": "Cookie di sessione per l’autenticazione",
+      "item2": "Cookie tecnici per il corretto funzionamento del sito"
+    },
+    "purpose": {
+      "title": "Finalità dei cookie",
+      "text": "I cookie tecnici sono utilizzati esclusivamente per consentire la navigazione e l’erogazione dei servizi richiesti dall’utente."
+    },
+    "manage": {
+      "title": "Gestione dei cookie",
+      "text": "L’utente può configurare il proprio browser per accettare o rifiutare i cookie. La disabilitazione dei cookie tecnici può compromettere il corretto funzionamento del sito."
+    },
+    "legal": {
+      "title": "Base giuridica",
+      "text": "L’utilizzo dei cookie tecnici è basato sulla necessità di fornire i servizi richiesti dall’utente, ai sensi dell’art. 6.1.b del GDPR."
+    }
   }
+
+
+
+
 
 
 
