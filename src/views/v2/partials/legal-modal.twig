@@ -1,0 +1,19 @@
+<div id="legalModal" class="legal-modal" style="display:none;">
+
+  <div class="legal-modal-overlay" onclick="closeLegalModal()"></div>
+
+  <div class="legal-modal-content">
+
+    <button class="legal-close" onclick="closeLegalModal()">×</button>
+
+    <div class="legal-modal-scroll">
+        <div id="legal-privacy" class="legal-section" style="display:none;">
+        {% include 'v2/partials/privacy-content.twig' %}
+        </div>
+
+        <div id="legal-cookie" class="legal-section" style="display:none;">
+        {% include 'v2/partials/cookie-content.twig' %}
+        </div>
+    </div>
+  </div>
+</div>

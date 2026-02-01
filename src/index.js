@@ -13,8 +13,8 @@ const jwtLib = jwtLibFactory({
     secret: process.env.JWT_SECRET || config.jwt_secret,
     excludePaths: [
         `/${serviceName}/`,
-        `/${serviceName}/password_recovery`,
-        new RegExp(`^/${serviceName}/users/reset_password/[^/]+/[^/]+$`),
+        `/${serviceName}/v2/password_recovery`,
+        new RegExp(`^/${serviceName}/users/v2/reset_password/[^/]+/[^/]+$`),
         `/${serviceName}/health`,
         `/${serviceName}/captcha/random-image`
     ],
@@ -89,20 +89,16 @@ getPort.default({
     app.use(`/${serviceName}/health`, healthRouter);
 
 
-    const usersRouter = require('./controllers/users.js')(serviceName);
-    app.use(`/${serviceName}/users`, usersRouter);
     const usersRouterV2 = require('./controllers/users_v2.js')(serviceName);
     app.use(`/frontend/v2/users`, usersRouterV2);
 
 
-    const vocabolariesRouter = require('./controllers/vocabolaries.js')(serviceName);
-    app.use(`/${serviceName}/vocabolaries`, vocabolariesRouter);
+
     const vocabolariesRouterV2 = require('./controllers/vocabolaries_v2.js')(serviceName);
     app.use(`/frontend/v2/vocabolaries`, vocabolariesRouterV2);
 
 
-    const searchRouter = require('./controllers/search.js')(serviceName);
-    app.use(`/${serviceName}/search`, searchRouter);
+
     const searchRouterV2 = require('./controllers/search_v2.js')(serviceName);
     app.use(`/frontend/v2/search`, searchRouterV2);
 
@@ -115,8 +111,7 @@ getPort.default({
     app.use(`/${serviceName}/investigation`, investigationRouter);
 
 
-    const rdfRouter = require('./controllers/rdf.js')(serviceName);
-    app.use(`/${serviceName}/rdf`, rdfRouter);
+
     const rdfRouterV2 = require('./controllers/rdf_v2.js')(serviceName);
     app.use(`/${serviceName}/v2/rdf`, rdfRouterV2);
 
@@ -131,8 +126,8 @@ getPort.default({
     app.get(`/${serviceName}`, (req, res) => {
         res.render('v2/login', { root: serviceName, title: 'Login' });
     });
-    app.get(`/${serviceName}/password_recovery`, (req, res) => {
-        res.render('password_recovery', { root: serviceName, title: 'Password recovery' });
+    app.get(`/${serviceName}/v2/password_recovery`, (req, res) => {
+        res.render('v2/password_recovery', { root: serviceName, title: 'Password recovery' });
     });
     app.get(`/${serviceName}/home`, (req, res) => {
         let data = new DataModel(req, {  
@@ -288,6 +283,20 @@ app.get('/frontend/v2/admin', (req, res) => {
 });
 
 
+// Privacy policy
+app.get('/frontend/privacy', function (req, res) {
+  res.render('v2/privacy.twig', {
+    pageTitle: 'Privacy Policy'
+  });
+});
+
+
+// Cookie policy
+app.get('/cookie', function (req, res) {
+  res.render('v2/cookie.twig', {
+    pageTitle: 'Cookie Policy'
+  });
+});
 
 
 

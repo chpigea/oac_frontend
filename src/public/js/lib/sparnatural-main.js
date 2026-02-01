@@ -5,6 +5,10 @@
 
 // reference to the sparnatural webcomponent
 const sparnatural = document.querySelector("spar-natural");
+// 🔥 RESET risultati YASR (evita risultati "fantasma" da localStorage)
+Object.keys(localStorage)
+  .filter(k => k.startsWith("yasr"))
+  .forEach(k => localStorage.removeItem(k));
 
 /* =========================
    VIEW MODE (radio buttons)
@@ -15,6 +19,8 @@ let viewMode = "direct";
 // cache risultati
 let directResults = null;        // risposta SPARQL originale
 let indaginiResults = null;      // risposta SPARQL costruita
+
+
 
 // per evitare race condition
 let currentRunId = 0;
@@ -36,32 +42,6 @@ document.querySelectorAll('input[name="viewMode"]').forEach(radio => {
   });
 });
 
-
-/* =========================
-   INDAGINE RESOLVERS MAP
-========================= */
-
-const INDAGINE_RESOLVERS = {
-  "crm:E39_Actor": {
-    property: "crm:P14_carried_out_by"
-  },
-  "crm:E42_Identifier": {
-    property: "crm:P48_has_preferred_identifier"
-  },
-  "crm:E55_Type": {
-    property: "crm:P2_has_type"
-  },
-  "base:I12_Adopted_Belief": {
-    property: "crm:P17_was_motivated_by"
-  },
-  "j.0:S13_Sample": {
-    property: "crm:P16_used_specific_object"
-  },
-  // 🆕 ATTIVITÀ DIAGNOSTICA
-  "crm:E7_Activity": {
-    property: "crm:P134_continued"
-  }
-};
 
 /* =========================
    YASQE INIT
@@ -111,6 +91,8 @@ yasr.plugins["TableX"].config.uriHrefAdapter = function (uri) {
    QUERY RESPONSE HANDLER
 ========================= */
 
+
+
 yasqe.on("queryResponse", async function (_yasqe, response, duration) {
   const runId = ++currentRunId;
 
@@ -124,47 +106,20 @@ yasqe.on("queryResponse", async function (_yasqe, response, duration) {
     return;
   }
 
-  // salva risultati diretti
   directResults = normalized;
-
-  // mostra subito i diretti
   yasr.setResponse(directResults, duration);
 
-  // calcola DERIVATE (in background)
-  // CASO SPECIALE: ricerca INDAGINE
-  if (await isIndagineSearch(normalized)) {
-
-  // Tabella B = stessa risposta della A
-    indaginiResults = normalized;
-
-    if (viewMode === "indagine") {
-      yasr.setResponse(indaginiResults);
-    }
-
-  } else {
-    resolveIndagini(normalized, runId);
-  }
-
-
+  // SEMPRE Postgres
+  resolveIndaginiPostgres(normalized, runId);
 });
 
 
+
 /* =========================
-   RESOLVER PIPELINE
+   RESOLVER POSTGRESQL
 ========================= */
 
-async function isIndagineSearch(response) {
-  const uris = extractUrisFromResponse(response);
-  if (!uris.length) return false;
 
-  // sicurezza: tutte sotto namespace indagine
-  if (!uris.every(u => u.startsWith("http://indagine/"))) {
-    return false;
-  }
-
-  // controllo RDF type
-  return await areAllIndaginiRoot(uris);
-}
 
 function updateView() {
   if (viewMode === "direct") {
@@ -174,189 +129,90 @@ function updateView() {
   }
 }
 
-async function areAllIndaginiRoot(uris) {
-  const values = uris.map(u => `(<${u}>)`).join(" ");
-
-  const query = `
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-
-SELECT ?x ?type WHERE {
-  VALUES (?x) { ${values} }
-
-  ?x rdf:type crm:E7_Activity .
-
-  # root = non deve essere continuazione di un'altra activity
-  FILTER NOT EXISTS {
-    ?parent crm:P134_continued ?x .
-  }
-}
-`;
-
-  const data = await fetchSparql(query);
-  const bindings = data?.results?.bindings || [];
-
-  // devono tornare TUTTE
-  return bindings.length === uris.length;
-}
 
 
 
-function resolveIndagini(response, runId) {
-  const uris = extractUrisFromResponse(response);
+async function resolveIndaginiPostgres(response, runId) {
+  const tokens = extractSearchTokens(response);
 
-  if (!uris.length) {
+  if (!tokens.length) {
     indaginiResults = emptyResponse("Nessuna indagine collegata");
     return;
   }
 
-  resolvedIndagini.clear();
-
-  let pending = 0;
-
-  uris.forEach(uri => {
-    pending++;
-    resolveIndagineFromUri(uri, runId, () => {
-      pending--;
-      if (pending === 0 && runId === currentRunId) {
-        buildIndaginiResponse();
-      }
+  try {
+    const res = await fetch('/backend/ontology/form/searchindagini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tokens
+      })
     });
-  });
-}
 
+    const data = await res.json();
 
-function buildIndaginiResponse() {
-  const bindings = Array.from(resolvedIndagini).map(uri => ({
-    indagine: { type: "uri", value: uri }
-  }));
+    if (!data.success || !data.data.length) {
+      indaginiResults = emptyResponse("Nessuna indagine collegata");
+      return;
+    }
 
-  indaginiResults = bindings.length
-    ? {
-        head: { vars: ["indagine"] },
-        results: { bindings }
-      }
-    : emptyResponse("Nessuna indagine collegata");
+    
+    const bindings = data.data.map(row => ({
+      Indagine: {
+          type: "uri",
+          value: "http://indagine/" + row.uuid
+        },
+        Indagine_label: {
+          type: "literal",
+          value: row.label || row.uuid
+        }
+    }));
 
-  // se l’utente è già in vista “indagine”, aggiorna subito
-  if (viewMode === "indagine") {
-    yasr.setResponse(indaginiResults);
+    indaginiResults = {
+      head: { vars: ["Indagine"] },
+      results: { bindings }
+    };
+
+    if (viewMode === "indagine" && runId === currentRunId) {
+      yasr.setResponse(indaginiResults);
+    }
+
+  } catch (e) {
+    console.error(e);
+    indaginiResults = emptyResponse("Errore risoluzione indagini");
   }
 }
 
+function extractSearchTokens(response) {
+  const vars = response.head?.vars || [];
+  const results = response.results?.bindings || [];
+  const tokens = new Set();
 
-function resolveIndagineFromUri(uri, runId, done) {
-  const typeQuery = `
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-SELECT DISTINCT ?type WHERE {
-  <${uri}> rdf:type ?type .
-}
-`;
+  results.forEach(row => {
+    vars.forEach(v => {
+      const cell = row[v];
+      if (!cell) return;
 
-  fetchSparql(typeQuery).then(data => {
-    const types = data.results.bindings
-      .map(b => normalizeRdfType(b.type.value))
-      .filter(Boolean);
+      if (cell.type === "uri") {
+        tokens.add(cell.value);
+        // aggiungi anche uuid puro
+        const uuid = cell.value.split('/').pop();
+        if (uuid) tokens.add(uuid);
+      }
 
-    let innerPending = 0;
-
-    types.forEach(t => {
-      const resolver = INDAGINE_RESOLVERS[t];
-      if (!resolver) return;
-
-      innerPending++;
-      const q = buildResolverQuery(uri, resolver.property);
-
-      fetchSparql(q).then(r => {
-        r.results?.bindings?.forEach(b => {
-          if (b.indagine?.type === "uri") {
-            resolvedIndagini.add(b.indagine.value);
-          }
-        });
-      }).finally(() => {
-        innerPending--;
-        if (innerPending === 0) done();
-      });
-    });
-
-    if (types.length === 0) done();
-  });
-}
-
-
-let resolvedIndagini = new Set();
-
-function fetchIndagini(query) {
-  fetchSparql(query).then(data => {
-    const bindings = data.results?.bindings || [];
-
-    bindings.forEach(b => {
-      if (b.indagine?.type === "uri") {
-        resolvedIndagini.add(b.indagine.value);
+      if (cell.type === "literal") {
+        tokens.add(cell.value);
       }
     });
-
-    // quando finiamo di risolvere, aggiorniamo la UI
-    renderIndaginiResults();
   });
-}
 
-function renderIndaginiResults() {
-  const bindings = Array.from(resolvedIndagini).map(uri => ({
-    indagine: {
-      type: "uri",
-      value: uri
-    }
-  }));
-
-  const fakeResponse = {
-    head: {
-      vars: ["indagine"]
-    },
-    results: {
-      bindings
-    }
-  };
-
-  console.log("SPARQL response (indagini):", fakeResponse);
-
-  yasr.setResponse(fakeResponse);
+  return [...tokens];
 }
 
 
 /* =========================
    SPARQL HELPERS
 ========================= */
-
-function fetchSparql(query) {
-  query = query.replace(/_ (\d+)/g, '0$1');
-  
-  console.log("*********");
-  console.log(query);
-
-  const url =
-    sparnatural.getAttribute("endpoint") +
-    "?query=" + encodeURIComponent(query);
-
-  return fetch(url).then(r => r.json());
-}
-
-function extractUrisFromResponse(response) {
-  const vars = response.head.vars;
-  const results = response.results.bindings;
-  const uris = [];
-
-  results.forEach(row => {
-    vars.forEach(v => {
-      if (row[v]?.type === "uri") {
-        uris.push(row[v].value);
-      }
-    });
-  });
-
-  return [...new Set(uris)];
-}
-
 
 function normalizeSparqlResponse(response) {
   if (response?.head && response?.results) {
@@ -375,44 +231,6 @@ function normalizeSparqlResponse(response) {
   return null;
 }
 
-function normalizeRdfType(uri) {
-  if (!uri) return null;
-
-  // CIDOC CRM
-  if (uri.startsWith("http://www.cidoc-crm.org/cidoc-crm/")) {
-    return "crm:" + uri.split("/").pop();
-  }
-
-  // CRMsci / j.0
-  if (uri.startsWith("http://www.cidoc-crm.org/extensions/crmsci/")) {
-    return "j.0:" + uri.split("/").pop();
-  }
-
-  // base CPM / CRMinf (adatta se necessario)
-  if (uri.startsWith("http://ontome.net/ns/cpm/")) {
-    return "base:" + uri.split("/").pop();
-  }
-
-  // fallback: ultimo frammento
-  return uri.split("/").pop();
-}
-
-/* =========================
-   SPARQL QUERY BUILDER
-========================= */
-
-function buildResolverQuery(uri, property) {
-  return `
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-
-SELECT DISTINCT ?indagine
-WHERE {
-  ?indagine rdf:type crm:E7_Activity ;
-            ${property} <${uri}> .
-}
-`;
-}
 
 /* =========================
    SPARNATURAL EVENTS
@@ -427,7 +245,11 @@ sparnatural.addEventListener("init", (event) => {
 });
 
 sparnatural.addEventListener("queryUpdated", (event) => {
-  let queryString = sparnatural.expandSparql(event.detail.queryString);
+  const queryString = sparnatural.expandSparql(event.detail.queryString);
+ 
+  const q = event.detail.queryJson;
+  lastLiteralPredicate = extractLiteralPredicate(q);
+
   yasqe.setValue(queryString);
   console.log("Sparnatural JSON query:");
   console.dir(event.detail.queryJson);
