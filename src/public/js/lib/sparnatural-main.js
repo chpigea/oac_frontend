@@ -248,7 +248,7 @@ sparnatural.addEventListener("queryUpdated", (event) => {
   const queryString = sparnatural.expandSparql(event.detail.queryString);
  
   const q = event.detail.queryJson;
-  lastLiteralPredicate = extractLiteralPredicate(q);
+ // lastLiteralPredicate = extractLiteralPredicate(q);
 
   yasqe.setValue(queryString);
   console.log("Sparnatural JSON query:");

@@ -43,7 +43,7 @@ module.exports = function(serviceName) {
             activeSidebarItem: null
         });
 
-        res.render('investigation/view.twig', data.toJson());
+        res.render('v2/investigation/view.twig', data.toJson());
     });
 
     return router
