@@ -389,6 +389,87 @@ document.addEventListener('DOMContentLoaded', () => {
                         var intervalId = setInterval(() => {
                             if(_this.form.shadowRoot){
                                 clearInterval(intervalId);
+                               // 🔥 Fix alignment for add-property blocks
+const shadow = _this.form.shadowRoot;
+
+if (!shadow.querySelector('#oac-final-layout')) {
+  const style = document.createElement('style');
+  style.id = 'oac-final-layout';
+  style.textContent = `
+
+    /* ============================= */
+    /* Layout moderno a 3 elementi   */
+    /* ============================= */
+
+    .property-instance {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    /* Label senza width fissa */
+    .property-instance label {
+        width: auto !important;
+        min-width: 220px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Editor cresce */
+    .property-instance .editor {
+        flex: 1 1 auto !important;
+    }
+
+    /* 🔥 SPUNTA NON PIÙ ASSOLUTA */
+    .property-instance.valid::before {
+        position: static !important;
+        margin-right: 6px !important;
+    }
+
+  `;
+  shadow.appendChild(style);
+}
+
+if (!shadow.querySelector('#oac-fix-add-buttons')) {
+  const style = document.createElement('style');
+  style.id = 'oac-fix-add-buttons';
+  style.textContent = `
+
+    /* Sposta i blocchi add a sinistra */
+    shacl-property:not(:has(>.collapsible)),
+    shacl-property > .collapsible::part(content) {
+        align-items: flex-start !important;
+    }
+
+    /* Assicura che il + sia inline */
+    shacl-property .add-button {
+        align-self: flex-start !important;
+        margin-right: 0 !important;
+    }
+
+  `;
+  shadow.appendChild(style);
+}
+
+
+if (!shadow.querySelector('#oac-limit-editor-width')) {
+  const style = document.createElement('style');
+  style.id = 'oac-limit-editor-width';
+  style.textContent = `
+
+    .property-instance .editor {
+        flex-grow: 0 !important;
+        max-width: 500px !important;
+        width: 100% !important;
+    }
+
+  `;
+  shadow.appendChild(style);
+}
+                                
+
+
+
                                 if(_this.inEditing)
                                     _this.inputIdentifizier();
                                 else
