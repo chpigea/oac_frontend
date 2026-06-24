@@ -117,11 +117,15 @@ __AUTO_COMPLETE_COMPONENT__ = {
 
         onInput() {
             clearTimeout(this.timer);
+
             if (this.query.length < this.minChars) {
                 this.close();
                 return;
             }
-            this.timer = setTimeout(this.fetchResults, this.debounceMs);
+
+            this.timer = setTimeout(() => {
+                this.fetchResults();
+            }, this.debounceMs);
         },
 
         async fetchResults() {
@@ -160,8 +164,12 @@ __AUTO_COMPLETE_COMPONENT__ = {
         },
 
         onEnter() {
-            if(this.query.length > 0){
-                this.timer = setTimeout(this.fetchResults);
+            if (this.query.length > 0) {
+                clearTimeout(this.timer);
+
+                this.timer = setTimeout(() => {
+                    this.fetchResults();
+                }, 0);
             }
         },
 
