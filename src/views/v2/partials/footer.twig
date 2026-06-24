@@ -1,39 +1,50 @@
 <footer class="footer-bar">
 
-  {# --- LOGHI --- #}
-  <div class="footer-logos">
+  <div class="footer-logos" aria-label="{{ t('footer.institutional_logos')|default('Loghi istituzionali') }}">
 
     <img src="/frontend/v2/images/sapienza.png"
          class="logo-sapienza"
          alt="Sapienza Università di Roma">
 
-    <span class="footer-separator"></span>
+    <span class="footer-separator" aria-hidden="true"></span>
 
     <img src="/frontend/v2/images/eu.png"
-         alt="Finanziato dall'Unione Europea">
+         alt="{{ t('footer.eu_alt')|default('Finanziato dall’Unione Europea') }}">
 
-    <span class="footer-separator"></span>
+    <span class="footer-separator" aria-hidden="true"></span>
 
     <img src="/frontend/v2/images/miur.png"
-         alt="Ministero dell'Università e della Ricerca">
+         alt="{{ t('footer.miur_alt')|default('Ministero dell’Università e della Ricerca') }}">
 
-    <span class="footer-separator"></span>
+    <span class="footer-separator" aria-hidden="true"></span>
 
     <img src="/frontend/v2/images/italiadomani.png"
          alt="Italia Domani – PNRR">
 
-    <span class="footer-separator"></span>
+    <span class="footer-separator" aria-hidden="true"></span>
 
     <img src="/frontend/v2/images/changes.png"
          alt="Fondazione CHANGES">
 
   </div>
 
-  {# --- PRIVACY / COOKIE --- #}
-  <div class="footer-legal">
-    <a href="javascript:void(0)" onclick="openPrivacy()">Privacy</a>
-    <span class="footer-legal-separator">|</span>
-    <a href="javascript:void(0)" onclick="openCookie()">Cookie</a>
-  </div>
+  <nav class="footer-legal"
+       aria-label="{{ t('footer.legal_links')|default('Informazioni legali') }}">
+
+    <button type="button"
+            class="footer-legal-link"
+            onclick="openPrivacy()">
+      {{ t('footer.privacy')|default('Privacy') }}
+    </button>
+
+    <span class="footer-legal-separator" aria-hidden="true"></span>
+
+    <button type="button"
+            class="footer-legal-link"
+            onclick="openCookie()">
+      {{ t('footer.cookie')|default('Cookie') }}
+    </button>
+
+  </nav>
 
 </footer>

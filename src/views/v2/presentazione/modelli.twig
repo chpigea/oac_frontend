@@ -5,10 +5,7 @@
 <section class="models-section">
 
   <header class="models-header">
-    <h1>Modelli di riferimento</h1>
-    <p class="models-intro">
-      HD-LSD si basa su un insieme di modelli ontologici di riferimento.......
-    </p>
+    <h1>{{ t('introduzione.modelli.title') }}</h1>
   </header>
 
   <div class="models-grid">
@@ -17,47 +14,45 @@
     <article class="model-card">
       <header class="model-card-header">
         <img src="/frontend/v2/images/models/Logo_CRM.png"
-            alt="CIDOC CRM"
+            alt="Logo CIDOC CRM"
             class="model-logo">
 
         <h2>CIDOC CRM</h2>
       </header>
       <p>
-        Il CIDOC Conceptual Reference Model (CRM) è uno strumento teorico e pratico per
-        l’integrazione delle informazioni nel campo del patrimonio culturale. Fornisce
-        definizioni e una struttura formale per descrivere concetti e relazioni utilizzati
-        nella documentazione del patrimonio culturale, consentendo l’integrazione di dati
-        eterogenei e distribuiti in modo indipendente dal software e dagli schemi adottati.
+        {{ t('introduzione.modelli.cidoc_crm_1') }}
       </p>
       <p>
-        Il CIDOC CRM promuove una comprensione condivisa delle informazioni sul patrimonio
-        culturale, fungendo da “colla semantica” tra musei, archivi, biblioteche e altri
-        sistemi informativi.
+        {{ t('introduzione.modelli.cidoc_crm_2') }}
       </p>
-      <a href="https://cidoc-crm.org" target="_blank">https://cidoc-crm.org</a>
+
+      <a href="https://cidoc-crm.org"
+        target="_blank"
+        rel="noopener noreferrer">
+          {{ t('introduzione.modelli.cidoc_crm_visit_site') }}
+      </a>
+
     </article>
 
     <!-- CRMsci -->
     <article class="model-card">
       <header class="model-card-header">
         <img src="/frontend/v2/images/models/CRMsci.png"
-            alt="CRMsci"
+            alt="Logo CRMsci"
             class="model-logo">
 
         <h2>CRMsci</h2>
       </header>
       <p>
-        Il Scientific Observation Model (CRMsci) è un’ontologia formale progettata come
-        schema globale per l’integrazione dei metadati relativi all’osservazione scientifica,
-        alle misurazioni e ai dati elaborati nelle scienze empiriche e descrittive.
+        {{ t('introduzione.modelli.crmsci_1') }}
       </p>
       <p>
-        Il modello facilita la gestione, l’integrazione e lo scambio dei dati di ricerca
-        attraverso la descrizione delle relazioni semantiche, in particolare di tipo causale,
-        nei contesti di ricerca e nelle infrastrutture digitali.
+        {{ t('introduzione.modelli.crmsci_2') }}
       </p>
-      <a href="https://cidoc-crm.org/crmsci" target="_blank">
-        https://cidoc-crm.org/crmsci
+      <a href="https://cidoc-crm.org/crmsci"
+        target="_blank"
+        rel="noopener noreferrer">
+          {{ t('introduzione.modelli.cidoc_sci_visit_site') }}
       </a>
     </article>
 
@@ -71,17 +66,15 @@
         <h2>CRMinf</h2>
       </header>    
       <p>
-        CRMinf è un’ontologia formale dedicata alla modellazione dell’argomentazione e dei
-        processi inferenziali nelle scienze descrittive ed empiriche. Consente di rappresentare
-        in modo strutturato il ragionamento, le premesse, le conclusioni e le attività cognitive.
+        {{ t('introduzione.modelli.crminf_1') }}
       </p>
       <p>
-        Il suo obiettivo è supportare l’integrazione, la mediazione e l’accesso ai dati relativi
-        ai processi di ragionamento, favorendo una rappresentazione esplicita della conoscenza
-        interpretativa.
+        {{ t('introduzione.modelli.crminf_2') }}
       </p>
-      <a href="https://cidoc-crm.org/crminf" target="_blank">
-        https://cidoc-crm.org/crminf
+      <a href="https://cidoc-crm.org/crminf"
+        target="_blank"
+        rel="noopener noreferrer">
+          {{ t('introduzione.modelli.cidoc_inf_visit_site') }}
       </a>
     </article>
 
@@ -89,22 +82,20 @@
     <article class="model-card">
       <header class="model-card-header">
         <img src="/frontend/v2/images/models/Logo_CPM.png"
-            alt="CPM"
+            alt="Logo CPM"
             class="model-logo">
         <h2>CPM</h2>
       </header>      
       <p>
-        Il Conservation Process Model (CPM) è un’ontologia formale sviluppata dal 2015 dal
-        gruppo di ricerca della Sapienza Università di Roma per la rappresentazione dei processi
-        di conoscenza, analisi e conservazione dell’architettura storica.
+        {{ t('introduzione.modelli.crmcpm_1') }}
       </p>
       <p>
-        Integrata nella struttura del CIDOC CRM, la CPM consente una gestione semantica
-        articolata delle informazioni relative alla conservazione, preservando la complessità
-        e il valore culturale dell’architettura storica.
+        {{ t('introduzione.modelli.crmcpm_2') }}
       </p>
-      <a href="https://editricesapienza.it/book/10676" target="_blank">
-        https://editricesapienza.it/book/10676
+      <a href="https://editricesapienza.it/book/10676"
+        target="_blank"
+        rel="noopener noreferrer">
+          {{ t('introduzione.modelli.cidoc_cpm_visit_site') }}
       </a>
     </article>
 

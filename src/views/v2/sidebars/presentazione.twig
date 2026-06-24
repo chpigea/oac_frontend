@@ -1,42 +1,47 @@
-<aside class="sidebar"
-       id="sidebar-presentazione">
+<nav class="sidebar-nav"
+     id="sidebar-presentazione"
+     aria-label="{{ t('sidebar.presentazione.label')|default('Menu di presentazione') }}">
 
-  <nav class="sidebar-nav">
+  <a href="/frontend/v2/sistema"
+     :class="{ active: activeItem === 'sistema' }"
+     :aria-current="activeItem === 'sistema' ? 'page' : null">
+    {{ t('sidebar.presentazione.sistema')|default('Il sistema') }}
+  </a>
 
-    <a href="/frontend/v2/sistema"
-       :class="{ active: activeItem === 'sistema' }">
-       Il sistema
-    </a>
+  <a href="/frontend/v2/finalita"
+     :class="{ active: activeItem === 'finalita' }"
+     :aria-current="activeItem === 'finalita' ? 'page' : null">
+    {{ t('sidebar.presentazione.finalita')|default('Finalità') }}
+  </a>
 
-    <a href="/frontend/v2/finalita"
-       :class="{ active: activeItem === 'finalita' }">
-       Finalità
-    </a>
+  <a href="/frontend/v2/partecipanti"
+     :class="{ active: activeItem === 'partecipanti' }"
+     :aria-current="activeItem === 'partecipanti' ? 'page' : null">
+    {{ t('sidebar.presentazione.partecipanti')|default('Partecipanti') }}
+  </a>
 
-    <a href="/frontend/v2/partecipanti"
-       :class="{ active: activeItem === 'partecipanti' }">
-       Partecipanti
-    </a>
+  <a href="/frontend/v2/bibliografia"
+     :class="{ active: activeItem === 'bibliografia' }"
+     :aria-current="activeItem === 'bibliografia' ? 'page' : null">
+    {{ t('sidebar.presentazione.bibliografia')|default('Riferimenti e bibliografia') }}
+  </a>
 
-    <a href="/frontend/v2/bibliografia"
-       :class="{ active: activeItem === 'bibliografia' }">
-       Riferimenti e Bibliografia
-    </a>
+  <a href="/frontend/v2/modelli"
+     :class="{ active: activeItem === 'modelli' }"
+     :aria-current="activeItem === 'modelli' ? 'page' : null">
+    {{ t('sidebar.presentazione.modelli')|default('Modelli utilizzati') }}
+  </a>
 
-    <a href="/frontend/v2/modelli"
-       :class="{ active: activeItem === 'modelli' }">
-       Modelli Utilizzati
-    </a>
+  <a href="/frontend/v2/crediti"
+     :class="{ active: activeItem === 'crediti' }"
+     :aria-current="activeItem === 'crediti' ? 'page' : null">
+    {{ t('sidebar.presentazione.crediti')|default('Crediti') }}
+  </a>
 
-    <a href="/frontend/v2/crediti"
-       :class="{ active: activeItem === 'crediti' }">
-       Crediti
-    </a>
+  <a href="/frontend/v2/contatti"
+     :class="{ active: activeItem === 'contatti' }"
+     :aria-current="activeItem === 'contatti' ? 'page' : null">
+    {{ t('sidebar.presentazione.contatti')|default('Contatti') }}
+  </a>
 
-    <a href="/frontend/v2/contatti"
-       :class="{ active: activeItem === 'contatti' }">
-       Contatti
-    </a>
-
-  </nav>
-</aside>
+</nav>

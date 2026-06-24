@@ -3,7 +3,6 @@ const router = express.Router();
 const DataModel = require('../models/DataModel');
 
 module.exports = function(serviceName) {
-
     router.get('/fast/:what', (req, res) => {
         let data = new DataModel(req, {  
             root: serviceName, 
@@ -13,7 +12,8 @@ module.exports = function(serviceName) {
             activeSidebarItem: 'fast',
             fastType: req.params.what,
             currentPath:  req.baseUrl +req.path,
-            schema: 'fast_' + req.params.what
+            schema: 'fast_' + req.params.what,
+            searchTitleKey: 'search.fast.' + req.params.what
         });    
         res.render('v2/search/advanced.twig', data.toJson()); 
     });
@@ -26,7 +26,8 @@ module.exports = function(serviceName) {
             activeSidebar: 'search',
             activeSidebarItem: 'advanced',
             currentPath:  req.baseUrl +req.path,
-            schema: 'advanced'
+            schema: 'advanced',
+            searchTitleKey: 'search.advanced.title'
         });    
         res.render('v2/search/advanced.twig', data.toJson()); 
     });

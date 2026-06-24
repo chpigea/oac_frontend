@@ -45,26 +45,48 @@ document.addEventListener('DOMContentLoaded', () => {
             const elSearch = document.getElementById(searchId);
             const searchApp = createApp({
                 template: `
-                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
-                        <autocomplete-search v-if="!inEdit"
-                            search-url="/backend/ontology/form/search"
-                            :min-chars="3"
-                            :placeholder="labels.search"
-                            @select="handleAutocompleteSelect"
-                        />
-                        <button v-if="existingInstance != null && !inEdit && cur_role != 3" :title="labels.edit"
-                            @click="editInstance()" type="button" class="btn btn-info">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
-                        <button v-if="!inEdit && cur_role != 3" :title="labels.new"
-                            @click="newInstance()" type="button" class="btn btn-success">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                        <button v-if="inEdit" :title="labels.stop_edit"
-                            @click="stopEdit()" type="button" class="btn btn-success">
-                            <i class="fa-solid fa-circle-stop" style="color:red;"></i>
-                        </button>
-                    </div>
+                    <div class="investigation-search-bar" role="search" :aria-label="labels.search">
+        
+
+        <autocomplete-search v-if="!inEdit"
+            id="investigation-autocomplete-input"
+            input-id="investigation-autocomplete-input"
+            search-url="/backend/ontology/form/search"
+            :min-chars="3"
+            :label="labels.search"
+            :placeholder="labels.search"
+            :aria-label="labels.search"
+            @select="handleAutocompleteSelect"
+        />
+
+        <button v-if="existingInstance != null && !inEdit && cur_role != 3"
+            :title="labels.edit"
+            :aria-label="labels.edit"
+            @click="editInstance()"
+            type="button"
+            class="btn btn-info">
+            <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+        </button>
+
+        <button v-if="!inEdit && cur_role != 3"
+            :title="labels.new"
+            :aria-label="labels.new"
+            @click="newInstance()"
+            type="button"
+            class="btn btn-success">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+
+        <button v-if="inEdit"
+            :title="labels.stop_edit"
+            :aria-label="labels.stop_edit"
+            @click="stopEdit()"
+            type="button"
+            class="btn btn-success">
+            <i class="fa-solid fa-circle-stop" aria-hidden="true"></i>
+        </button>
+
+    </div>
                 `,
                 data() {
                     return {

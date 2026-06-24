@@ -1,26 +1,19 @@
 {% extends 'v2/layout.twig' %}
 
-
 {% block content %}
 
 <section class="system-page">
 
-  {# TITOLO #}
   <header class="system-header">
-    <h1>Contatti</h1>
+    <h1>{{ t('introduzione.contatti.title') }}</h1>
   </header>
 
-    <p class="intro-text">
-        <p>
-  Per informazioni e contatti, è possibile inviare un’email all’indirizzo
- <a href="mailto:hd-lsd.dsdra@uniroma1.it?subject=Richiesta%20informazioni">
-  hd-lsd.dsdra@uniroma1.it
-</a>
-
+  <p class="intro-text">
+    {{ t('introduzione.contatti.intro') }}
+    <a href="mailto:hd-lsd.dsdra@uniroma1.it?subject={{ t('introduzione.contatti.email_subject')|url_encode }}">
+      hd-lsd.dsdra@uniroma1.it
+    </a>
   </p>
-  </p>
-
-
 
 </section>
 

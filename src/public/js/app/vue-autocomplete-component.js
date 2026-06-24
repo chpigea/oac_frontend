@@ -22,6 +22,14 @@ __AUTO_COMPLETE_COMPONENT__ = {
         maxResults: {
             type: Number,
             default: 5
+        },
+        inputId: {
+            type: String,
+            default: 'autocomplete-search-input'
+        },
+        label: {
+            type: String,
+            default: ''
         }
     },
 
@@ -37,8 +45,16 @@ __AUTO_COMPLETE_COMPONENT__ = {
         }
     },
 
+    computed: {
+        inputLabel() {
+            return this.label || this.placeholder || 'Search';
+        },
+        listboxId() {
+            return this.inputId + '-results';
+        }
+    },
+
     mounted() {
-        // Inietta gli stili CSS se non già presenti
         this.injectStyle();
     },
 
@@ -62,7 +78,8 @@ __AUTO_COMPLETE_COMPONENT__ = {
                     }
 
                     .autocomplete input:focus {
-                        outline: none;
+                        outline: 3px solid #000;
+                        outline-offset: 2px;
                         border-color: #4CAF50;
                     }
 
@@ -97,6 +114,7 @@ __AUTO_COMPLETE_COMPONENT__ = {
                 document.head.appendChild(style);
             }
         },
+
         onInput() {
             clearTimeout(this.timer);
             if (this.query.length < this.minChars) {
@@ -142,7 +160,7 @@ __AUTO_COMPLETE_COMPONENT__ = {
         },
 
         onEnter() {
-            if(this.query.length>0){
+            if(this.query.length > 0){
                 this.timer = setTimeout(this.fetchResults);
             }
         },
@@ -160,7 +178,6 @@ __AUTO_COMPLETE_COMPONENT__ = {
         },
 
         onBlur() {
-            // Usa setTimeout per permettere al mousedown di completarsi prima del blur
             setTimeout(() => {
                 this.close();
             }, 150);
@@ -169,42 +186,54 @@ __AUTO_COMPLETE_COMPONENT__ = {
         labelOfItem(item){
             return '[' + item.id + ']: ' + item.label;
         }
+    },
 
-  },
+    template: `
+        <div class="autocomplete" role="search">
+            <label :for="inputId" class="visually-hidden">
+                {{ inputLabel }}
+            </label>
 
-  template: `
-    <div class="autocomplete">
-      <input
-        type="text"
-        :placeholder="placeholder"
-        v-model="query"
-        @input="onInput"
-        @keydown.down.prevent="move(1)"
-        @keydown.up.prevent="move(-1)"
-        @keydown.enter.prevent="onEnter"
-        @keydown.esc="close"
-        @blur="onBlur"
-      />
+            <input
+                :id="inputId"
+                type="text"
+                :placeholder="placeholder"
+                :aria-label="inputLabel"
+                :aria-controls="listboxId"
+                :aria-expanded="open ? 'true' : 'false'"
+                aria-autocomplete="list"
+                autocomplete="off"
+                v-model="query"
+                @input="onInput"
+                @keydown.down.prevent="move(1)"
+                @keydown.up.prevent="move(-1)"
+                @keydown.enter.prevent="onEnter"
+                @keydown.esc="close"
+                @blur="onBlur"
+            />
 
-      <ul v-if="open && results.length" class="dropdown">
-        <li
-          v-for="(item, i) in results"
-          :key="i"
-          :class="{ active: i === activeIndex }"
-          @mousedown.prevent="select(i)"
-        >
-          <span style="font-weight:bold; padding-right:10px; border-right:solid 1px gray;">
-            <i class="fa-solid fa-file-invoice"></i>
-            {{ item.id }}
-          </span>  
-          <span style="margin-left:10px;color:gray;">
-            <i class="fa-solid fa-tag"></i>
-            {{ item.label }}
-          </span>  
-          
-        </li>
-      </ul>
-    </div>
-  `
-
+            <ul v-if="open && results.length"
+                :id="listboxId"
+                class="dropdown"
+                role="listbox">
+                <li
+                    v-for="(item, i) in results"
+                    :key="i"
+                    :class="{ active: i === activeIndex }"
+                    role="option"
+                    :aria-selected="i === activeIndex ? 'true' : 'false'"
+                    @mousedown.prevent="select(i)"
+                >
+                    <span class="autocomplete-result-id">
+                        <i class="fa-solid fa-file-invoice" aria-hidden="true"></i>
+                        {{ item.id }}
+                    </span>
+                    <span class="autocomplete-result-label">
+                        <i class="fa-solid fa-tag" aria-hidden="true"></i>
+                        {{ item.label }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    `
 }

@@ -1,142 +1,206 @@
 {
-    "welcome": "Welcome",
-    "exit": "Exit",
-    "app": {
-        "title": "Conservation Flows"
+  "welcome": "Welcome",
+  "exit": "Exit",
+  "app": {
+    "title": "Conservation Workflows"
+  },
+  "sidebar": {
+    "presentazione": {
+      "label": "Presentation menu",
+      "sistema": "The system",
+      "finalita": "Objectives",
+      "partecipanti": "Participants",
+      "bibliografia": "References and bibliography",
+      "modelli": "Models used",
+      "crediti": "Credits",
+      "contatti": "Contacts"
     },
-    "login": {
-        "title": "Login",
-        "user": "Email or Username",
-        "password": "Password",
-        "password_recovery": "Forgot your password?",
-        "invalid_user": "Invalid username or password",
-        "sign_in": "Sign in",
-        "anonymous": "Guest"
+    "indagine": "Investigation",
+    "admin": {
+      "label": "Administration menu",
+      "title": "Administration",
+      "users": "Users",
+      "vocabularies": "Vocabularies"
+    }
+  },
+  "login": {
+    "title": "Sign in",
+    "user": "Email or username",
+    "password": "Password",
+    "password_recovery": "Forgot your password?",
+    "invalid_user": "Invalid username or password",
+    "sign_in": "Sign in",
+    "anonymous": "Guest"
+  },
+  "password_recovery": {
+    "title": "Password recovery",
+    "instructions": "Enter your email address or username to receive password recovery instructions.",
+    "email": "Email",
+    "send_instructions": "Send instructions",
+    "back_to_login": "Back to login",
+    "invalid_email": "Invalid email address",
+    "email_sent": "Instructions have been sent to your email address, if it exists in our system.",
+    "password_reset_success": "Your password has been reset successfully. You can now sign in with your new password."
+  },
+  "introduction": {
+    "title": "Presentation",
+    "content": "Contents",
+    "purpose": "Objectives",
+    "participants": "Participants",
+    "references": "References",
+    "bibliography": "Bibliography"
+  },
+  "admin": {
+    "manage": {
+      "title": "Administration",
+      "description": "Administration functions for user management and vocabulary updates."
+    }
+  },
+  "users": {
+    "manage": {
+      "title": "Users",
+      "name": "First name",
+      "surname": "Last name",
+      "username": "Username",
+      "email": "Email",
+      "role": "Role",
+      "edit": "Edit",
+      "delete": "Delete",
+      "new": "New",
+      "confirm_delete": "Are you sure you want to delete this user?"
     },
-    "password_recovery": {
-        "title": "Password recovery",
-        "instructions": "Enter your email address or username to receive password recovery instructions.",
-        "email": "Email",
-        "send_instructions": "Send instructions",
-        "back_to_login": "Back to login",
-        "invalid_email": "Invalid email address",
-        "email_sent": "Instructions have been sent to your email address, if it exists in our system.",
-        "password_reset_success": "Your password has been reset successfully. You can now log in with your new password."        
+    "edit": {
+      "title": "User",
+      "update": "Edit",
+      "new": "New",
+      "password": "Password",
+      "confirm_password": "Confirm password",
+      "save": "Save",
+      "cancel": "Cancel",
+      "invalid_name": "Invalid first name",
+      "invalid_surname": "Invalid last name",
+      "invalid_username": "Invalid username",
+      "invalid_email": "Invalid email address",
+      "invalid_password": "Invalid password (must contain at least 6 characters)",
+      "different_password": "Passwords do not match",
+      "save_ok": "Data saved successfully"
     },
-    "introduction": {
-        "title": "Introduction",
-        "content": "Contents",
-        "purpose": "Purpose",
-        "participants": "Participants",
-        "references": "References",
-        "bibliography": "Bibliography"
+    "profile": {
+      "title": "Profile"
     },
-    "users": {
-        "manage": {
-            "title": "Users",
-            "name": "Name",
-            "surname": "Surname",
-            "username": "Username",
-            "email": "Email",
-            "role": "Role",
-            "edit": "Edit",
-            "delete": "Delete",
-            "new": "New",
-            "confirm_delete": "Are you sure you want to delete this user?"
-        },
-        "edit": {
-            "title": "User",
-            "update": "Update",
-            "new": "New",
-            "password": "Password",
-            "confirm_password": "Confirm password",
-            "save": "Save",
-            "cancel": "Cancel",
-            "invalid_name": "Invalid name",
-            "invalid_surname": "Invalid surname",
-            "invalid_username": "Invalid username",
-            "invalid_email": "Invalid email address",
-            "invalid_password": "Invalid password (must be at least 6 characters)",
-            "different_password": "Passwords do not match",
-            "save_ok": "Data saved successfully"
-        },
-        "profile": {
-            "title": "Profile"
-        },
-        "role": {
-            "sudo": "Super Admin",
-            "admin": "Admin",
-            "editor": "Editor",
-            "reader": "Reader"
-        },
-        "vocabolaries": {
-            "title": "Vocabolaries",
-            "drag_drop": "Drag & drop XML files here, or click to select",
-            "browse": "browse",
-            "no_files": "No files selected",
-            "file": "file",
-            "files": "files",
-            "remove": "Remove",
-            "upload": "Upload",
-            "uploading": "Uploading...",
-            "upload_ok": "Files uploaded successfully",
-            "upload_error": "Error uploading files",
-            "invalid_file": "Invalid file type",
-            "max_files": "You can upload up to 5 files at a time",
-            "max_size": "Each file must be less than 10MB",
-            "select_vocabolary": "Select a vocabolary to view its items",
-            "terms": "Vocabulary entries"
-        }
+    "role": {
+      "sudo": "Super Administrator",
+      "admin": "Administrator",
+      "editor": "Editor",
+      "reader": "Reader"
     },
-    "investigation":{
-        "new": {
-            "title": "New Investigation",
-            "description": "Compila il modulo sottostante per creare una nuova indagine.",
-            "form_invalid": "The form contains errors. Please correct them before submitting.",
-            "submit": "Save",
-            "reset": "Reset",
-            "validate": "Validate",
-            "show_more": "Show more",
-            "confirm": "Confirm",
-            "download": "Download",
-            "select_instance": "Select an instance",
-            "generated_output": "Generated output",
-            "valid": "Valid",
-            "not_valid": "Not valid"
-        },
-        "title": "Investigation",
-        "edit_item": "Edit",
-        "new_item": "New",
-        "stop_edit": "Stop edit",
-        "search": "Search",
-        "edit_from_other_user": "Another user is editing this item",
-        "save_ok": "Form saved successfully",
-        "save_err": "Error saving the form"
+    "vocabolaries": {
+      "title": "Vocabularies",
+      "drag_drop": "Drag and drop XML files here, or click to select them",
+      "browse": "browse",
+      "no_files": "No files selected",
+      "file": "file",
+      "files": "files",
+      "remove": "Remove",
+      "upload": "Upload",
+      "uploading": "Uploading...",
+      "upload_ok": "Files uploaded successfully",
+      "upload_error": "Error while uploading files",
+      "invalid_file": "Invalid file type",
+      "select_vocabolary": "Select a vocabulary to view its items",
+      "terms": "Vocabulary entries"
+    }
+  },
+  "investigation": {
+    "new": {
+      "title": "New investigation",
+      "description": "Fill in the form below to create a new investigation.",
+      "form_invalid": "The record contains errors. Correct them to save it properly.",
+      "submit": "Submit",
+      "reset": "Reset",
+      "validate": "Validate",
+      "show_more": "Show more",
+      "confirm": "Confirm",
+      "download": "Download",
+      "select_instance": "Select an instance",
+      "generated_output": "Generated output",
+      "valid": "Valid",
+      "not_valid": "Not valid"
     },
-    "search": {
-        "fast": {
-            "title": "Fast search",
-            "investigations": "Investigations",
-            "samples": "Samples",
-            "diagnostics": "Diagnostic activities",
-            "materials": "Materials"
-        },
-        "advanced": {
-            "title": "Advanced search"
-        }
+    "viewer": {
+      "title": "Investigation view",
+      "close_hint": "You can close this tab from your browser."
     },
-    "footer": {
-        "text": "Powered by IGEA: all rights reserved"
+    "title": "Investigation",
+    "edit_item": "Edit",
+    "new_item": "New",
+    "stop_edit": "Stop editing",
+    "search": "Search",
+    "edit_from_other_user": "Another user is editing this item",
+    "save_ok": "Record saved successfully",
+    "save_err": "Error while saving the record",
+    "close": "Close"
+  },
+  "search": {
+    "title": "Search",
+    "fast": {
+      "title": "Fast search",
+      "investigations": "Investigations",
+      "samples": "Samples",
+      "diagnostics": "Diagnostic activities",
+      "materials": "Materials",
+      "1": "Investigation search",
+      "2": "Sample search",
+      "3": "Diagnostic activity search",
+      "4": "Material search"
     },
-    "footer_leg": {
-        "privacy": "Privacy policy",
-        "cookie": "Cookie policy"
+    "advanced": {
+      "title": "Advanced search",
+      "view_mode_rdf": "RDF object",
+      "view_mode_investigation": "Investigation record",
+      "toggle_sparql": "Toggle SPARQL query"
     },
-
-
-    "introduzione": {
+    "index": {
+      "title": "Search",
+      "description_1": "The main advantage of the system lies in allowing domain experts to directly query the archived data for simple or complex searches.",
+      "description_2": "Both follow SPARQL logic and language, but rely on NaturalSparql technology, which suggests the possible combinations allowed by the project’s underlying semantics.",
+      "description_3": "This makes it possible to identify potential chains starting from any entity of interest in the graph, and to select the subsequent query phrases only from the meaningful entry points.",
+      "access_intro": "In this section you can access:",
+      "fast_search_title": "Fast search",
+      "fast_search_description": "where the entry entities have been filtered according to the thematic focuses: Investigation, Sample, Diagnostic activity, Material.",
+      "advanced_search_title": "Advanced search",
+      "advanced_search_description": "where the system can be queried starting from any of the entities in the knowledge graph.",
+      "guide_title": "Querying the system",
+      "guide_description": "Practical guide to querying the system:",
+      "guide_link": "download the PDF guide"
+    }
+  },
+  "footer": {
+    "text": "Developed by IGEA: all rights reserved",
+    "institutional_logos": "Institutional logos",
+    "legal_links": "Legal information",
+    "privacy": "Privacy",
+    "cookie": "Cookie",
+    "eu_alt": "Funded by the European Union",
+    "miur_alt": "Ministry of University and Research"
+  },
+  "footer_leg": {
+    "privacy": "Privacy notice",
+    "cookie": "Cookie notice"
+  },
+  "legal": {
+    "title": "Legal information",
+    "description": "Information window containing the privacy policy and cookie policy."
+  },
+  "common": {
+    "close": "Close"
+  },
+  "introduzione": {
     "sistema": {
       "title": "The system",
+      "description": "<strong>HD-LSD (Heritage & Diagnostics – Linked Semantic Data)</strong> is a tool for collecting and managing diagnostic data in the field of cultural heritage, within architectural, archaeological, art-historical and environmental contexts.<br/>The consultation allows users to ask questions about data interpretation, providing workflows and best practices for both field and laboratory activities and offering documentation ranging from the macroscopic level down to the microscopic scale, exploring techniques for material characterization, production analysis, degradation identification, dating, and reconstruction of palaeoenvironments and cultivation practices.",
+      "video_description": "Introduction to how the HD-LSD website works",
+      "video_not_supported": "Video not supported",
       "area": {
         "heritage": "Heritage",
         "diagnostics": "Diagnostics",
@@ -151,17 +215,146 @@
       }
     },
     "finalita": {
-      "title": "Purpose",
+      "title": "Objectives",
       "item": {
         "documentare": "Document",
-        "conoscere": "Understand",
+        "conoscere": "Know",
         "comparare": "Compare",
-        "comprendere": "Interpret",
-        "analizzare": "Analyse",
+        "comprendere": "Understand",
+        "analizzare": "Analyze",
         "condividere": "Share"
+      },
+      "description_1": "The main objective of <strong>HD-LSD</strong> is to overcome sector-based interpretation of data, opening up an <em>interdisciplinary</em> reading of diagnostics applied to cultural heritage and facilitating research and understanding of workflows across different fields.",
+      "description_2": "Through the integration and sharing of knowledge, the platform promotes better accessibility of information for the scientific community, enhancing both field and laboratory activities."
+    },
+    "partecipanti": {
+      "title": "Participants",
+      "intro": "HD-LSD is an output of the national research project PE5 CHANGES PNRR, Spoke 5. It is part of the activities of WP6 <em>Cross-disciplinary interpretation of data from novel diagnostics and definition of multi-method protocols for the study of Cultural Heritage</em>, composed of an interdisciplinary team from Sapienza University of Rome involving four departments:",
+      "departments": {
+        "sdara": {
+          "name": "Department of History, Representation and Restoration of Architecture",
+          "people": "Donatella Fiorani · Chiara Porrovecchio · Silvia Cigognetti"
+        },
+        "antichita": {
+          "name": "Department of Ancient Studies",
+          "people": "Cristina Lemorini · Giulia Previti"
+        },
+        "terra": {
+          "name": "Department of Earth Sciences",
+          "people": "Laura Medeghini · Melania Di Fazio"
+        },
+        "biologia": {
+          "name": "Department of Environmental Biology",
+          "people": "Mauro Iberite · Laura Sadori · Alessia Masi · Eleonora Creafogli"
+        }
       }
+    },
+    "bibliografia": {
+      "title": "References and bibliography",
+      "intro": "This section collects the main scientific and documentary references used to develop the conceptual model and the theoretical framework.",
+      "webography": "Webography",
+      "references": "Bibliography",
+      "cidoc_link_label": "CIDOC CRM – Conceptual Reference Model (opens in a new window)"
+    },
+    "modelli": {
+      "title": "Reference models",
+      "intro": "",
+      "cidoc_crm_1": "The CIDOC Conceptual Reference Model (CRM) is a theoretical and practical tool for integrating information in the field of cultural heritage. It provides definitions and a formal structure for describing concepts and relationships used in cultural heritage documentation, enabling the integration of heterogeneous and distributed data independently of the software and schemas adopted.",
+      "cidoc_crm_2": "CIDOC CRM promotes a shared understanding of cultural heritage information, acting as “semantic glue” between museums, archives, libraries and other information systems.",
+      "crmsci_1": "The Scientific Observation Model (CRMsci) is a formal ontology designed as a global schema for integrating metadata relating to scientific observation, measurements and processed data in empirical and descriptive sciences.",
+      "crmsci_2": "The model facilitates the management, integration and exchange of research data through the description of semantic relationships, particularly causal ones, in research contexts and digital infrastructures.",
+      "crminf_1": "CRMinf is a formal ontology dedicated to modelling argumentation and inferential processes in descriptive and empirical sciences. It enables the structured representation of reasoning, premises, conclusions and cognitive activities.",
+      "crminf_2": "Its goal is to support the integration, mediation and access to data relating to reasoning processes, promoting an explicit representation of interpretive knowledge.",
+      "crmcpm_1": "The Conservation Process Model (CPM) is a formal ontology developed since 2015 by the Sapienza University of Rome research group for representing knowledge, analysis and conservation processes concerning historic architecture.",
+      "crmcpm_2": "Integrated into the CIDOC CRM structure, CPM enables articulated semantic management of information relating to conservation, preserving the complexity and cultural value of historic architecture.",
+      "cidoc_link_label": "CIDOC CRM – Conceptual Reference Model (opens in a new window)",
+      "cidoc_crm_visit_site": "CIDOC CRM – official website",
+      "cidoc_sci_visit_site": "CIDOC CRMsci – official website",
+      "cidoc_inf_visit_site": "CIDOC CRMinf – official website",
+      "cidoc_cpm_visit_site": "CPM – official website"
+    },
+    "crediti": {
+      "title": "Credits",
+      "intro": "The development of HD-LSD is the result of interdisciplinary work involving scientific, methodological and IT expertise.",
+      "modeling_title": "Analysis, design and formal modelling",
+      "modeling": "Design, definition and validation of conceptual and ontological models for representing diagnostic data and cultural heritage.",
+      "it_development_title": "IT system development",
+      "it_development": "Design and development of the software architecture, web interfaces and services for data management and querying.",
+      "logo_title": "Logo"
+    },
+    "contatti": {
+      "title": "Contacts",
+      "intro": "For information and contacts, you can send an email to",
+      "email_subject": "Information request"
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated:",
+    "intro": "This website processes personal data exclusively for institutional and research purposes, in compliance with Regulation (EU) 2016/679 (GDPR).",
+    "controller": {
+      "title": "Data controller",
+      "text": "The data controller for personal data collected through this website is the institution responsible for the HD-LSD project, as part of its research and development activities."
+    },
+    "data": {
+      "title": "Types of data processed",
+      "text": "The website processes personal data voluntarily provided by users authorized to access the services, as well as technical data necessary for system operation.",
+      "item1": "Identification and contact data for access to the services",
+      "item2": "Technical browsing and session data"
+    },
+    "purpose": {
+      "title": "Purposes and legal basis of processing",
+      "text": "Personal data is processed exclusively to provide the services requested by the user and to ensure the security and proper operation of the system.",
+      "item1": "Performance of a service requested by the user (Art. 6.1.b GDPR)",
+      "item2": "Legitimate interest of the controller in system security"
+    },
+    "retention": {
+      "title": "Data retention",
+      "text": "Personal data is retained for the time strictly necessary to achieve the purposes for which it was collected and in compliance with legal obligations."
+    },
+    "rights": {
+      "title": "Rights of the data subject",
+      "text": "Data subjects may exercise the rights provided for in Articles 15 et seq. of the GDPR, including the right of access, rectification, erasure, restriction of processing and objection."
+    },
+    "security": {
+      "title": "Data security",
+      "text": "The controller adopts appropriate technical and organizational measures to ensure the security of personal data and prevent unauthorized access."
+    },
+    "cookies": {
+      "title": "Cookie notice",
+      "text": "The website uses only technical cookies necessary for the operation of the services. For further information, please refer to the Cookie Policy.",
+      "message": "This website uses technical cookies to ensure proper operation.",
+      "more_info": "More information is available in the",
+      "privacy_policy": "Privacy policy",
+      "cookie_policy": "Cookie policy",
+      "accept": "Accept",
+      "and": "and in the"
+    }
+  },
+  "cookie": {
+    "title": "Cookie Policy",
+    "updated": "Last updated:",
+    "what": {
+      "title": "What cookies are",
+      "text": "Cookies are small text files that the website sends to the user’s browser to allow pages and services to function properly."
+    },
+    "types": {
+      "title": "Types of cookies used",
+      "text": "The website uses only technical cookies necessary for browsing and accessing restricted services.",
+      "item1": "Session cookies for authentication",
+      "item2": "Technical cookies for the proper operation of the website"
+    },
+    "purpose": {
+      "title": "Purpose of cookies",
+      "text": "Technical cookies are used exclusively to enable browsing and provide the services requested by the user."
+    },
+    "manage": {
+      "title": "Cookie management",
+      "text": "Users can configure their browser to accept or reject cookies. Disabling technical cookies may compromise the proper operation of the website."
+    },
+    "legal": {
+      "title": "Legal basis",
+      "text": "The use of technical cookies is based on the need to provide the services requested by the user, pursuant to Art. 6.1.b of the GDPR."
     }
   }
-
-
 }

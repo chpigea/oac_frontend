@@ -37,80 +37,73 @@
 
 {% block content %}
 
-    
-    <div class="container" style="margin-top:1rem!important; margin-bottom:1rem!important;">
-      <div class="col-lg-12 px-0">
-        
-        <!-- uncomment to enable links to load sample queries
-        <p>
-          Load example queries :
-          <a href="#" onclick="document.querySelector('spar-natural').loadQuery(window['example_1']);return false;">example 1</a>
-          |
-          <a href="#" onclick="document.querySelector('spar-natural').loadQuery(window['example_2']);return false;">example 2</a>
-        </p>
-        -->
 
-        <!-- The sparnatural web component with config attributes. -->
-        <!-- See http://docs.sparnatural.eu/Javascript-integration.html#html-attributes-reference -->
-        <spar-natural
-            src="/backend/ontology/schema/{{schema}}"
-            endpoint="/backend/fuseki/endpoint/sparql"
-            lang="en"
-            defaultLang="en"
-            distinct="true"
-            limit="1000"
-            debug="true"
-        ></spar-natural>
-        
-        <!-- Modalità risultati -->
-        <div class="mt-3 mb-2">
-          <label class="me-3">
-            <input type="radio" name="viewMode" value="direct" checked>
-            Oggetto RDF
-          </label>
-          <label>
-            <input type="radio" name="viewMode" value="indagine">
-            Scheda indagine
-          </label>
-        </div>
 
-        <span class="btn btn-primary" id="sparql-toggle">Toggle SPARQL query</span>
+{% set searchPageTitle = t(searchTitleKey|default('search.advanced.title')) %}
 
-      </div>
-    </div>
+<section class="container advanced-search-page my-3"
+         aria-labelledby="search-page-title">
 
-    <!-- raw SPARQL query editor, yasQE -->
-    <!-- see https://triply.cc/docs/yasgui/ -->
-    <div class="container my-5">
-      <div id="yasqe" style="display:none; " />
-    </div>
+    <h1 id="search-page-title">
+        {{ searchPageTitle }}
+    </h1>
 
-    <!-- SPARQL query results display, yasR -->
-    <!-- see https://triply.cc/docs/yasgui/ -->
-    <div class="container my-5">
-      <div id="yasr">
-      </div>
-    </div>
 
-    <!-- Bootstrap JS -->
-    <script src="/frontend/js/lib/bootstrap.bundle.min.js"></script>
 
-    <!-- YASGUI JS -->
-    <script src="/frontend/js/lib/yasgui.min.js"></script>
+  <div class="col-lg-12 px-0">
 
-    <!-- Sparnatural JS -->
-    <script src="/frontend/js/lib/sparnatural.js"></script>
+    <spar-natural
+        src="/backend/ontology/schema/{{ schema }}"
+        endpoint="/backend/fuseki/endpoint/sparql"
+        lang="{{ currentLang|default('it') }}"
+        defaultLang="{{ currentLang|default('it') }}"
+        distinct="true"
+        limit="1000"
+        debug="true">
+    </spar-natural>
 
-    <!-- Sparnatural Custom YASR plugins -->
-    <script src="/frontend/js/lib/sparnatural-yasgui-plugins.js"></script>
+    <fieldset class="mt-3 mb-2">
+      <legend class="visually-hidden">
+        {{ t('advanced.view_mode') }}
+      </legend>
 
-    <!-- File containing example queries -->
-    <script src="/frontend/js/lib/sparnatural-example-queries.js"></script>
-    
-    <script src="/frontend/js/lib/sparnatural-tree-select.js"></script>
+      <label class="me-3">
+        <input type="radio" name="viewMode" value="direct" checked>
+        {{ t('search.advanced.view_mode_rdf') }}
+      </label>
 
-    <!-- This page custom JS -->
-    <script src="/frontend/js/lib/sparnatural-main.js"></script>  
+      <label>
+        <input type="radio" name="viewMode" value="indagine">
+        {{ t('search.advanced.view_mode_investigation') }}
+      </label>
+    </fieldset>
 
+    <button type="button"
+            class="btn btn-primary"
+            id="sparql-toggle"
+            aria-expanded="false"
+            aria-controls="yasqe">
+      {{ t('search.advanced.toggle_sparql') }}
+    </button>
+
+  </div>
+
+</section>
+
+<div class="container my-5">
+  <div id="yasqe" style="display:none;"></div>
+</div>
+
+<div class="container my-5">
+  <div id="yasr"></div>
+</div>
+
+<script src="/frontend/js/lib/bootstrap.bundle.min.js"></script>
+<script src="/frontend/js/lib/yasgui.min.js"></script>
+<script src="/frontend/js/lib/sparnatural.js"></script>
+<script src="/frontend/js/lib/sparnatural-yasgui-plugins.js"></script>
+<script src="/frontend/js/lib/sparnatural-example-queries.js"></script>
+<script src="/frontend/js/lib/sparnatural-tree-select.js"></script>
+<script src="/frontend/js/lib/sparnatural-main.js"></script>
 
 {% endblock %}

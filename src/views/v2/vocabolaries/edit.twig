@@ -11,30 +11,65 @@
 <div style="margin: 30px;">
 
     <div>
-        <h2 style="display:flex; justify-content:space-between; align-items:center;">    
-            <span>{{ t('users.vocabolaries.title') }}:</span>
-        </h2>
+        <h1 id="vocabolaries-title"
+            style="display:flex; justify-content:space-between; align-items:center;">
+            {{ t('users.vocabolaries.title') }}:
+        </h1>
     </div>
 
-    <div class="dropzone" id="dropzone" draggable="true" tabindex="0">
-        <p>{{ t('users.vocabolaries.drag_drop') }}
-            <button style="margin-left:20px;" id="browseBtn" class="btn" type="button">
-                <i class="fa-solid fa-folder-open" 
-                    style="font-size:24px; color:darkred;">
+    <div class="dropzone"
+        id="dropzone"
+        draggable="true"
+        tabindex="0"
+        aria-describedby="dropzone-description">
+
+        <p id="dropzone-description">
+            {{ t('users.vocabolaries.drag_drop') }}
+
+            <button style="margin-left:20px;"
+                    id="browseBtn"
+                    class="btn"
+                    type="button"
+                    aria-label="{{ t('users.vocabolaries.browse_file')|default('Seleziona file') }}"
+                    title="{{ t('users.vocabolaries.browse_file')|default('Seleziona file') }}">
+                <i class="fa-solid fa-folder-open"
+                aria-hidden="true"
+                style="font-size:24px; color:darkred;">
                 </i>
             </button>
         </p>
-        <input id="fileInput" type="file" style="display:none" multiple>
-        <div class="files-list" id="filesList"></div>
+
+        <label for="fileInput" class="visually-hidden">
+            {{ t('users.vocabolaries.file_input')|default('File da caricare') }}
+        </label>
+
+        <input id="fileInput"
+            type="file"
+            style="display:none"
+            multiple>
+
+        <div class="files-list"
+            id="filesList"
+            aria-live="polite">
+        </div>
     </div>
 
     <div id="vocabolary-view" style="margin-left:100px; width: calc(100% - 200px)"
         data-lang_terms="{{ t('users.vocabolaries.terms') }}" 
     >
-        <div><span style="font-weight:bold;">{{ t('users.vocabolaries.select_vocabolary') }}:</span></div>
-        <select size="10" v-model="vocabolary" style="min-width:500px;">
-            <option v-for="item in vocabolaries" :value="item">{@ item.name @}</option>
-        </select>
+ <label for="vocabolary-select"
+       style="font-weight:bold; display:block; margin-bottom:6px;">
+    {{ t('users.vocabolaries.select_vocabolary') }}:
+</label>
+
+<select id="vocabolary-select"
+        size="10"
+        v-model="vocabolary"
+        style="min-width:500px;">
+    <option v-for="item in vocabolaries" :value="item">
+        {@ item.name @}
+    </option>
+</select>
         <div v-if="vocabolary">
             <div style="
                 margin-top:30px; font-size:24px; 
