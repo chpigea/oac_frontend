@@ -97,7 +97,8 @@
     "vocabolaries": {
       "title": "Vocabularies",
       "drag_drop": "Drag and drop XML files here, or click to select them",
-      "browse": "browse",
+      "browse_file": "Select file",
+      "file_input": "File to upload",
       "no_files": "No files selected",
       "file": "file",
       "files": "files",

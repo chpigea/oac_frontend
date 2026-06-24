@@ -54,7 +54,7 @@
     {# ----------------------------------
      VIDEO DI PRESENTAZIONE
   ---------------------------------- #}
-  <div class="system-video-wrapper">
+<div class="system-video-wrapper">
     <video
         class="system-video"
         controls
@@ -62,11 +62,13 @@
         poster="/frontend/v2/images/cover_video.jpg"
         aria-describedby="system-video-description"
     >
-        {{ t('introduzione.sistema.video_not_supported') }}
+        <source src="/frontend/v2/videos/hd-lsd-introduction.mp4" type="video/mp4">
+
+        {{ t('introduzione.sistema.video_not_supported')|default('Il tuo browser non supporta il tag video.') }}
     </video>
 
     <p id="system-video-description" class="visually-hidden">
-        {{ t('introduzione.sistema.video_description') }}
+        {{ t('introduzione.sistema.video_description')|default('Video introduttivo al funzionamento del sito HD-LSD') }}
     </p>
   </div>
 

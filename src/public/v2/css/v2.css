@@ -1149,3 +1149,26 @@ body.layout-v2 {
     outline: 3px solid #6E1B2A;
     outline-offset: 3px;
 }
+
+
+/* =========================
+   LAYOUT – EVITA DOPPIA SCROLLBAR
+   ========================= */
+
+/* Lo scroll deve restare solo dentro il contenuto centrale */
+html,
+body {
+  overflow: hidden;
+}
+
+body.layout-v2 {
+  overflow: hidden;
+}
+
+.layout-body {
+  overflow: hidden;
+}
+
+.main-content {
+  overflow: auto;
+}

@@ -99,7 +99,8 @@
         "vocabolaries": {
             "title": "Vocabolari",
             "drag_drop": "Trascina e rilascia i file XML qui, oppure clicca per selezionare",
-            "browse": "sfoglia",
+            "browse_file": "Seleziona file",
+            "file_input": "File da caricare",
             "no_files": "Nessun file selezionato",
             "file": "file",
             "files": "file",
