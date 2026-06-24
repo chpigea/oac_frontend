@@ -4,6 +4,27 @@
     "app": {
         "title": "Flussi Conservativi"
     },
+    "sidebar": {
+        "presentazione": {
+          "label": "Menu di presentazione",
+          "sistema": "Il sistema",
+          "finalita": "Finalità",
+          "partecipanti": "Partecipanti",
+          "bibliografia": "Riferimenti e bibliografia",
+          "modelli": "Modelli utilizzati",
+          "crediti": "Crediti",
+          "contatti": "Contatti"
+        },
+        "indagine" : "Indagine",
+        "admin": {
+          "label": "Menu amministrazione",
+          "title": "Amministrazione",
+          "users": "Utenti",
+          "vocabularies": "Vocabolari"
+        }
+      },
+
+
     "login": {
         "title": "Accesso",
         "user": "Email o Nome utente",
@@ -33,7 +54,8 @@
     },
     "admin": {
         "manage" :{
-            "title" : "Amministrazione"
+            "title" : "Amministrazione",
+            "description" : "Funzioni di amministrazione per la gestione degli utenti e l'aggiornamento dei vocabolari."
         }
     },
     "users": {
@@ -107,6 +129,10 @@
             "valid": "Valido",
             "not_valid": "Non valido"
         },
+        "viewer": {
+          "title": "Visualizzazione indagine",
+          "close_hint": "Puoi chiudere questa scheda dal browser."
+        },
         "title": "Indagine",
         "edit_item": "Modifica",
         "new_item": "Nuova",
@@ -114,7 +140,8 @@
         "search": "Ricerca",
         "edit_from_other_user": "Un altro utente sta modificando questo elemento",
         "save_ok": "Scheda salvata correttamente",
-        "save_err": "Errore nel salvataggio della scheda"
+        "save_err": "Errore nel salvataggio della scheda",
+        "close" : "Chiudi"
 
     },
     "search": {
@@ -124,26 +151,63 @@
             "investigations": "Indagini",
             "samples": "Campioni",
             "diagnostics": "Attività diagnostiche",
-            "materials": "Materiali"
+            "materials": "Materiali",
+            "1": "Ricerca Indagini",
+            "2": "Ricerca Campioni",
+            "3": "Ricerca Attività diagnostiche",
+            "4": "Ricerca Materiali"
+
         },
         "advanced": {
-            "title": "Ricerca avanzata"
+            "title": "Ricerca avanzata",
+            "view_mode_rdf" : "Oggetto RDF",
+            "view_mode_investigation" : "Scheda indagine",
+            "toggle_sparql" : "Toggle SPARQL query"
+        },
+        "index": {
+          "title": "Ricerca",
+          "description_1": "Il principale vantaggio del sistema risiede nella possibilità, da parte degli esperti di dominio, d’interrogare direttamente i dati archiviati per ricerche semplici o complesse.",
+          "description_2": "Entrambe rispondono alle logiche e al linguaggio SPARQL, ma si avvalgono dell’ausilio della tecnologia NaturalSparql, che suggerisce le possibili combinazioni consentite dalla semantica sottesa al progetto.",
+          "description_3": "Ciò si traduce nell’identificazione delle concatenazioni possibili a partire da una qualsiasi entità d’interesse appartenente al grafo, e nella possibilità di selezionare i successivi sintagmi della query all’interno dei soli punti di ingresso significativi.",
+          "access_intro": "In questa sezione è possibile accedere alla:",
+          "fast_search_title": "Ricerca veloce",
+          "fast_search_description": "in cui le entità di ingresso sono state scremate alla luce dei focus tematici: Indagine, Campione, Attività diagnostica, Materiale.",
+          "advanced_search_title": "Ricerca avanzata",
+          "advanced_search_description": "in cui è possibile interrogare il sistema a partire da una qualunque delle entità presenti all’interno del grafo di conoscenza.",
+          "guide_title": "Interrogare il sistema",
+          "guide_description": "Guida pratica per interrogare il sistema:",
+          "guide_link": "scarica la guida in PDF"
         }
 
     },
     "footer": {
-        "text": "Sviluppato da IGEA: tutti i diritti riservati"
+        "text": "Sviluppato da IGEA: tutti i diritti riservati",
+         "institutional_logos": "Loghi istituzionali",
+        "legal_links": "Informazioni legali",
+        "privacy": "Privacy",
+        "cookie": "Cookie",
+        "eu_alt": "Finanziato dall’Unione Europea",
+        "miur_alt": "Ministero dell’Università e della Ricerca"
     },
     "footer_leg": {
         "privacy": "Informativa sulla privacy",
         "cookie": "Informativa sui cookie"
     },
-
+"legal": {
+    "title": "Informazioni legali",
+    "description": "Finestra informativa con privacy policy e cookie policy."
+  },
+  "common": {
+    "close": "Chiudi"
+  },
  
 
   "introduzione": {
     "sistema": {
       "title": "Il sistema",
+      "description" :"<strong>HD-LSD (Heritage & Diagnostics – Linked Semantic Data)</strong> è uno strumento di raccolta e gestione dei dati diagnostici nel settore dei beni culturali, negli ambiti architettonici, archeologici, storico-        artistici e ambientali.<br/>La consultazione consente di porre domande sull'interpretazione dei dati, fornendo flussi di lavoro e best practice sia per le attività sul campo che per quelle di laboratorio e offrendo una documentazione che va dal livello macroscopico fino alla scala microscopica, esplorando tecniche di caratterizzazione dei materiali, di analisi della produzione, di identificazione del degrado, di datazione e di ricostruzione del paleoambiente e delle pratiche di coltivazione.",
+      "video_description":"Introduzione al funzionamento del sito HD-LSD",
+      "video_not_supported" : "Video non supportato",
       "area": {
         "heritage": "Heritage",
         "diagnostics": "Diagnostics",
@@ -166,12 +230,81 @@
         "comprendere": "Comprendere",
         "analizzare": "Analizzare",
         "condividere": "Condividere"
+      },
+      "description_1": "La principale finalità di <strong>HD-LSD</strong> risiede nel superamento dell'interpretazione settoriale dei dati, aprendo a una lettura <em>interdisciplinare</em> della diagnostica applicata ai beni culturali e facilitando la ricerca e la comprensione dei flussi di lavoro nei diversi ambiti.",
+      "description_2": "Attraverso l'integrazione e la condivisione delle conoscenze, la piattaforma favorisce una migliore accessibilità alle informazioni da parte della comunità scientifica, valorizzando sia l'attività di campo che quella laboratoriale."
+    
+    },
+    "partecipanti": {
+      "title": "Partecipanti",
+      "intro": "HD-LSD è un prodotto del progetto nazionale di ricerca PE5 CHANGES PNRR, Spoke 5. Rientra nelle attività del WP6 <em>Cross-disciplinary interpretation of data from novel diagnostics and definition of multi-method protocols for the study of Cultural Heritage</em>, composto da un team interdisciplinare di Sapienza Università di Roma che coinvolge quattro dipartimenti:",
+      "departments": {
+        "sdara": {
+          "name": "Dipartimento di Storia, Disegno e Restauro dell'Architettura",
+          "people": "Donatella Fiorani · Chiara Porrovecchio · Silvia Cigognetti"
+        },
+        "antichita": {
+          "name": "Dipartimento di Scienze dell'Antichità",
+          "people": "Cristina Lemorini · Giulia Previti"
+        },
+        "terra": {
+          "name": "Dipartimento di Scienze della Terra",
+          "people": "Laura Medeghini · Melania Di Fazio"
+        },
+        "biologia": {
+          "name": "Dipartimento di Biologia Ambientale",
+          "people": "Mauro Iberite · Laura Sadori · Alessia Masi · Eleonora Creafogli"
+        }
       }
-    }
+    },
+    "bibliografia" :{
+      "title" : "Riferimenti e bibliografia",
+
+      "intro": "La presente sezione raccoglie i principali riferimenti scientifici e documentali utilizzati per l'elaborazione del modello concettuale e del quadro teorico di riferimento.",
+      "webography":"Sitografia",
+      "references":"Bibliografia",
+      "cidoc_link_label" : "CIDOC CRM – Conceptual Reference Model (si apre in una nuova finestra)"
+    },
+    "modelli" :{
+      "title" : "Modelli di riferimento",
+
+      "intro": "",
+      "cidoc_crm_1":"Il CIDOC Conceptual Reference Model (CRM) è uno strumento teorico e pratico per l’integrazione delle informazioni nel campo del patrimonio culturale. Fornisce definizioni e una struttura formale per descrivere concetti e relazioni utilizzati nella documentazione del patrimonio culturale, consentendo l’integrazione di dati eterogenei e distribuiti in modo indipendente dal software e dagli schemi adottati.",
+      "cidoc_crm_2": "Il CIDOC CRM promuove una comprensione condivisa delle informazioni sul patrimonio culturale, fungendo da “colla semantica” tra musei, archivi, biblioteche e altri sistemi informativi.",
+      "crmsci_1":"Scientific Observation Model (CRMsci) è un’ontologia formale progettata come schema globale per l’integrazione dei metadati relativi all’osservazione scientifica, alle misurazioni e ai dati elaborati nelle scienze empiriche e descrittive.",
+      "crmsci_2":"Il modello facilita la gestione, l’integrazione e lo scambio dei dati di ricerca attraverso la descrizione delle relazioni semantiche, in particolare di tipo causale, nei contesti di ricerca e nelle infrastrutture digitali.",
+      "crminf_1":"CRMinf è un’ontologia formale dedicata alla modellazione dell’argomentazione e dei processi inferenziali nelle scienze descrittive ed empiriche. Consente di rappresentare in modo strutturato il ragionamento, le premesse, le conclusioni e le attività cognitive.",
+      "crminf_2":"Il suo obiettivo è supportare l’integrazione, la mediazione e l’accesso ai dati relativi ai processi di ragionamento, favorendo una rappresentazione esplicita della conoscenza interpretativa.",
+      "crmcpm_1" : "Il Conservation Process Model (CPM) è un’ontologia formale sviluppata dal 2015 dal gruppo di ricerca della Sapienza Università di Roma per la rappresentazione dei processi di conoscenza, analisi e conservazione dell’architettura storica.",
+      "crmcpm_2" : "Integrata nella struttura del CIDOC CRM, la CPM consente una gestione semantica articolata delle informazioni relative alla conservazione, preservando la complessità e il valore culturale dell’architettura storica.",
+      "cidoc_link_label" : "CIDOC CRM – Conceptual Reference Model (si apre in una nuova finestra)",
+      "cidoc_crm_visit_site":"CIDOC CRM – sito ufficiale",
+      "cidoc_sci_visit_site":"CIDOC CRMsci – sito ufficiale",
+      "cidoc_inf_visit_site" :"CIDOC CRMinf – sito ufficiale",
+      "cidoc_cpm_visit_site" :"CPM – sito ufficiale"
+
+    },
+    "crediti" : {
+      "title" : "Crediti", 
+      "intro" : "La realizzazione di HD-LSD è il risultato di un lavoro interdisciplinare che ha coinvolto competenze scientifiche, metodologiche e informatiche.",
+      "modeling_title" : "Analisi, progettazione e modellazione formale",
+      "modeling" : "Progettazione, definizione e validazione dei modelli concettuali e ontologici per la rappresentazione dei dati diagnostici e del patrimonio culturale.",
+      "it_development_title" : "Sviluppo del sistema informatico",
+      "it_development" : " Progettazione e sviluppo dell’architettura software, delle interfacce web e dei servizi di gestione e interrogazione dei dati.",
+      "logo_title" :"Logo"
+    },
+    "contatti": {
+      "title": "Contatti",
+      "intro": "Per informazioni e contatti, è possibile inviare un’email all’indirizzo",
+      "email_subject": "Richiesta informazioni"
+  }
+    
+
   },
   "privacy": {
     "title": "Privacy Policy",
     "updated": "Ultimo aggiornamento:",
+    "intro": "Il presente sito tratta dati personali esclusivamente per finalità istituzionali e di ricerca, nel rispetto del Regolamento (UE) 2016/679 (GDPR).",
     "controller": {
       "title": "Titolare del trattamento",
       "text": "Il titolare del trattamento dei dati personali raccolti tramite il presente sito è l’ente responsabile del progetto HD-LSD, nell’ambito delle attività di ricerca e sviluppo."
@@ -201,8 +334,14 @@
       "text": "Il titolare adotta misure tecniche e organizzative adeguate per garantire la sicurezza dei dati personali e prevenire accessi non autorizzati."
     },
     "cookies": {
-      "title": "Cookie",
-      "text": "Il sito utilizza esclusivamente cookie tecnici necessari al funzionamento dei servizi. Per maggiori informazioni si rimanda alla Cookie Policy."
+      "title": "Informativa cookie",
+      "text": "Il sito utilizza esclusivamente cookie tecnici necessari al funzionamento dei servizi. Per maggiori informazioni si rimanda alla Cookie Policy.",
+    "message": "Questo sito utilizza cookie tecnici per il corretto funzionamento.",
+    "more_info": "Maggiori informazioni sono disponibili nella",
+    "privacy_policy": "Privacy policy",
+    "cookie_policy": "Cookie policy",
+    "accept": "Accetta",
+    "and" : "e nella"
     }
   },
   "cookie": {

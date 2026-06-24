@@ -1,15 +1,43 @@
-<div id="cookie-banner" class="cookie-banner" style="display:none;">
-  <div class="cookie-banner-content">
-    <span>
-      Questo sito utilizza cookie tecnici per il corretto funzionamento.
-      Maggiori informazioni sono disponibili nella
-      <a href="javascript:void(0)" onclick="openPrivacy()">Privacy policy</a>
-      e nella
-      <a href="javascript:void(0)" onclick="openCookie()">Cookie policy</a>
-    </span>
+<div id="cookie-banner"
+     class="cookie-banner"
+     role="region"
+     aria-labelledby="cookie-banner-title"
+     aria-describedby="cookie-banner-description"
+     style="display:none;">
 
-    <button id="cookie-accept" class="cookie-btn">
-      Accetta
+  <div class="cookie-banner-content">
+
+    <div class="cookie-banner-text">
+      <h2 id="cookie-banner-title" class="visually-hidden">
+        {{ t('privacy.cookies.title')|default('Informativa cookie') }}
+      </h2>
+
+      <p id="cookie-banner-description">
+        {{ t('privacy.cookies.message')|default('Questo sito utilizza cookie tecnici per il corretto funzionamento.') }}
+
+        {{ t('privacy.cookies.more_info')|default('Maggiori informazioni sono disponibili nella') }}
+
+        <button type="button"
+                class="link-button"
+                onclick="openPrivacy()">
+          {{ t('privacy.cookies.privacy_policy')|default('Privacy policy') }}
+        </button>
+
+        {{ t('privacy.cookies.and')|default('e nella') }}
+
+        <button type="button"
+                class="link-button"
+                onclick="openCookie()">
+          {{ t('privacy.cookies.cookie_policy')|default('Cookie policy') }}
+        </button>.
+      </p>
+    </div>
+
+    <button id="cookie-accept"
+            type="button"
+            class="cookie-btn">
+      {{ t('privacy.cookies.accept')|default('Accetta') }}
     </button>
+
   </div>
 </div>

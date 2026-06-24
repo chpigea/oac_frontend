@@ -2,142 +2,148 @@
 
 {% block extendHead %}
 
-    <!-- BOOTSTRAP CSS -->
-    <link rel="stylesheet" href="/frontend/css/bootstrap.min.css" />
-
-    <!-- YASGUI CSS -->
     <link rel="stylesheet" href="/frontend/css/yasgui.min.css" />
-
-    <!-- Font Awesome -->    
     <link rel="stylesheet" href="/frontend/css/fa/css/all.min.css" />
-
-    <!-- Sparnatural CSS -->
     <link rel="stylesheet" href="/frontend/css/sparnatural-form.css">
-
-    <style>
-      .yasqe .CodeMirror {
-        font-size: 0.9em;
-        height: 380px;
-      }
-      .yasr_header {
-        display: none;
-      }
-      .form-container {
-        background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-      }
-      .result-container {
-        margin-top: 20px;
-      }
-    </style>
 
 {% endblock %}
 
 {% block content %}
 
-    <div class="container-fluid mt-4">
-      <div class="row">
-        <!-- Colonne gauche : formulaire + onglets -->
-        <div class="col-md-4">
-          <!-- Onglets -->
-          <ul class="nav nav-tabs" id="formTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link active"
-                id="tab1"
-                data-form="form1"
-                type="button"
-                role="tab"
-              >
-                Artwork
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="tab2"
-                data-form="form2"
-                type="button"
-                role="tab"
-              >
-                Museum
-              </button>
-            </li>
-          </ul>
+<section class="container-fluid mt-4 fast-search-page" aria-labelledby="fast-search-title">
 
-          <!-- Formulaire 1 -->
-          <sparnatural-form
-            id="form1"
-            class="form-instance active-form"
-            style="display: block"
-            lang="en"
-            defaultLang="en"
-            limit="100"
-            endpoint="/backend/fuseki/endpoint/sparql"
-            endpoint_="https://proxy.sparnatural.eu/sparql-proxy/sparql?endpoint=http%3A%2F%2Ffr.dbpedia.org%2Fsparql"
-            prefix="skos:http://www.w3.org/2004/02/skos/core# rico:https://www.ica.org/standards/RiC/ontology#"
-            src="/backend/ontology/schema/config/01"
-            form="/backend/ontology/schema/form/01"
-            query="/backend/ontology/schema/query/01"
-          ></sparnatural-form>
+  <h1 id="fast-search-title">
+    {{ t('search.fast.title')|default('Ricerca veloce') }}
+  </h1>
 
-          <!-- Formulaire 2 -->
-          <sparnatural-form
-            id="form2"
-            class="form-instance"
-            style="display: none"
-            lang="en"
-            defaultLang="en"
-            limit="100"
-            endpoint="https://proxy.sparnatural.eu/sparql-proxy/sparql?endpoint=http%3A%2F%2Ffr.dbpedia.org%2Fsparql"
-            prefix="skos:http://www.w3.org/2004/02/skos/core# rico:https://www.ica.org/standards/RiC/ontology#"
-            src="/backend/ontology/schema/config/02"
-            form="/backend/ontology/schema/form/02"
-            query="/backend/ontology/schema/query/02"
-          ></sparnatural-form>
-        </div>
+  <div class="row">
 
-        <!-- Colonne droite : éditeur et résultats -->
-        <div class="col-md-8">
-          <p>
-            Queries are sent to
-            <a id="displayEndpoint" href="#" target="_blank">...</a>
-          </p>
-          <button class="btn btn-primary" id="sparql-toggle">
-            Toggle SPARQL Query
+    <div class="col-md-4">
+
+      <h2 class="visually-hidden">
+        {{ t('search.fast.forms_title')|default('Tipologie di ricerca') }}
+      </h2>
+
+      <ul class="nav nav-tabs" id="formTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="tab1"
+            data-form="form1"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="form1-panel">
+            Artwork
           </button>
+        </li>
 
-          <div class="row mt-2">
-            <div class="col-md-12">
-              <div id="yasqe"></div>
-            </div>
-          </div>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="tab2"
+            data-form="form2"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="form2-panel">
+            Museum
+          </button>
+        </li>
+      </ul>
 
-          <div class="result-container">
-            <div id="yasr"></div>
-          </div>
-        </div>
+      <div id="form1-panel"
+           role="tabpanel"
+           aria-labelledby="tab1"
+           class="form-container">
+
+        <sparnatural-form
+          id="form1"
+          class="form-instance active-form"
+          style="display: block"
+          aria-label="{{ t('search.fast.form_artwork')|default('Modulo di ricerca Artwork') }}"
+          lang="{{ currentLang|default('it') }}"
+          defaultLang="{{ currentLang|default('it') }}"
+          limit="100"
+          endpoint="/backend/fuseki/endpoint/sparql"
+          endpoint_="https://proxy.sparnatural.eu/sparql-proxy/sparql?endpoint=http%3A%2F%2Ffr.dbpedia.org%2Fsparql"
+          prefix="skos:http://www.w3.org/2004/02/skos/core# rico:https://www.ica.org/standards/RiC/ontology#"
+          src="/backend/ontology/schema/config/01"
+          form="/backend/ontology/schema/form/01"
+          query="/backend/ontology/schema/query/01">
+        </sparnatural-form>
+
       </div>
+
+      <div id="form2-panel"
+           role="tabpanel"
+           aria-labelledby="tab2"
+           class="form-container"
+           hidden>
+
+        <sparnatural-form
+          id="form2"
+          class="form-instance"
+          style="display: none"
+          aria-label="{{ t('search.fast.form_museum')|default('Modulo di ricerca Museum') }}"
+          lang="{{ currentLang|default('it') }}"
+          defaultLang="{{ currentLang|default('it') }}"
+          limit="100"
+          endpoint="https://proxy.sparnatural.eu/sparql-proxy/sparql?endpoint=http%3A%2F%2Ffr.dbpedia.org%2Fsparql"
+          prefix="skos:http://www.w3.org/2004/02/skos/core# rico:https://www.ica.org/standards/RiC/ontology#"
+          src="/backend/ontology/schema/config/02"
+          form="/backend/ontology/schema/form/02"
+          query="/backend/ontology/schema/query/02">
+        </sparnatural-form>
+
+      </div>
+
     </div>
 
-    <!-- Scripts -->
+    <div class="col-md-8">
 
-    <!-- Bootstrap JS -->
-    <script src="/frontend/js/lib/bootstrap.bundle.min.js"></script>
+      <h2 class="visually-hidden">
+        {{ t('search.fast.results_title')|default('Query e risultati') }}
+      </h2>
 
-    <!-- YASGUI JS -->
-    <script src="/frontend/js/lib/yasgui.min.js"></script>
+      <p>
+        {{ t('search.fast.queries_sent_to')|default('Le query sono inviate a') }}
+        <a id="displayEndpoint"
+           href="/backend/fuseki/endpoint/sparql"
+           target="_blank"
+           rel="noopener noreferrer">
+          {{ t('search.fast.sparql_endpoint')|default('endpoint SPARQL') }}
+        </a>
+      </p>
 
-    <!-- Sparnatural JS -->
-    <script src="/frontend/js/lib/sparnatural-form.js"></script>
+      <button class="btn btn-primary"
+              id="sparql-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls="yasqe">
+        {{ t('search.fast.toggle_sparql')|default('Mostra o nascondi query SPARQL') }}
+      </button>
 
-    <!-- Sparnatural Custom YASR plugins -->
-    <script src="/frontend/js/lib/sparnatural-yasgui-plugins.js"></script>
+      <div class="row mt-2">
+        <div class="col-md-12">
+          <div id="yasqe" aria-label="{{ t('search.fast.sparql_editor')|default('Editor query SPARQL') }}"></div>
+        </div>
+      </div>
 
-    <!-- This page custom JS -->
-    <script src="/frontend/js/lib/sparnatural-form-main.js"></script>  
+      <div class="result-container">
+        <div id="yasr" aria-label="{{ t('search.fast.results')|default('Risultati della ricerca') }}"></div>
+      </div>
 
+    </div>
+
+  </div>
+
+</section>
+
+<script src="/frontend/js/lib/bootstrap.bundle.min.js"></script>
+<script src="/frontend/js/lib/yasgui.min.js"></script>
+<script src="/frontend/js/lib/sparnatural-form.js"></script>
+<script src="/frontend/js/lib/sparnatural-yasgui-plugins.js"></script>
+<script src="/frontend/js/lib/sparnatural-form-main.js"></script>
 
 {% endblock %}

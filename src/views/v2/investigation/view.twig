@@ -1,249 +1,157 @@
 {% extends "/v2/layout.twig" %}
 
-{# --------------------------------------------------
-   Forziamo modalità viewer:
-   - niente sidebar
-   - header minimale
--------------------------------------------------- #}
 {% set activeMenu = null %}
 {% set activeSidebar = null %}
 {% set activeSidebarItem = null %}
 
 {% block extendHead %}
 
-  {# SHACL FORM web component #}
   <script src="/frontend/js/lib/shacl-form.bundle-2.0.7-11.js" type="module"></script>
-
-  {# Vue investigation (stessa usata per editing) #}
   <script src="/frontend/js/app/vue-investigation.js"></script>
-
-  <style>
-    .viewer-container {
-      max-width: 1100px;
-      margin: 20px auto;
-    }
-
-    .viewer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .viewer-header h2 {
-      margin: 0;
-    }
-
-    .viewer-actions {
-      text-align: center;
-      margin-top: 20px;
-    }
-  </style>
 
 {% endblock %}
 
 {% block content %}
 
-<div class="viewer-container">
+<section class="viewer-container"
+         aria-labelledby="viewer-title">
 
+  <h1 id="viewer-title" class="visually-hidden">
+    {{ t('investigation.viewer.title')|default('Visualizzazione indagine') }}
+  </h1>
 
+  <div v-cloak
+       id="investigation-app"
+       data-cur_role="{{ user.role }}"
+       data-uuid="{{ uuid }}"
+       data-form-id="{{ form_id }}"
+       data-editing="false"
+       data-show-form="true"
+       data-label_save_ok="{{ t('investigation.save_ok') }}"
+       data-label_save_err="{{ t('investigation.save_err') }}">
 
-  {# --------------------------------------------------
-     Vue root (SENZA search)
-     UUID passato dal controller
-  -------------------------------------------------- #}
-<div v-cloak
-     id="investigation-app"
-     data-cur_role="{{ user.role }}"
-     data-uuid="{{ uuid }}"
-     data-form-id="{{ form_id }}"
-     data-editing="false"
-     data-show-form="true"
-     data-label_save_ok="{{ t('investigation.save_ok') }}"
-     data-label_save_err="{{ t('investigation.save_err') }}"
->
+    <div class="viewer-header">
 
-  <div class="viewer-header">
-  {% if user.role != 3 %}
-<!-- MODIFICA -->
-<button v-if="!inEditingViewer"
-        title="{{ t('investigation.edit_item') }}"
-        @click="startEdit"
-        type="button"
-        class="btn btn-info">
-  <i class="fa-solid fa-pen-to-square"></i>
-</button>
+      {% if user.role != 3 %}
 
-<!-- STOP EDITING -->
-<button v-if="inEditingViewer"
-        title="{{ t('investigation.stop_edit') }}"
-        @click="stopEdit"
-        type="button"
-        class="btn btn-success">
-  <i class="fa-solid fa-circle-stop" style="color:red;"></i>
-</button>
+        <button v-if="!inEditingViewer"
+                title="{{ t('investigation.edit_item') }}"
+                aria-label="{{ t('investigation.edit_item') }}"
+                @click="startEdit"
+                type="button"
+                class="btn btn-info">
+          <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+        </button>
 
-{% endif %}
+        <button v-if="inEditingViewer"
+                title="{{ t('investigation.stop_edit') }}"
+                aria-label="{{ t('investigation.stop_edit') }}"
+                @click="stopEdit"
+                type="button"
+                class="btn btn-success">
+          <i class="fa-solid fa-circle-stop viewer-stop-icon" aria-hidden="true"></i>
+        </button>
 
+      {% endif %}
 
-
-  </div>
-
+    </div>
 
     <template v-if="isVisible">
 
-      {# ---------------- BUTTONS ---------------- #}
       {% if user.role != 3 %}
-      <div class="col-12 text-center mt-4">
+        <div class="viewer-download-actions col-12 text-center mt-4">
 
-        <button class="btn btn-secondary mx-2"
-                @click="download('xml')">
-          RDF/XML
-        </button>
+          <button class="btn btn-secondary mx-2"
+                  title="{{ t('investigation.new.download') }} RDF/XML"
+                  aria-label="{{ t('investigation.new.download') }} RDF/XML"
+                  @click="download('xml')"
+                  type="button">
+            RDF/XML
+          </button>
 
-        <button class="btn btn-secondary mx-2"
-                @click="download('ttl')">
-          TURTLE
-        </button>
+          <button class="btn btn-secondary mx-2"
+                  title="{{ t('investigation.new.download') }} TURTLE"
+                  aria-label="{{ t('investigation.new.download') }} TURTLE"
+                  @click="download('ttl')"
+                  type="button">
+            TURTLE
+          </button>
 
-        <button v-if="inEditingViewer  && validForm"
-                :disabled="saving"
-                class="btn btn-primary mx-2"
-                @click="save(false)">
-          <i v-if="saving" class="fa-solid fa-spinner"></i>
-          <i v-else class="fa-solid fa-save"></i>
-        </button>
+          <button v-if="inEditingViewer && validForm"
+                  :disabled="saving"
+                  class="btn btn-primary mx-2"
+                  title="{{ t('investigation.new.confirm') }}"
+                  aria-label="{{ t('investigation.new.confirm') }}"
+                  :aria-busy="saving ? 'true' : 'false'"
+                  @click="save(false)"
+                  type="button">
+            <i v-if="saving" class="fa-solid fa-spinner" aria-hidden="true"></i>
+            <i v-else class="fa-solid fa-save" aria-hidden="true"></i>
+          </button>
 
-
-
-      </div>
+        </div>
       {% endif %}
 
-      {# ---------------- SHACL FORM ---------------- #}
       <div id="shacl-container"
-           style="margin-top:15px;
-                  border:dashed 2px gray;
-                  padding:15px;
-                  border-radius:6px;
-                  max-width: 60%;">
+           class="viewer-shacl-container"
+           aria-labelledby="viewer-title">
 
-        <shacl-form id="shacl-form"
-          data-collapse="open"
-          data-values-namespace="indagine:"
-          data-shapes-url="/backend/ontology/schema/editing"
-          data-generate-node-shape-reference=""
-        ></shacl-form>
+        <shacl-form
+                    id="shacl-form"
+                    data-collapse="open"
+                    data-values-namespace="indagine:"
+                    data-shapes-url="/backend/ontology/schema/editing"
+                    data-generate-node-shape-reference="">
+        </shacl-form>
 
       </div>
 
-      {# ---------------- DEBUG OUTPUT (admin) ---------------- #}
       {% if user.role in [0,1] %}
-      <fieldset v-if="inEditingViewer"
-        style="margin-top:15px;
-               border: solid 1px gray;
-               border-radius: 6px;
-               padding: 10px;">
-        <legend>
-          Output SHACL
-          [{@ validForm ? 'valido' : 'non valido' @}]
-        </legend>
-        <pre :style="outputStyle">{@ serializedForm @}</pre>
-      </fieldset>
+        <fieldset v-if="inEditingViewer"
+                  class="viewer-shacl-output">
+          <legend>
+            {{ t('investigation.new.generated_output')|default('Output SHACL') }}
+            <span aria-live="polite">
+              [{@ validForm ? '{{ t('investigation.new.valid')|default('valido') }}' : '{{ t('investigation.new.not_valid')|default('non valido') }}' @}]
+            </span>
+          </legend>
+
+          <pre :style="outputStyle">{@ serializedForm @}</pre>
+        </fieldset>
       {% endif %}
 
     </template>
 
   </div>
 
-  {# ---------------- CLOSE TAB ---------------- #}
   <div class="viewer-actions">
     <button class="btn btn-outline-secondary"
+            type="button"
+            aria-describedby="close-hint"
             onclick="tryCloseViewer()">
-      Chiudi
+      {{ t('investigation.close')|default('Chiudi') }}
     </button>
 
     <div id="close-hint"
-         style="display:none; margin-top:6px; color:#666; font-size:0.9em;">
-      Puoi chiudere questa scheda dal browser.
+         class="viewer-close-hint"
+         hidden>
+      {{ t('investigation.viewer.close_hint')|default('Puoi chiudere questa scheda dal browser.') }}
     </div>
   </div>
 
-</div>
+</section>
 
 <script>
 function tryCloseViewer() {
   window.close();
-  setTimeout(() => {
+
+  setTimeout(function () {
     const hint = document.getElementById('close-hint');
-    if (hint) hint.style.display = 'block';
+    if (hint) {
+      hint.hidden = false;
+    }
   }, 200);
 }
-
-
-async function startEditFromViewer(btn) {
-  if (btn) {
-    btn.disabled = true;
-    btn.classList.add('disabled');
-  }
-
-  const appEl = document.getElementById('investigation-app');
-  if (!appEl) return;
-
-  const uuid = appEl.dataset.uuid;
-  if (!uuid) {
-    alert("UUID non disponibile");
-    if (btn) btn.disabled = false;
-    return;
-  }
-
-  try {
-    // 🔍 riuso search
-    const res = await fetch('/backend/ontology/form/search', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: uuid, limit: 1 })
-    });
-
-    const response = await res.json();
-
-    if (!response.success || !response.data?.length) {
-      alert("Indagine non trovata");
-      if (btn) btn.disabled = false;
-      return;
-    }
-
-    const item = response.data[0];
-
-    // 🔐 lock
-    const lockResp = await fetch(
-      `/backend/ontology/form/lock/${item.id}/${window.CLIENT_UUID}`
-    ).then(r => r.json());
-
-    if (!lockResp.success) {
-      alert("Indagine in modifica da un altro UTENTES");
-      if (btn) btn.disabled = false;
-      return;
-    }
-
-    // 🔥 entra in editing
-    window.dispatchEvent(
-      new CustomEvent('edit-item', {
-        detail: {
-          id: item.id,
-          uuid: item.uuid
-        }
-      })
-    );
-
-  } catch (e) {
-    console.error(e);
-    alert("Errore durante l'attivazione della modifica");
-    if (btn) btn.disabled = false;
-  }
-}
-
-
-
 </script>
 
 {% endblock %}

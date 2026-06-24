@@ -1,18 +1,20 @@
-<nav class="sidebar-nav">
+<nav class="sidebar-nav"
+     aria-label="{{ t('sidebar.admin.label')|default('Menu amministrazione') }}">
 
-  <div class="sidebar-title-only">
-    Amministrazione
-  </div>
+  <span class="sidebar-title-only sidebar-nav-item sidebar-current">
+    {{ t('sidebar.admin.title')|default('Amministrazione') }}
+  </span>
 
   <a href="/frontend/v2/users/manage"
-     class="{% if activeSidebarItem == 'users' %}active{% endif %}">
-    Utenti
+     class="{% if activeSidebarItem|default('') == 'users' %}active{% endif %}"
+     {% if activeSidebarItem|default('') == 'users' %}aria-current="page"{% endif %}>
+    {{ t('sidebar.admin.users')|default('Utenti') }}
   </a>
 
   <a href="/frontend/v2/vocabolaries/manage"
-     class="{% if activeSidebarItem == 'vocabolaries' %}active{% endif %}">
-    Vocabolari
+     class="{% if activeSidebarItem|default('') == 'vocabolaries' %}active{% endif %}"
+     {% if activeSidebarItem|default('') == 'vocabolaries' %}aria-current="page"{% endif %}>
+    {{ t('sidebar.admin.vocabularies')|default('Vocabolari') }}
   </a>
-
 
 </nav>

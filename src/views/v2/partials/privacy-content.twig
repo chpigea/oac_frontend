@@ -1,47 +1,78 @@
-<div class="legal-text">
+<div class="legal-text privacy-policy-content"
+     aria-labelledby="privacy-policy-title">
 
-  <h2>{{ t('privacy.title') }}</h2>
+  <h2 id="privacy-policy-title">
+    {{ t('privacy.title') }}
+  </h2>
 
   <p class="privacy-updated">
     {{ t('privacy.updated') }}
-    <strong>{{ "now"|date("d/m/Y") }}</strong>
+    <strong>23/06/2026</strong>
   </p>
 
   <p>
-    Il presente sito tratta dati personali esclusivamente per finalità
-    istituzionali e di ricerca, nel rispetto del Regolamento (UE) 2016/679 (GDPR).
+    {{ t('privacy.intro') }}
   </p>
 
-  <h2>1. {{ t('privacy.controller.title') }}</h2>
-  <p>{{ t('privacy.controller.text') }}</p>
+  <section aria-labelledby="privacy-controller-title">
+    <h3 id="privacy-controller-title">
+      1. {{ t('privacy.controller.title') }}
+    </h3>
+    <p>{{ t('privacy.controller.text') }}</p>
+  </section>
 
-  <h2>2. {{ t('privacy.data.title') }}</h2>
-  <p>{{ t('privacy.data.text') }}</p>
+  <section aria-labelledby="privacy-data-title">
+    <h3 id="privacy-data-title">
+      2. {{ t('privacy.data.title') }}
+    </h3>
 
-  <ul>
-    <li>{{ t('privacy.data.item1') }}</li>
-    <li>{{ t('privacy.data.item2') }}</li>
-  </ul>
+    <p>{{ t('privacy.data.text') }}</p>
 
-  <h2>3. {{ t('privacy.purpose.title') }}</h2>
-  <p>{{ t('privacy.purpose.text') }}</p>
+    <ul>
+      <li>{{ t('privacy.data.item1') }}</li>
+      <li>{{ t('privacy.data.item2') }}</li>
+    </ul>
+  </section>
 
-  <ul>
-    <li>{{ t('privacy.purpose.item1') }}</li>
-    <li>{{ t('privacy.purpose.item2') }}</li>
-  </ul>
+  <section aria-labelledby="privacy-purpose-title">
+    <h3 id="privacy-purpose-title">
+      3. {{ t('privacy.purpose.title') }}
+    </h3>
 
-  <h2>4. {{ t('privacy.retention.title') }}</h2>
-  <p>{{ t('privacy.retention.text') }}</p>
+    <p>{{ t('privacy.purpose.text') }}</p>
 
-  <h2>5. {{ t('privacy.rights.title') }}</h2>
-  <p>{{ t('privacy.rights.text') }}</p>
+    <ul>
+      <li>{{ t('privacy.purpose.item1') }}</li>
+      <li>{{ t('privacy.purpose.item2') }}</li>
+    </ul>
+  </section>
 
-  <h2>6. {{ t('privacy.security.title') }}</h2>
-  <p>{{ t('privacy.security.text') }}</p>
+  <section aria-labelledby="privacy-retention-title">
+    <h3 id="privacy-retention-title">
+      4. {{ t('privacy.retention.title') }}
+    </h3>
+    <p>{{ t('privacy.retention.text') }}</p>
+  </section>
 
-  <h2>7. {{ t('privacy.cookies.title') }}</h2>
-  <p>
-    {{ t('privacy.cookies.text') }}
-  </p>
+  <section aria-labelledby="privacy-rights-title">
+    <h3 id="privacy-rights-title">
+      5. {{ t('privacy.rights.title') }}
+    </h3>
+    <p>{{ t('privacy.rights.text') }}</p>
+  </section>
+
+  <section aria-labelledby="privacy-security-title">
+    <h3 id="privacy-security-title">
+      6. {{ t('privacy.security.title') }}
+    </h3>
+    <p>{{ t('privacy.security.text') }}</p>
+  </section>
+
+  <section aria-labelledby="privacy-cookies-title">
+    <h3 id="privacy-cookies-title">
+      7. {{ t('privacy.cookies.title') }}
+    </h3>
+    <p>{{ t('privacy.cookies.text') }}</p>
+  </section>
+
 </div>

@@ -1,72 +1,64 @@
 {% extends 'v2/layout.twig' %}
 
-
-
 {% block content %}
 
 <section class="system-page">
 
-  {# TITOLO #}
   <header class="system-header">
-    <h1>Partecipanti</h1>
+    <h1>{{ t('introduzione.partecipanti.title') }}</h1>
   </header>
 
-    <p class="intro-text">
-    HD-LSD è un prodotto del progetto nazionale di ricerca PE5 CHANGES PNRR, Spoke 5.
-    Rientra nelle attività del WP6 "Cross-disciplinary interpretation of data from
-    novel diagnostics and definition of multi-method protocols for the study of
-    Cultural Heritage”, composto da un team interdisciplinare di
-    Sapienza Università di Roma che coinvolge quattro dipartimenti:
+  <p class="intro-text">
+    {{ t('introduzione.partecipanti.intro')|raw }}
   </p>
 
   <ul class="department-banners">
 
-  <li class="department-banner banner-sdara">
-    <div class="department-overlay">
-      <div class="department-name">
-        Dipartimento di Storia, Disegno e Restauro dell'Architettura
+    <li class="department-banner banner-sdara">
+      <div class="department-overlay">
+        <div class="department-name">
+          {{ t('introduzione.partecipanti.departments.sdara.name') }}
+        </div>
+        <div class="department-people">
+          {{ t('introduzione.partecipanti.departments.sdara.people') }}
+        </div>
       </div>
-      <div class="department-people">
-        Donatella Fiorani · Chiara Porrovecchio  · Silvia Cigognetti
-      </div>
-    </div>
-  </li>
+    </li>
 
     <li class="department-banner banner-antichita">
-    <div class="department-overlay">
-      <div class="department-name">
-        Dipartimento di Scienze dell'Antichità
+      <div class="department-overlay">
+        <div class="department-name">
+          {{ t('introduzione.partecipanti.departments.antichita.name') }}
+        </div>
+        <div class="department-people">
+          {{ t('introduzione.partecipanti.departments.antichita.people') }}
+        </div>
       </div>
-      <div class="department-people">
-        Cristina Lemorini · Giulia Previti
-      </div>
-    </div>
-  </li>
+    </li>
 
-      <li class="department-banner banner-terra">
-    <div class="department-overlay">
-      <div class="department-name">
-        Dipartimento di Scienze della Terra
+    <li class="department-banner banner-terra">
+      <div class="department-overlay">
+        <div class="department-name">
+          {{ t('introduzione.partecipanti.departments.terra.name') }}
+        </div>
+        <div class="department-people">
+          {{ t('introduzione.partecipanti.departments.terra.people') }}
+        </div>
       </div>
-      <div class="department-people">
-        Laura Medeghini · Melania Di Fazio
-      </div>
-    </div>
-  </li>
+    </li>
 
-      <li class="department-banner banner-biologia">
-    <div class="department-overlay">
-      <div class="department-name">
-        Dipartimento di Biologia Ambientale
+    <li class="department-banner banner-biologia">
+      <div class="department-overlay">
+        <div class="department-name">
+          {{ t('introduzione.partecipanti.departments.biologia.name') }}
+        </div>
+        <div class="department-people">
+          {{ t('introduzione.partecipanti.departments.biologia.people') }}
+        </div>
       </div>
-      <div class="department-people">
-        Mauro Iberite · Laura Sadori · Alessia Masi · Eleonora Creafogli
-      </div>
-    </div>
-  </li>
+    </li>
 
   </ul>
-
 
 </section>
 

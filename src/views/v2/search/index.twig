@@ -1,25 +1,56 @@
 {% extends "v2/layout.twig" %}
 
 {% block content %}
-  <div class="system-page">
-    <h1>Ricerca</h1>
-    <p>Il principale vantaggio del sistema risiede nella possibilità, da parte degli esperti di dominio, d’interrogare direttamente i dati archiviati per ricerche semplici o complesse. Entrambe rispondono alle logiche e al linguaggio SPARQL, ma si avvalgono dell’ausilio della tecnologia NaturalSparql  che suggerisce le possibili combinazioni consentite dalla semantica sottesa al progetto.
-Ciò si traduce nell’identificazione delle concatenazioni possibili a partire da una qualsiasi entità d’interesse appartenente al grafo, e nella possibilità di selezionare i successivi sintagmi della query all’interno dei soli punti di ingresso significativi.
-In questa sezione è possibile accedere alla:
-</p>
-<ul>
-  <li><strong>Ricerca veloce</strong>: in cui le entità di ingresso sono state scremate alla luce dei focus tematici (Indagine, Campione, Attività diagnostica, Materiale)</li>
-  <li><strong>Ricerca avanzata</strong>: in cui è possibile interrogare il sistema a partire da una qualunque delle entità presenti all’interno del grafo di conoscenza</li>
-</ul>
 
+<section class="system-page" aria-labelledby="search-title">
 
-<p>
-  <strong>Interrogare il sistema</strong><br>
-  Guida pratica per interrogare il sistema:
-  <a href="/frontend/docs/interrogare_il_sistema.pdf" target="_blank">
-    scarica il PDF
-  </a>
-</p>
+  <header class="system-header">
+    <h1 id="search-title">{{ t('search.index.title') }}</h1>
+  </header>
 
-  </div>
+  <p>
+    {{ t('search.index.description_1') }}
+  </p>
+
+  <p>
+    {{ t('search.index.description_2') }}
+  </p>
+
+  <p>
+    {{ t('search.index.description_3') }}
+  </p>
+
+  <p>
+    {{ t('search.index.access_intro') }}
+  </p>
+
+  <ul>
+    <li>
+      <strong>{{ t('search.index.fast_search_title') }}</strong>:
+      {{ t('search.index.fast_search_description') }}
+    </li>
+
+    <li>
+      <strong>{{ t('search.index.advanced_search_title') }}</strong>:
+      {{ t('search.index.advanced_search_description') }}
+    </li>
+  </ul>
+
+  <section class="search-guide" aria-labelledby="search-guide-title">
+    <h2 id="search-guide-title">
+      {{ t('search.index.guide_title') }}
+    </h2>
+
+    <p>
+      {{ t('search.index.guide_description') }}
+      <a href="/frontend/docs/interrogare_il_sistema.pdf"
+         target="_blank"
+         rel="noopener noreferrer">
+        {{ t('search.index.guide_link') }}
+      </a>
+    </p>
+  </section>
+
+</section>
+
 {% endblock %}

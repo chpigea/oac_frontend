@@ -1,11 +1,11 @@
-<aside class="sidebar"
-       id="sidebar-investigation">
+<nav class="sidebar-nav"
+     id="sidebar-investigation"
+     aria-label="{{ t('sidebar.indagine')|default('Menu indagine') }}">
 
-  <nav class="sidebar-nav">
+  <span class="sidebar-nav-item sidebar-current"
+        :class="{ active: activeItem === 'investigation' }"
+        :aria-current="activeItem === 'investigation' ? 'page' : null">
+    {{ t('sidebar.indagine')|default('Indagine') }}
+  </span>
 
-    <a
-       :class="{ active: activeItem === 'investigation' }">
-       Indagine
-    </a>
-      </nav>
-</aside>
+</nav>

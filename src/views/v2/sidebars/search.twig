@@ -1,51 +1,51 @@
-<nav class="sidebar-nav">
+<nav class="sidebar-nav"
+     aria-label="{{ t('sidebar.search.label')|default('Menu ricerca') }}">
 
   {% set ft = fastType|default(null) %}
+  {% set currentItem = activeSidebarItem|default('') %}
 
-  {# =========================
-     RICERCA VELOCE (GRUPPO)
-     ========================= #}
+  <div class="sidebar-group {% if currentItem == 'fast' %}open{% endif %}"
+       role="group"
+       aria-labelledby="sidebar-fast-search-title">
 
-  <div class="sidebar-group {% if activeSidebarItem == 'fast' %}open{% endif %}">
-
-    <div class="sidebar-group-title
-         {% if activeSidebarItem == 'fast' %}active{% endif %}">
+    <span id="sidebar-fast-search-title"
+          class="sidebar-group-title sidebar-nav-item sidebar-current {% if currentItem == 'fast' %}active{% endif %}">
       {{ t('search.fast.title')|default('Ricerca veloce') }}
-    </div>
+    </span>
 
     <div class="sidebar-submenu">
 
       <a href="/frontend/v2/search/fast/1"
-         class="{% if activeSidebarItem == 'fast' and ft == '1' %}active{% endif %}">
-        {{ t('search.fast.investigations') }}
+         class="{% if currentItem == 'fast' and ft == '1' %}active{% endif %}"
+         {% if currentItem == 'fast' and ft == '1' %}aria-current="page"{% endif %}>
+        {{ t('search.fast.investigations')|default('Indagini') }}
       </a>
 
       <a href="/frontend/v2/search/fast/2"
-         class="{% if activeSidebarItem == 'fast' and ft == '2' %}active{% endif %}">
-        {{ t('search.fast.samples') }}
+         class="{% if currentItem == 'fast' and ft == '2' %}active{% endif %}"
+         {% if currentItem == 'fast' and ft == '2' %}aria-current="page"{% endif %}>
+        {{ t('search.fast.samples')|default('Campioni') }}
       </a>
 
       <a href="/frontend/v2/search/fast/3"
-         class="{% if activeSidebarItem == 'fast' and ft == '3' %}active{% endif %}">
-        {{ t('search.fast.diagnostics') }}
+         class="{% if currentItem == 'fast' and ft == '3' %}active{% endif %}"
+         {% if currentItem == 'fast' and ft == '3' %}aria-current="page"{% endif %}>
+        {{ t('search.fast.diagnostics')|default('Attività diagnostiche') }}
       </a>
 
       <a href="/frontend/v2/search/fast/4"
-         class="{% if activeSidebarItem == 'fast' and ft == '4' %}active{% endif %}">
-        {{ t('search.fast.materials') }}
+         class="{% if currentItem == 'fast' and ft == '4' %}active{% endif %}"
+         {% if currentItem == 'fast' and ft == '4' %}aria-current="page"{% endif %}>
+        {{ t('search.fast.materials')|default('Materiali') }}
       </a>
 
     </div>
   </div>
 
-  {# =========================
-     RICERCA AVANZATA (RAMO SEPARATO)
-     ========================= #}
-
   <a href="/frontend/v2/search/advanced"
-     class="sidebar-item
-     {% if activeSidebarItem == 'advanced' %}active{% endif %}">
-    {{ t('search.advanced.title') }}
+     class="sidebar-item {% if currentItem == 'advanced' %}active{% endif %}"
+     {% if currentItem == 'advanced' %}aria-current="page"{% endif %}>
+    {{ t('search.advanced.title')|default('Ricerca avanzata') }}
   </a>
 
 </nav>

@@ -191,17 +191,23 @@ body.layout-v2 {
   text-decoration: none;
 }
 
-.sidebar-nav a {
+.sidebar-nav a,
+.sidebar-nav .sidebar-nav-item {
   display: block;
   padding: 8px 12px;
   text-decoration: none;
   color: #333;
 }
 
-.sidebar-nav a.active {
+.sidebar-nav a.active,
+.sidebar-nav .sidebar-nav-item.active {
   font-weight: bold;
   background-color: #B1A891;
   border-left: 3px solid #0056b3;
+}
+
+.sidebar-nav .sidebar-current {
+  cursor: default;
 }
 
 
@@ -779,4 +785,367 @@ body.layout-v2 {
 
 .legal-text h2 {
   margin-top: 0;
+}
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 9999;
+    padding: 8px 12px;
+    background: #fff;
+    color: #000;
+}
+
+.skip-link:focus {
+    left: 8px;
+    top: 8px;
+}
+
+.system-description {
+    margin-top: 20px;
+    line-height: 2;
+}
+
+.manage-users {
+    margin: 30px;
+}
+
+.manage-users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-button {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px;
+    font-size: 1rem;
+}
+
+.icon-button:focus-visible {
+    outline: 3px solid #000;
+    outline-offset: 3px;
+}
+
+.manage-users-header .icon-button {
+    color: gray;
+    font-size: 24px;
+}
+
+.edit-button {
+    color: blue;
+}
+
+.delete-button {
+    color: #b00000;
+}
+
+.edit-user {
+    margin: 30px;
+}
+
+.edit-user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-user-form {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.warning {
+    color: #b00000;
+}
+
+.search-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.search-modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 650px;
+    width: 90%;
+}
+
+.investigation-page {
+    margin: 24px 32px;
+}
+
+.investigation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.investigation-actions {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.shacl-container {
+    border: dashed 2px gray;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 60%;
+    margin: 10px auto 0 auto;
+}
+
+.shacl-output {
+    margin-top: 10px;
+    border: solid 1px gray;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.investigation-bottom-spacer {
+    margin-top: 200px;
+}
+
+.search-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+
+.search-modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 650px;
+    width: 90%;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.search-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 40px;
+    margin-bottom: 10px;
+}
+
+.search-modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.close-btn {
+    align-self: flex-end;
+    background: transparent;
+    border: none;
+    font-size: 40px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.search-modal-select {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.selected-instance {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #666;
+}
+
+.search-modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.search-modal-action {
+    background: transparent;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.search-modal-action-more {
+    color: blue;
+    border: solid 1px blue;
+}
+
+.search-modal-action-confirm {
+    color: green;
+    border: solid 1px green;
+}
+
+.investigation-search-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.yasqe .CodeMirror {
+    font-size: 0.9em;
+    height: 380px;
+}
+
+.yasr_header {
+    display: none;
+}
+
+.form-container {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.result-container {
+    margin-top: 20px;
+}
+
+.yasr_external_ref_btn {
+    display: none !important;
+}
+
+.switch-accessible-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.viewer-container {
+    max-width: 1100px;
+    margin: 20px auto;
+}
+
+.viewer-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.viewer-download-actions {
+    margin-top: 20px;
+}
+
+.viewer-shacl-container {
+    margin-top: 15px;
+    border: dashed 2px gray;
+    padding: 15px;
+    border-radius: 6px;
+    max-width: 60%;
+}
+
+.viewer-shacl-output {
+    margin-top: 15px;
+    border: solid 1px gray;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.viewer-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.viewer-close-hint {
+    margin-top: 6px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.viewer-stop-icon {
+    color: #b00000;
+}
+
+.link-button {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: #0645ad;
+    text-decoration: underline;
+    cursor: pointer;
+    font: inherit;
+}
+
+.link-button:focus-visible {
+    outline: 3px solid #000;
+    outline-offset: 3px;
+}
+
+.footer-legal {
+  position: absolute;
+  right: 24px;
+  font-size: 0.75rem;
+  color: #6E1B2A;
+  white-space: nowrap;
+}
+
+.footer-legal a,
+.footer-legal-link {
+  color: #6E1B2A;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footer-legal a:hover,
+.footer-legal-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.footer-legal a:focus-visible,
+.footer-legal-link:focus-visible {
+  outline: 3px solid #6E1B2A;
+  outline-offset: 3px;
+}
+
+.footer-legal-separator {
+  margin: 0 6px;
+  color: #6E1B2A;
+}
+
+/* Override accessibilità pulsanti login */
+/* Pulsanti login e ospite - contrasto accessibile */
+.login-form button[type="submit"],
+.login-form .anonymous-button {
+    background-color: #B1A891;
+    color: #6E1B2A;
+    border: 2px solid #6E1B2A;
+    font-weight: 600;
+}
+
+.login-form button[type="submit"]:hover,
+.login-form .anonymous-button:hover {
+    background-color: #A79D84;
+    color: #5F1725;
+    border-color: #5F1725;
+}
+
+.login-form button[type="submit"]:focus-visible,
+.login-form .anonymous-button:focus-visible {
+    outline: 3px solid #6E1B2A;
+    outline-offset: 3px;
 }

@@ -274,3 +274,120 @@ document.getElementById('sparql-toggle').onclick = function () {
   yasqe.refresh();
   return false;
 };
+
+function fixYasrAccessibility() {
+    const label = 'Documentazione YASGUI';
+
+    document.querySelectorAll('a.yasr_external_ref_btn').forEach(function(link) {
+        link.href = 'https://triply.cc/docs/yasgui';
+        link.setAttribute('aria-label', label);
+        link.setAttribute('title', label);
+
+        if (!link.querySelector('.visually-hidden')) {
+            const span = document.createElement('span');
+            span.className = 'visually-hidden';
+            span.textContent = label;
+            link.appendChild(span);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const yasr = document.getElementById('yasr');
+
+    if (yasr) {
+        fixYasrAccessibility();
+
+        const observer = new MutationObserver(function () {
+            fixYasrAccessibility();
+        });
+
+        observer.observe(yasr, {
+            childList: true,
+            subtree: true
+        });
+    }
+});
+
+function fixYasqeAccessibility() {
+    document.querySelectorAll('.CodeMirror textarea').forEach(function(textarea) {
+        textarea.setAttribute('aria-label', 'Editor query SPARQL');
+        textarea.setAttribute('title', 'Editor query SPARQL');
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(fixYasqeAccessibility, 500);
+
+    const yasqe = document.getElementById('yasqe');
+
+    if (yasqe) {
+        const observer = new MutationObserver(function () {
+            fixYasqeAccessibility();
+        });
+
+        observer.observe(yasqe, {
+            childList: true,
+            subtree: true
+        });
+    }
+});
+
+function fixYasrColumnNamesSwitch() {
+    document.querySelectorAll('.variablesOptionsSelect').forEach(function(container) {
+        const p = container.querySelector('p');
+        const switchLabel = container.querySelector('label.switch');
+        const input = switchLabel ? switchLabel.querySelector('input[type="checkbox"]') : null;
+
+        if (!p || !switchLabel || !input) return;
+
+        // Evita di applicare la patch più volte
+        if (switchLabel.querySelector('.switch-accessible-label')) return;
+
+        // Prova a recuperare il testo già presente vicino allo switch
+        let text = '';
+
+        p.childNodes.forEach(function(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                text += node.textContent.trim() + ' ';
+            }
+        });
+
+        text = text.trim();
+
+        // Fallback italiano
+        if (!text || text.toLowerCase().includes('empty form label')) {
+            text = 'Mostra nomi colonne';
+        }
+
+        // Rimuove il testo sciolto fuori dalla label, per evitare duplicazioni
+        p.childNodes.forEach(function(node) {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                node.textContent = '';
+            }
+        });
+
+        // Inserisce il testo dentro la label
+        const span = document.createElement('span');
+        span.className = 'switch-accessible-label';
+        span.textContent = text + ' ';
+
+        switchLabel.insertBefore(span, switchLabel.firstChild);
+
+        input.setAttribute('aria-label', text);
+        input.setAttribute('title', text);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    fixYasrColumnNamesSwitch();
+
+    const observer = new MutationObserver(function () {
+        fixYasrColumnNamesSwitch();
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
