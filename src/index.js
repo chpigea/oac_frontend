@@ -14,7 +14,7 @@ const jwtLib = jwtLibFactory({
     excludePaths: [
         `/${serviceName}/`,
         `/${serviceName}/v2/password_recovery`,
-        new RegExp(`^/${serviceName}/users/v2/reset_password/[^/]+/[^/]+$`),
+        new RegExp(`^/${serviceName}/v2/users/reset_password/[^/]+/[^/]+$`),
         `/${serviceName}/health`,
         `/${serviceName}/captcha/random-image`
     ],
