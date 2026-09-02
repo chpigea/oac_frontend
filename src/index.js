@@ -22,6 +22,7 @@ const jwtLib = jwtLibFactory({
     redirectTo: `/${serviceName}/`
 });
 
+
 i18n.configure({
   locales: ['en', 'it'],
   defaultLocale: 'it',
